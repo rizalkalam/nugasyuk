@@ -18,7 +18,8 @@ return new class extends Migration
             $table->string('password');
             $table->integer('niy')->primary();
             $table->string('foto_profile');
-            $table->foreignId('mapel_id');
+            $table->foreignId('mapel1_id');
+            $table->foreignId('mapel2_id')->nullable();
             $table->timestamps();
         });
     }

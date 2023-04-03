@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Mapel;
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
 use Tymon\JWTAuth\Contracts\JWTSubject;
@@ -55,5 +56,16 @@ class Guru extends Authenticatable implements JWTSubject
     public function getJWTCustomClaims()
     {
         return [];
+    }
+
+    // relation 
+    public function mapel1()
+    {
+        return $this->belongsTo(Mapel::class);
+    }
+
+    public function mapel2()
+    {
+        return $this->belongsTo(Mapel::class);
     }
 }

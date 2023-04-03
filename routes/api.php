@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\API\GuruController;
 use App\Http\Controllers\API\LoginController;
 
 /*
@@ -18,6 +19,10 @@ use App\Http\Controllers\API\LoginController;
 Route::post('/login/guru', [LoginController::class, 'loginGuru']);
 Route::post('/login/murid', [LoginController::class, 'loginMurid']);
 Route::post('/login/ortu', [LoginController::class, 'loginOrtu']);
+
+Route::middleware('auth:guru')->group(function(){
+    Route::get('/beranda', [GuruController::class, 'beranda']);
+});
 
 // Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //     return $request->user();

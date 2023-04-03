@@ -21,7 +21,7 @@ class LoginController extends Controller
 
         return response()->json([
             'token'=>$token,
-            'account'=>auth()->user()->nama_guru
+            'account'=>auth()->user()->email
             ]);
     }
 
@@ -38,7 +38,7 @@ class LoginController extends Controller
 
         return response()->json([
                 'token'=>$token,
-                'account'=>Auth::guard('murid')->user()->nama_siswa
+                'account'=>Auth::guard('murid')->user()->email
             ]);
     }
 
