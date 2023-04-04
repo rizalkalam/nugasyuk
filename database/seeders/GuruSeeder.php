@@ -20,7 +20,7 @@ class GuruSeeder extends Seeder
             'password'=>bcrypt('mrjack123'),
             'niy'=>'0111',
             'foto_profile'=>'gambar1.jpg',
-            'mapel_id'=>1
+            'mapel1_id'=>1
         ]);
 
         Guru::create([
@@ -30,7 +30,8 @@ class GuruSeeder extends Seeder
             'password'=>bcrypt('mrmusfiq123'),
             'niy'=>'0112',
             'foto_profile'=>'gambar2.jpg',
-            'mapel_id'=>2
+            'mapel1_id'=>2,
+            'mapel2_id'=>3
         ]);
     }
 }
