@@ -14,7 +14,9 @@ return new class extends Migration
         Schema::create('tugas', function (Blueprint $table) {
             $table->id();
             $table->string('judul');
+            $table->date('date');
             $table->date('deadline');
+            $table->text('description');
             $table->enum('status', ['menunggu', 'selesai']);
             $table->string('link')->nullable();
             $table->string('file')->nullable();

@@ -2,6 +2,9 @@
 
 namespace App\Models;
 
+use App\Models\Kelas;
+use App\Models\Tugas;
+use App\Models\Materi;
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
 use Tymon\JWTAuth\Contracts\JWTSubject;
@@ -25,6 +28,16 @@ class Murid extends Authenticatable implements JWTSubject
                  $model->setAttribute($model->getKeyName(), Str::uuid()->toString());
             }
         });
+    }
+
+    public function kelas()
+    {
+        return $this->belongsTo(Kelas::class);
+    }
+
+    public function tugas()
+    {
+        return $this->belongsTo(Tugas::class);
     }
 
     public function getIncrementing()

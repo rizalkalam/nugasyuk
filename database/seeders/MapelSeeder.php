@@ -14,31 +14,49 @@ class MapelSeeder extends Seeder
     public function run(): void
     {
         Mapel::create([
-            // 'id'=>'1',
+            'id'=>'1',
            'kode_id'=>1,
            'kelas_id'=>1,
-           'tugas_id'=>1,
-           'materi_id'=>1,
         //    'nama_mapel'=>'ICT',
             // 'asset_id'=>1,
         ]);
 
         Mapel::create([
-             // 'id'=>'1',
+            'id'=>'2',
+           'kode_id'=>1,
+           'kelas_id'=>2,
+        //    'nama_mapel'=>'ICT',
+            // 'asset_id'=>1,
+        ]);
+
+        Mapel::create([
+            'id'=>'3',
+           'kode_id'=>1,
+           'kelas_id'=>3,
+        //    'nama_mapel'=>'ICT',
+            // 'asset_id'=>1,
+        ]);
+
+        Mapel::create([
+            'id'=>'4',
+           'kode_id'=>1,
+           'kelas_id'=>4,
+        //    'nama_mapel'=>'ICT',
+            // 'asset_id'=>1,
+        ]);
+
+        Mapel::create([
+             'id'=>'5',
             'kode_id'=>2,
             'kelas_id'=>1,
-            'tugas_id'=>2,
-            'materi_id'=>2,
         //    'nama_mapel'=>'Science',
             // 'asset_id'=>2,
         ]);
 
         Mapel::create([
-            // 'id'=>'1',
+            'id'=>'6',
             'kode_id'=>3,
             'kelas_id'=>2,
-            'tugas_id'=>3,
-            'materi_id'=>3,
             // 'nama_mapel'=>'Math',
             // 'asset_id'=>2,
         ]);

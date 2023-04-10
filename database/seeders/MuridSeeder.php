@@ -20,7 +20,8 @@ class MuridSeeder extends Seeder
             'password'=>bcrypt('kalam123'),
             'nis'=>'0441',
             'foto_profile'=>'gambar1.jpg',
-            'kelas_id'=>3
+            'kelas_id'=>3,
+            'tugas_id'=>1
         ]);
 
         Murid::create([
@@ -30,7 +31,8 @@ class MuridSeeder extends Seeder
             'password'=>bcrypt('zumar123'),
             'nis'=>'0442',
             'foto_profile'=>'gambar1.jpg',
-            'kelas_id'=>3
+            'kelas_id'=>3,
+            'tugas_id'=>3,
         ]);
     }
 }

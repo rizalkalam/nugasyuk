@@ -25,14 +25,4 @@ class Mapel extends Model
         return $this->belongsTo(Kode::class);
     }
 
-    public function materi()
-    {
-        return $this->belongsTo(Materi::class);
-    }
-
-    public function tugas()
-    {
-        return $this->belongsTo(Tugas::class);
-    }
-
 }

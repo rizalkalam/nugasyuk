@@ -14,8 +14,9 @@ class MateriSeeder extends Seeder
     public function run(): void
     {
         Materi::create([
-            // 'id'=>'1',
+            'id'=>'1',
            'judul'=>'Hosting Wordpress',
+           'date'=>'2023-05-05',
            'isi'=>'lorem ipsum dolor sit amet bla bli blu ble blo ohok ohok',
            'link'=>null,
            'file'=>null,
@@ -23,8 +24,29 @@ class MateriSeeder extends Seeder
         ]);
 
         Materi::create([
-            // 'id'=>'1',
+            'id'=>'2',
             'judul'=>'Sistem Reproduksi Manusia',
+            'date'=>'2023-05-05',
+            'isi'=>'lorem ipsum dolor sit amet bla bli blu ble blo ohok ohok',
+            'link'=>null,
+            'file'=>null,
+            'mapel_id'=>5
+        ]);
+
+        Materi::create([
+             'id'=>'3',
+             'judul'=>'Aljawir',
+             'date'=>'2023-05-05',
+             'isi'=>'lorem ipsum dolor sit amet bla bli blu ble blo ohok ohok',
+             'link'=>null,
+             'file'=>null,
+             'mapel_id'=>6
+        ]);
+
+        Materi::create([
+            'id'=>'4',
+            'judul'=>'Wordpress Landing Page',
+            'date'=>'2023-05-05',
             'isi'=>'lorem ipsum dolor sit amet bla bli blu ble blo ohok ohok',
             'link'=>null,
             'file'=>null,
@@ -32,12 +54,13 @@ class MateriSeeder extends Seeder
         ]);
 
         Materi::create([
-             // 'id'=>'1',
-             'judul'=>'Ajawir',
-             'isi'=>'lorem ipsum dolor sit amet bla bli blu ble blo ohok ohok',
-             'link'=>null,
-             'file'=>null,
-             'mapel_id'=>3
+            'id'=>'5',
+           'judul'=>'Coba',
+           'date'=>'2023-05-05',
+           'isi'=>'lorem ipsum dolor sit amet bla bli blu ble blo ohok ohok',
+           'link'=>null,
+           'file'=>null,
+           'mapel_id'=>1
         ]);
     }
 }

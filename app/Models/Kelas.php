@@ -20,4 +20,6 @@ class Kelas extends Model
     {
         return $this->belongsTo(Jurusan::class);
     }
+
+    
 }
