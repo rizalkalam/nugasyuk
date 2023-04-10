@@ -23,6 +23,30 @@ class KelasSeeder extends Seeder
 
         Kelas::create([
             // 'id'=>'1',
+           'nama_kelas'=>'2',
+           'jumlah_siswa'=>32,
+           'tingkatan_id'=>1,
+           'jurusan_id'=>1
+        ]);
+
+        Kelas::create([
+            // 'id'=>'1',
+           'nama_kelas'=>'1',
+           'jumlah_siswa'=>34,
+           'tingkatan_id'=>2,
+           'jurusan_id'=>1
+        ]);
+
+        Kelas::create([
+            // 'id'=>'1',
+           'nama_kelas'=>'2',
+           'jumlah_siswa'=>35,
+           'tingkatan_id'=>2,
+           'jurusan_id'=>1
+        ]);
+
+        Kelas::create([
+            // 'id'=>'1',
             'nama_kelas'=>'1',
             'jumlah_siswa'=>34,
             'tingkatan_id'=>1,

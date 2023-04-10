@@ -13,30 +13,30 @@ class Guru extends Authenticatable implements JWTSubject
 {
     use HasFactory;
 
-    protected $guarded = [];
+    protected $guarded = ['id'];
 
-    public $incrementing = false;
-    protected $keyType = 'string';
+    // public $incrementing = false;
+    // protected $keyType = 'string';
 
-    protected static function boot()
-    {
-        parent::boot();
-        static::creating(function($model){
-            if ($model->getKey() == null) {
-                 $model->setAttribute($model->getKeyName(), Str::uuid()->toString());
-            }
-        });
-    }
+    // protected static function boot()
+    // {
+    //     parent::boot();
+    //     static::creating(function($model){
+    //         if ($model->getKey() == null) {
+    //              $model->setAttribute($model->getKeyName(), Str::uuid()->toString());
+    //         }
+    //     });
+    // }
 
-    public function getIncrementing()
-    {
-        return false;
-    }
+    // public function getIncrementing()
+    // {
+    //     return false;
+    // }
 
-    public function getKeyType()
-    {
-        return 'string';
-    }
+    // public function getKeyType()
+    // {
+    //     return 'string';
+    // }
 
      /**
      * Get the identifier that will be stored in the subject claim of the JWT.
@@ -59,13 +59,13 @@ class Guru extends Authenticatable implements JWTSubject
     }
 
     // relation 
-    public function mapel1()
+    public function mapel()
     {
         return $this->belongsTo(Mapel::class);
     }
 
-    public function mapel2()
-    {
-        return $this->belongsTo(Mapel::class);
-    }
+    // public function mapel2()
+    // {
+    //     return $this->belongsTo(Mapel::class);
+    // }
 }

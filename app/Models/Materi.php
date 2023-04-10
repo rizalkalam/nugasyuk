@@ -16,7 +16,7 @@ class Materi extends Model
     public function mapel()
     {
         return $this->belongsTo(Mapel::class);
-        return $this->hasMany(Mapel::class);
+        // return $this->hasMany(Mapel::class);
     }
 
     public function materi()

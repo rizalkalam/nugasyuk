@@ -15,8 +15,6 @@ return new class extends Migration
             $table->id();
             $table->foreignId('kode_id');
             $table->foreignId('kelas_id');
-            $table->foreignId('tugas_id');
-            $table->foreignId('materi_id');
             // $table->string('nama_mapel');
             // $table->string('nama_guru');
             // $table->string('kelas');
