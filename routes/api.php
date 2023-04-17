@@ -24,11 +24,20 @@ Route::middleware('auth:guru')->group(function(){
     Route::get('/beranda', [GuruController::class, 'beranda']);
     Route::get('/profile', [GuruController::class, 'profile']);
     Route::get('/kbm', [GuruController::class, 'kbm']);
-    Route::get('/materi/kelas/{id}', [GuruController::class, 'materi']);
-    Route::get('/tugas/kelas/{id}', [GuruController::class, 'tugas']);
+    Route::get('/materi/kelas/{kelas_id}', [GuruController::class, 'materi']);
+    Route::get('/tugas/kelas/{kelas_id}', [GuruController::class, 'tugas']);
     Route::get('/materi/kelas/{kelas_id}/detail/{materi_id}', [GuruController::class, 'detail_materi']);
     Route::get('/tugas/kelas/{kelas_id}/detail/{tugas_id}', [GuruController::class, 'detail_tugas']);
-    Route::get('/tugas/kelas/{kelas_id}/detail/{tugas_id}/cek', [GuruController::class, 'cek_pengumpulan']);
+    Route::get('/tugas/kelas/{kelas_id}/detail/{tugas_id}/{status}', [GuruController::class, 'cek_pengumpulan']);
+    Route::get('/pengumpulan/{kelas_id?}', [GuruController::class, 'pengumpulan']);
+    Route::get('/pengumpulan/detail/{nama}', [GuruController::class, 'detail_pengumpulan']);
+    Route::get('/pengumpulan/detail/{nama}/{status}', [GuruController::class, 'status_pengumpulan']);
+
+    // crud route
+    Route::post('buat/materi/kelas/{kelas_Id}/mapel/{nama_mapel}', [GuruController::class, 'buat_materi']);
+    // Route::get('/tugas/kelas/{kelas_id}/mapel/{nama_mapel}/buat', [GuruController::class, 'buat_tugas']);
+
+    Route::post('buat/tugas/kelas/{kelas_Id}/mapel/{nama_mapel}', [GuruController::class, 'buat_tugas']);
 });
 
 // Route::middleware('auth:sanctum')->get('/user', function (Request $request) {

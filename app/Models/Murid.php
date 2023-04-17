@@ -15,40 +15,36 @@ class Murid extends Authenticatable implements JWTSubject
 {
     use HasFactory;
 
-    protected $guarded = [];
+    protected $guarded = ['id'];
+    // protected $primaryKey = 'nis';
 
-    public $incrementing = false;
-    protected $keyType = 'string';
+    // public $incrementing = false;
+    // protected $keyType = 'string';
 
-    protected static function boot()
-    {
-        parent::boot();
-        static::creating(function($model){
-            if ($model->getKey() == null) {
-                 $model->setAttribute($model->getKeyName(), Str::uuid()->toString());
-            }
-        });
-    }
+    // protected static function boot()
+    // {
+    //     parent::boot();
+    //     static::creating(function($model){
+    //         if ($model->getKey() == null) {
+    //              $model->setAttribute($model->getKeyName(), Str::uuid()->toString());
+    //         }
+    //     });
+    // }
 
     public function kelas()
     {
         return $this->belongsTo(Kelas::class);
     }
 
-    public function tugas()
-    {
-        return $this->belongsTo(Tugas::class);
-    }
+    // public function getIncrementing()
+    // {
+    //     return false;
+    // }
 
-    public function getIncrementing()
-    {
-        return false;
-    }
-
-    public function getKeyType()
-    {
-        return 'string';
-    }
+    // public function getKeyType()
+    // {
+    //     return 'string';
+    // }
 
      /**
      * Get the identifier that will be stored in the subject claim of the JWT.
@@ -68,5 +64,19 @@ class Murid extends Authenticatable implements JWTSubject
     public function getJWTCustomClaims()
     {
         return [];
+    }
+
+    public function scopeFilter($query, array $filters)
+    {
+        $query->when($filters['search']??false, function($query, $search){
+            return $query->where('nama_siswa', 'like', '%' . $search . '%')
+            ->orWhere('nama_siswa', 'like', '%' . $search . '%');
+        });
+
+        // $query->when($filters['kelas']??false, function($query, $category){
+        //     return $query->whereHas('kelas', function($query) use ($category){
+        //         $query->where('id', $category);
+        //     });
+        // });
     }
 }

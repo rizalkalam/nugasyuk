@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Murid;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Kelas extends Model
 {
@@ -19,6 +20,11 @@ class Kelas extends Model
     public function jurusan()
     {
         return $this->belongsTo(Jurusan::class);
+    }
+
+    public function murids()
+    {
+        return $this->hasMany(Murid::class);
     }
 
     

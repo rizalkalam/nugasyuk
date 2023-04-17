@@ -7,13 +7,16 @@ use Illuminate\Database\Seeder;
 use Database\Seeders\GuruSeeder;
 use Database\Seeders\KodeSeeder;
 use Database\Seeders\OrtuSeeder;
+use Database\Seeders\SoalSeeder;
 use Database\Seeders\KelasSeeder;
 use Database\Seeders\MapelSeeder;
 use Database\Seeders\MuridSeeder;
 use Database\Seeders\TugasSeeder;
 use Database\Seeders\MateriSeeder;
+use Database\Seeders\StatusSeeder;
 use Database\Seeders\JurusanSeeder;
 use Database\Seeders\TingkatanSeeder;
+use Database\Seeders\PengumpulanSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -40,6 +43,9 @@ class DatabaseSeeder extends Seeder
             MapelSeeder::class,
             TugasSeeder::class,
             MateriSeeder::class,
+            PengumpulanSeeder::class
+            // SoalSeeder::class
+            // StatusSeeder::class
          ]);
     }
 }
