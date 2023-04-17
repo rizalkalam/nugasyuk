@@ -4,13 +4,18 @@ namespace App\Http\Controllers\API;
 
 use App\Models\Guru;
 use App\Models\Kode;
+use App\Models\Soal;
 use App\Models\Kelas;
 use App\Models\Mapel;
 use App\Models\Murid;
 use App\Models\Tugas;
 use App\Models\Materi;
+use App\Models\Status;
+use App\Models\Pengumpulan;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Validator;
 
 class GuruController extends Controller
 {
@@ -53,12 +58,11 @@ class GuruController extends Controller
         }
 
         // jumlah tugas yang diberikan
-        $tugasall = Tugas::all();
-        foreach ($tugasall as $item) {
+        $all_tugas = Tugas::all();
+        foreach ($all_tugas as $item) {
             if ($item->mapel->kode->guru->nama_guru == auth()->user()->nama_guru) {
                 $tugas[]=[
-                    'judul'=>$item->judul,
-                    'status'=>$item->status
+                    'judul'=>$item->soal,
                 ];
             }
         }
@@ -93,15 +97,13 @@ class GuruController extends Controller
 
     public function kbm()
     {
-        $mapels = Mapel::all();
-        foreach ($mapels as $mapel) {
-            if ($mapel->kode->guru->nama_guru == auth()->user()->nama_guru) {
-                $kelas[]=[
-                    'id'=>$mapel->kelas->id,
-                    'kelas'=>$mapel->kelas->tingkatan->tingkat_ke . ' ' . $mapel->kelas->jurusan->nama_jurusan . ' ' . $mapel->kelas->nama_kelas
-                ];
-            }    
-        }
+        $kelas = Mapel::join('kodes', 'kodes.id', '=', 'mapels.kode_id')
+                        ->join('gurus', 'gurus.id', '=', 'kodes.guru_id')
+                        ->join('kelas', 'kelas.id', '=', 'mapels.kelas_id')
+                        ->join('jurusans', 'jurusans.id', '=', 'kelas.jurusan_id')
+                        ->join('tingkatans', 'tingkatans.id', '=', 'kelas.tingkatan_id')
+                        ->where('gurus.id', '=', auth()->user()->id)
+                        ->get(['tingkatans.tingkat_ke', 'jurusans.nama_jurusan', 'kelas.nama_kelas']);
 
         return response()->json([
             "success" => true,
@@ -110,178 +112,315 @@ class GuruController extends Controller
         ], 200);
     }
 
-    public function materi($key)
+    public function materi($kelas_id)
     {
-        $materis = Materi::all();
-        foreach ($materis as $item) {
-            if ($item->mapel->kode->guru->nama_guru == auth()->user()->nama_guru) {
-                if ($item->mapel->kelas->id == $key) {
-                    $materi[]=[
-                        'kelas'=>$item->mapel->kelas->tingkatan->tingkat_ke . ' ' . $item->mapel->kelas->jurusan->nama_jurusan . ' ' . $item->mapel->kelas->nama_kelas,
-                        'judul'=>$item->judul
-                    ];
-                }
-            }
-        }
+        $materi = Materi::join('mapels', 'mapels.id', '=', 'materis.mapel_id')
+                            ->join('kodes', 'kodes.id', '=', 'mapels.kode_id')
+                            ->join('gurus', 'gurus.id', '=', 'kodes.guru_id')
+                            ->join('kelas', 'kelas.id', '=', 'mapels.kelas_id')
+                            ->where('gurus.id', '=', auth()->user()->id)
+                            ->where('kelas.id','=',$kelas_id)
+                            ->get('materis.nama_materi');
 
-        if (!empty($materi)) {
+        if (count($materi) == 0) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Materi tidak ada',
+            ], 404);
+        }
+        else {
             return response()->json([
                 "success" => true,
                 "message" => "List Materi",
                 "materi" => $materi,
             ], 200);
         }
-
-        return response()->json([
-            'success' => false,
-            'message' => 'Materi tidak ada',
-        ], 404);
+        
     }
 
-    public function tugas($key)
+    public function tugas($kelas_id)
     {
-        $all_tugas = Tugas::all();
-        foreach ($all_tugas as $item){
-            if ($item->mapel->kode->guru->nama_guru == auth()->user()->nama_guru) {
-                if ($item->mapel->kelas->id == $key) {
-                    $tugas[]=[
-                        'kelas'=>$item->mapel->kelas->tingkatan->tingkat_ke . ' ' . $item->mapel->kelas->jurusan->nama_jurusan . ' ' . $item->mapel->kelas->nama_kelas,
-                        'judul'=>$item->judul
-                    ];
-                }
-            }
-            
-            if (!empty($tugas)) {
-                return response()->json([
-                    "success" => true,
-                    "message" => "List Tugas",
-                    "tugas" => $tugas,
-                ], 200);
-            }
-    
+        $tugas = Tugas::join('materis', 'materis.id', '=', 'tugas.materi_id')
+                        ->join('mapels', 'mapels.id', '=', 'materis.mapel_id')
+                        ->join('kodes', 'kodes.id', '=', 'mapels.kode_id')
+                        ->join('gurus', 'gurus.id', '=', 'kodes.guru_id')
+                        ->join('kelas', 'kelas.id', '=', 'mapels.kelas_id')
+                        ->join('jurusans', 'jurusans.id', '=', 'kelas.jurusan_id')
+                        ->join('tingkatans', 'tingkatans.id', '=', 'kelas.tingkatan_id')
+                        ->where('gurus.id', '=', auth()->user()->id)
+                        ->where('kelas.id', '=', $kelas_id)
+                        ->get([
+                            'tugas.id',
+                            'tugas.soal',
+                            'materis.nama_materi',
+                            'tingkatans.tingkat_ke',
+                            'jurusans.nama_jurusan',
+                            'kelas.nama_kelas', 
+                        ]);
+
+        if (count($tugas) == 0) {
             return response()->json([
                 'success' => false,
                 'message' => 'Tugas tidak ada',
             ], 404);
         }
+        else {
+            return response()->json([
+                "success" => true,
+                "message" => "List Tugas",
+                "tugas" => $tugas,
+            ], 200);
+        }
     }
 
     public function detail_materi($kelas_id, $materi_id)
     {
-        $materis = Materi::all();
-        foreach ($materis as $item) {
-            if ($item->mapel->kode->guru->nama_guru == auth()->user()->nama_guru) {
-                if ($item->mapel->kelas->id == $kelas_id) {
-                   if ($item->id == $materi_id) {
-                    $materi[]=[
-                        'judul'=>$item->judul,
-                        'nama_guru'=>$item->mapel->kode->guru->nama_guru,
-                        'tanggal'=>$item->date,
-                        'isi'=>$item->isi,
-                        'link'=>$item->link,
-                        'file'=>$item->file
-                    ];
-                   }
-                }
-            }
-        }
+        $materi = Materi::join('mapels', 'mapels.id', '=', 'materis.mapel_id')
+                            ->join('kodes', 'kodes.id', '=', 'mapels.kode_id')
+                            ->join('gurus', 'gurus.id', '=', 'kodes.guru_id')
+                            ->join('kelas', 'kelas.id', '=', 'mapels.kelas_id')
+                            ->where('gurus.id', '=', auth()->user()->id)
+                            ->where('kelas.id', '=', $kelas_id)
+                            ->where('materis.id', '=', $materi_id)
+                            ->get(['materis.nama_materi', 'gurus.nama_guru', 'materis.date', 'materis.isi', 'materis.link', 'materis.file']);
 
-        if (!empty($materi)) {
+        if (count($materi) == 0) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Materi tidak ada',
+            ], 404);
+        }
+        else {
             return response()->json([
                 "success" => true,
-                "message" => "KBM",
+                "message" => "Detail Materi",
                 "materi" => $materi,
             ], 200);
         }
-
-        return response()->json([
-            'success' => false,
-            'message' => 'Materi tidak ada',
-        ], 404);
     }
 
     public function detail_tugas($kelas_id, $tugas_id)
     {
-        $all_tugas = Tugas::all();
-        foreach ($all_tugas as $item) {
-            if ($item->mapel->kode->guru->nama_guru == auth()->user()->nama_guru) {
-                if ($item->mapel->kelas->id == $kelas_id) {
-                   if ($item->id == $tugas_id) {
-                    $tugas[]=[
-                        'judul'=>$item->judul,
-                        'nama_guru'=>$item->mapel->kode->guru->nama_guru,
-                        'tanggal'=>$item->date,
-                        'deskripsi'=>$item->description,
-                    ];
-                   }
-                }
-            }
-        }
+        $tugas = Tugas::join('materis', 'materis.id', '=', 'tugas.materi_id')
+                        ->join('mapels', 'mapels.id', '=', 'materis.mapel_id')
+                        ->join('kodes','kodes.id', '=', 'mapels.kode_id')
+                        ->join('kelas', 'kelas.id', '=', 'mapels.kelas_id')
+                        ->join('gurus', 'gurus.id', '=', 'kodes.guru_id')
+                        ->where('gurus.id', '=', auth()->user()->id)
+                        ->where('kelas.id', '=', $kelas_id)
+                        ->where('tugas.id', '=', $tugas_id)
+                        ->get([
+                            'tugas.soal',
+                            'gurus.nama_guru',
+                            'tugas.date',
+                            'tugas.description'
+                        ]);
 
-        if (!empty($tugas)) {
+        if (count($tugas) == 0) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Tugas tidak ada',
+            ], 404);
+        }
+        else {
             return response()->json([
                 "success" => true,
-                "message" => "KBM",
+                "message" => "Detail Tugas",
                 "tugas" => $tugas,
             ], 200);
         }
-
-        return response()->json([
-            'success' => false,
-            'message' => 'Tugas tidak ada',
-        ], 404);
     }
 
-    public function cek_pengumpulan($kelas_id, $tugas_id)
+    public function cek_pengumpulan($kelas_id, $tugas_id, $status)
     {
-        $all_tugas = Tugas::all();
-        foreach ($all_tugas as $item) {
-            if ($item->mapel->kode->guru->nama_guru == auth()->user()->nama_guru) {
-                if ($item->mapel->kelas->id == $kelas_id) {
-                   if ($item->id == $tugas_id) {
-                    $tugas[]=[
-                        'judul'=>$item->judul,
-                        'nama_guru'=>$item->mapel->kode->guru->nama_guru,
-                        'tanggal'=>$item->date,
-                        'deskripsi'=>$item->description,
-                    ];
-                   }
-                }
-            }
-        }
-       
-        // $murids = Murid::all();
-        // foreach ($murids as $item) {
-        //     if ($item->tugas->mapel_id == auth()->user()->mapel->id) {
-        //         if ($item->tugas->mapel_id == $key) {
-        //             $tugas[]=[
-        //                 'nama_siswa'=>$item->nama_siswa,
-        //                 'judul'=>$item->tugas->judul,
-        //                 'status'=>$item->tugas->status,
-        //                 // 'nama_guru'=>$item->mapel->kode->guru->nama_guru,
-        //                 // 'tanggal'=>$item->date,
-        //                 // 'deskripsi'=>$item->description,
-        //                 // 'menunggu'=>$item->status,
-        //                 // 'selesai'=>$item->status
-        //             ];
-        //         }
-        //     }
-        // }
+        $pengumpulan = Pengumpulan::join('tugas', 'tugas.id', '=', 'pengumpulans.tugas_id')
+                                    ->join('murids', 'murids.id', '=', 'pengumpulans.murid_id')
+                                    ->join('materis', 'materis.id', '=', 'tugas.materi_id')
+                                    ->join('mapels', 'mapels.id', '=', 'materis.mapel_id')
+                                    ->join('kelas', 'kelas.id', '=', 'mapels.kelas_id')
+                                    ->join('kodes', 'kodes.id', '=', 'mapels.kode_id')
+                                    ->join('gurus', 'gurus.id', '=', 'kodes.guru_id')
+                                    ->where('gurus.id', '=', auth()->user()->id)
+                                    ->where('kelas.id', '=', $kelas_id)
+                                    ->where('tugas.id', '=', $tugas_id)
+                                    ->where('pengumpulans.status', '=', $status)
+                                    ->get([
+                                        'murids.nama_siswa',
+                                        'pengumpulans.status'
+                                    ]);
 
-        if (!empty($tugas)) {
+            if (count($pengumpulan) == 0) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Tugas tidak ada',
+                ], 404);
+            }
+            else {
+                return response()->json([
+                    "success" => true,
+                    "message" => "Detail Pengumpulan",
+                    "pengumpulan" => $pengumpulan,
+                ], 200);
+            }
+    }
+
+    public function pengumpulan($kelas_id = '1')
+    {
+        $murid = Murid::join('kelas', 'kelas.id', '=', 'murids.kelas_id')
+                        ->join('jurusans', 'jurusans.id', '=', 'kelas.jurusan_id')
+                        ->join('tingkatans', 'tingkatans.id', '=', 'kelas.tingkatan_id')
+                        ->where('kelas.id', '=', $kelas_id)
+                        ->filter(request(['search']))
+                        ->get(['murids.nama_siswa', 'murids.email', 'tingkatans.tingkat_ke', 'jurusans.nama_jurusan', 'kelas.nama_kelas']);
+                        
+        if (count($murid) == 0) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Data tidak ada',
+            ], 404);
+        }
+        else {
             return response()->json([
                 "success" => true,
-                "message" => "Checklist Pengumpulan Tugas",
-                "tugas" => $tugas,
-                // "status" => $status
-                // "tes"=>$key
+                "message" => "Pengumpulan",
+                "pengumpulan" => $murid,
             ], 200);
         }
+    }
 
-        return response()->json([
-            'success' => false,
-            'message' => 'Tugas tidak ada',
-            // 'data'    => ''
-        ], 404);
+    public function detail_pengumpulan($nama)
+    {
+        $murid = Murid::join('kelas', 'kelas.id', '=', 'murids.kelas_id')
+                        ->join('jurusans', 'jurusans.id', '=', 'kelas.jurusan_id')
+                        ->join('tingkatans', 'tingkatans.id', '=', 'kelas.tingkatan_id')
+                        ->where('murids.nama_siswa', '=', $nama)
+                        ->get(['murids.nama_siswa', 'murids.email', 'tingkatans.tingkat_ke', 'jurusans.nama_jurusan', 'kelas.nama_kelas']);
+
+        if (count($murid) == 0) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Data tidak ada',
+            ], 404);
+        }
+        else {
+            return response()->json([
+                "success" => true,
+                "message" => "Pengumpulan",
+                "pengumpulan" => $murid,
+            ], 200);
+        }
+    }
+
+    public function status_pengumpulan($nama, $status)
+    {
+        $pengumpulan = Pengumpulan::join('tugas', 'tugas.id', '=', 'pengumpulans.tugas_id')
+                                    ->join('murids', 'murids.id', '=', 'pengumpulans.murid_id')
+                                    ->join('materis', 'materis.id', '=', 'tugas.materi_id')
+                                    ->join('mapels', 'mapels.id', '=', 'materis.mapel_id')
+                                    ->join('kelas', 'kelas.id', '=', 'mapels.kelas_id')
+                                    ->join('kodes', 'kodes.id', '=', 'mapels.kode_id')
+                                    ->join('gurus', 'gurus.id', '=', 'kodes.guru_id')
+                                    ->join('jurusans', 'jurusans.id', '=', 'kelas.jurusan_id')
+                                    ->join('tingkatans', 'tingkatans.id', '=', 'kelas.tingkatan_id')
+                                    ->where('gurus.id', '=', auth()->user()->id)
+                                    ->where('murids.nama_siswa', '=', $nama)
+                                    ->where('pengumpulans.status', '=', $status)
+                                    ->get(['tugas.soal', 'gurus.nama_guru', 'tugas.deadline', 'tugas.created_at', 'pengumpulans.status']);
+
+        if (count($pengumpulan) == 0) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Data tidak ada',
+            ], 404);
+        }
+        else {
+            return response()->json([
+                "success" => true,
+                "message" => "Pengumpulan",
+                "pengumpulan" => $pengumpulan,
+            ], 200);
+        }
+    }
+
+    public function buat_materi(Request $request, $kelas_id, $nama_mapel)
+    {
+        $mapel = Mapel::join('kodes', 'kodes.id', '=', 'mapels.kode_id')
+        ->join('kelas', 'kelas.id', '=', 'mapels.kelas_id')
+        ->where('kodes.guru_id', '=', auth()->user()->id)
+        ->where('kelas_id', $kelas_id)
+        ->where('kodes.nama_mapel', $nama_mapel)
+        ->get('mapels.id');
+
+         $validator = Validator::make($request->all(),[
+                'mapel_id'=> 'required',
+                'nama_materi'=> 'required',
+                'isi'=> 'required',
+                // 'link'=> 'required',
+                // 'file'=> 'required',
+                // 'tahun'=> 'required',
+            ]);
+    
+            $materi = Materi::create([
+                'mapel_id'=> $mapel->first()->id,
+                'nama_materi'=> $request->nama_materi,
+                'isi'=> $request->isi,
+                // 'link'=> $request->link,
+                // 'file'=> $request->file,
+                // 'tahun'=> $request->tahun
+            ]);
+    
+            return response()->json([
+                'message' => 'Materi berhasil dibuat',
+                'data' => $materi,
+            ]);
+    }
+
+    public function buat_tugas(Request $request, $kelas_id, $nama_mapel)
+    {
+        $mapel = Mapel::join('kodes', 'kodes.id', '=', 'mapels.kode_id')
+                        ->join('kelas', 'kelas.id', '=', 'mapels.kelas_id')
+                        ->where('kodes.guru_id', '=', auth()->user()->id)
+                        ->where('kelas_id', '=', $kelas_id)
+                        ->where('kodes.nama_mapel', '=', $nama_mapel)
+                        ->get('mapels.id');
+
+                        // return response()->json([
+                        //     'message' => 'Tugas berhasil dibuat',
+                        //     'data' => $mapel->first()->id,
+                        // ]);
+
+        if (!$mapel->isEmpty()) {
+            $validator = Validator::make($request->all(),[
+                'materi_id'=> 'required',
+                'soal'=> 'required',
+                // 'date'=> 'required',
+                // 'deadline'=> 'required',
+                'description'=> 'required',
+                // 'link'=> 'required',
+                // 'file'=> 'required'
+            ]);
+    
+            $tugas = Tugas::create([
+                'materi_id'=> $request->materi_id,
+                'soal'=> $request->soal,
+                // 'date'=> 'required',
+                // 'deadline'=> 'required',
+                'description'=> $request->description,
+                // 'link'=> 'required',
+                // 'file'=> 'required'
+            ]);
+    
+            return response()->json([
+                'message' => 'Tugas berhasil dibuat',
+                'data' => $tugas,
+            ]);
+           
+        } else {
+            return response()->json([
+                'message' => 'Tugas gagal dibuat',
+                'data' => 'error',
+            ]);
+
+        }
     }
 }

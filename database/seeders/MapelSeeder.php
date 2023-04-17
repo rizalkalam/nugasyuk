@@ -46,7 +46,7 @@ class MapelSeeder extends Seeder
         ]);
 
         Mapel::create([
-             'id'=>'5',
+            'id'=>'5',
             'kode_id'=>2,
             'kelas_id'=>1,
         //    'nama_mapel'=>'Science',

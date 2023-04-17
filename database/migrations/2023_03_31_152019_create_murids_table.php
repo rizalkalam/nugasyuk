@@ -12,14 +12,15 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('murids', function (Blueprint $table) {
-            $table->string('id')->unique();
+            // $table->string('id')->unique();
+            $table->id();
             $table->string('nama_siswa');
             $table->string('email');
             $table->string('password');
-            $table->integer('nis')->primary();
+            // $table->integer('nis')->primary();
             $table->string('foto_profile');
             $table->foreignId('kelas_id');
-            $table->bigInteger('tugas_id')->nullable();
+            // $table->bigInteger('tugas_id')->nullable();
             // $table->foreignId('materi_id')->nullable();
             $table->timestamps();
         });

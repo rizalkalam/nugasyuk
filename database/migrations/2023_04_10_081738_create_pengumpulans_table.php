@@ -11,15 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tugas', function (Blueprint $table) {
+        Schema::create('pengumpulans', function (Blueprint $table) {
             $table->id();
-            $table->string('soal');
-            $table->date('date')->nullable();
-            $table->date('deadline')->nullable();
-            $table->text('description');
-            $table->string('link')->nullable();
-            $table->string('file')->nullable();
-            $table->foreignId('materi_id');
+            $table->foreignId('tugas_id');
+            $table->enum('status', ['menunggu', 'selesai', 'belum selesai'])->default('belum selesai');
+            $table->foreignId('murid_id');
             $table->timestamps();
         });
     }
@@ -29,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('tugas');
+        Schema::dropIfExists('pengumpulans');
     }
 };
