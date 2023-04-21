@@ -17,7 +17,9 @@ return new class extends Migration
             $table->text('isi');
             $table->string('link')->nullable();
             $table->string('file')->nullable();
-            $table->date('tahun_ajaran')->nullable();
+            $table->date('tanggal_dibuat')->nullable();
+            $table->year('tahun_mulai');
+            $table->year('tahun_selesai');
             $table->foreignId('mapel_id');
             $table->timestamps();
         });

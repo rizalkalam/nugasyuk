@@ -4,6 +4,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\GuruController;
 use App\Http\Controllers\API\LoginController;
+use App\Http\Controllers\API\Guru\KbmController;
+use App\Http\Controllers\API\Guru\PengumpulanController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,21 +25,25 @@ Route::post('/login/ortu', [LoginController::class, 'loginOrtu']);
 Route::middleware('auth:guru')->group(function(){
     Route::get('/beranda', [GuruController::class, 'beranda']);
     Route::get('/profile', [GuruController::class, 'profile']);
-    Route::get('/kbm', [GuruController::class, 'kbm']);
-    Route::get('/materi/kelas/{kelas_id}', [GuruController::class, 'materi']);
-    Route::get('/tugas/kelas/{kelas_id}', [GuruController::class, 'tugas']);
-    Route::get('/materi/kelas/{kelas_id}/detail/{materi_id}', [GuruController::class, 'detail_materi']);
-    Route::get('/tugas/kelas/{kelas_id}/detail/{tugas_id}', [GuruController::class, 'detail_tugas']);
-    Route::get('/tugas/kelas/{kelas_id}/detail/{tugas_id}/{status}', [GuruController::class, 'cek_pengumpulan']);
-    Route::get('/pengumpulan/{kelas_id?}', [GuruController::class, 'pengumpulan']);
-    Route::get('/pengumpulan/detail/{nama}', [GuruController::class, 'detail_pengumpulan']);
-    Route::get('/pengumpulan/detail/{nama}/{status}', [GuruController::class, 'status_pengumpulan']);
+    Route::get('/kbm', [KbmController::class, 'kbm']);
+    Route::get('/materi/kelas/{kelas_id}', [KbmController::class, 'materi']);
+    Route::get('/tugas/kelas/{kelas_id}', [KbmController::class, 'tugas']);
+    Route::get('/materi/kelas/{kelas_id}/detail/{materi_id}', [KbmController::class, 'detail_materi']);
+    Route::get('/tugas/kelas/{kelas_id}/detail/{tugas_id}', [KbmController::class, 'detail_tugas']);
+    Route::get('/tugas/kelas/{kelas_id}/detail/{tugas_id}/{status}', [KbmController::class, 'cek_pengumpulan']);
+    Route::get('/pengumpulan/{kelas_id?}', [PengumpulanController::class, 'pengumpulan']);
+    Route::get('/pengumpulan/detail/{nama}', [PengumpulanController::class, 'detail_pengumpulan']);
+    Route::get('/pengumpulan/detail/{nama}/{status}', [PengumpulanController::class, 'status_pengumpulan']);
 
-    // crud route
-    Route::post('buat/materi/kelas/{kelas_Id}/mapel/{nama_mapel}', [GuruController::class, 'buat_materi']);
-    // Route::get('/tugas/kelas/{kelas_id}/mapel/{nama_mapel}/buat', [GuruController::class, 'buat_tugas']);
+    // crud route materi
+    Route::post('/materi/kelas/{kelas_Id}/mapel/{nama_mapel}', [KbmController::class, 'buat_materi']);
+    Route::post('/materi/kelas/{kelas_id}/mapel/{nama_mapel}/{id}', [KbmController::class, 'edit_materi']);
+    Route::delete('/materi/kelas/{kelas_id}/mapel/{nama_mapel}/{id}', [KbmController::class, 'hapus_materi']);
 
-    Route::post('buat/tugas/kelas/{kelas_Id}/mapel/{nama_mapel}', [GuruController::class, 'buat_tugas']);
+    // crud route tugas
+    Route::post('/tugas/kelas/{kelas_Id}/mapel/{nama_mapel}', [KbmController::class, 'buat_tugas']);
+    Route::post('/tugas/kelas/{kelas_Id}/mapel/{nama_mapel}/{id}', [KbmController::class, 'edit_tugas']);
+    Route::delete('/tugas/kelas/{kelas_Id}/mapel/{nama_mapel}/{id}', [KbmController::class, 'hapus_tugas']);
 });
 
 // Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
