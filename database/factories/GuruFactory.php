@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Guru;
+use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -23,7 +24,9 @@ class GuruFactory extends Factory
             'password'=> bcrypt('password'),
             'niy'=>'0111',
             'foto_profile'=>'gambar1.jpg',
-            'mapel_id'=>1
+            'mapel_id'=>1,
+
+            // 'remember_token' => Str::random(10),
         ];
     }
 }

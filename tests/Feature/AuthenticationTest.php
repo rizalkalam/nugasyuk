@@ -16,18 +16,13 @@ class AuthenticationTest extends TestCase
     /** @test */
     public function guru_bisa_login_dengan_kredensial()
     {
-        // $guru = Guru::factory()->create();
+        $guru = Guru::factory()->create();
 
-        $this->json('POST', '/login/guru', [
-            'email' => 'jokoarysbi@gmail.com',
-            'password' => 'mrjack123'
-        ])->seeJson([
-            'account' => 'jokoarysbi@gmail.com'
-        ]);
+        $response = $this->postJson(route('login.guru'), [
+            'email' => $guru->email,
+            'password' => 'password'
+        ])->assertOk();
 
-        
-        // $this->assertAuthenticated();
-
-        // $response->assertStatus(200);
+        $this->assertArrayHasKey('token', $response->json());
     }
 }

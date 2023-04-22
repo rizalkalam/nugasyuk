@@ -18,7 +18,7 @@ use App\Http\Controllers\API\Guru\PengumpulanController;
 |
 */
 
-Route::post('/login/guru', [LoginController::class, 'loginGuru']);
+Route::post('/login/guru', [LoginController::class, 'loginGuru'])->name('login.guru');
 Route::post('/login/murid', [LoginController::class, 'loginMurid']);
 Route::post('/login/ortu', [LoginController::class, 'loginOrtu']);
 
