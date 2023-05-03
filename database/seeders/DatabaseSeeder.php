@@ -8,6 +8,7 @@ use Database\Seeders\GuruSeeder;
 use Database\Seeders\KodeSeeder;
 use Database\Seeders\OrtuSeeder;
 use Database\Seeders\SoalSeeder;
+use Database\Seeders\AdminSeeder;
 use Database\Seeders\KelasSeeder;
 use Database\Seeders\MapelSeeder;
 use Database\Seeders\MuridSeeder;
@@ -43,7 +44,8 @@ class DatabaseSeeder extends Seeder
             MapelSeeder::class,
             TugasSeeder::class,
             MateriSeeder::class,
-            PengumpulanSeeder::class
+            PengumpulanSeeder::class,
+            AdminSeeder::class
             // SoalSeeder::class
             // StatusSeeder::class
          ]);

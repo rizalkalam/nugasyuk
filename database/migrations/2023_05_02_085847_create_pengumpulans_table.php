@@ -15,7 +15,8 @@ return new class extends Migration
             $table->id();
             $table->foreignId('tugas_id');
             $table->enum('status', ['menunggu', 'selesai', 'belum selesai'])->default('belum selesai');
-            $table->foreignId('murid_id');
+            $table->foreignId('kelas_id');
+            $table->foreignId('murid_id')->nullable();
             $table->timestamps();
         });
     }

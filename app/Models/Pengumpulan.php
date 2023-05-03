@@ -22,18 +22,4 @@ class Pengumpulan extends Model
     {
         return $this->belongsTo(Murid::class);
     }
-
-    // public function scopeFilter($query, array $filters)
-    // {
-    //     $query->when($filters['search']??false, function($query, $search){
-    //         return $query->where('nama_siswa', 'like', '%' . $search . '%')
-    //         ->orWhere('nama_siswa', 'like', '%' . $search . '%');
-    //     });
-
-    //     // $query->when($filters['kelas']??false, function($query, $category){
-    //     //     return $query->whereHas('kelas', function($query) use ($category){
-    //     //         $query->where('id', $category);
-    //     //     });
-    //     // });
-    // }
 }

@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\Kelas;
 use App\Models\Tugas;
 use App\Models\Materi;
+use App\Models\Pengumpulan;
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
 use Tymon\JWTAuth\Contracts\JWTSubject;
@@ -16,6 +17,7 @@ class Murid extends Authenticatable implements JWTSubject
     use HasFactory;
 
     protected $guarded = ['id'];
+
     // protected $primaryKey = 'nis';
 
     // public $incrementing = false;
@@ -35,6 +37,12 @@ class Murid extends Authenticatable implements JWTSubject
     {
         return $this->belongsTo(Kelas::class);
     }
+
+    // public function pengumpulans()
+    // {
+    //     return $this->hasMany(Pengumpulan::class);
+    // }
+
 
     // public function getIncrementing()
     // {

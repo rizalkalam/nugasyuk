@@ -41,14 +41,21 @@ return [
         //     'provider' => 'users',
         // ],
 
+        'admin' => [
+            'driver' => 'jwt',
+            'provider' => 'admins',
+        ],
+
         'guru' => [
             'driver' => 'jwt',
             'provider' => 'gurus',
         ],
+
         'murid' => [
             'driver' => 'jwt',
             'provider' => 'murids',
         ],
+
         'ortu' => [
             'driver' => 'jwt',
             'provider' => 'ortus',
@@ -76,6 +83,11 @@ return [
         'users' => [
             'driver' => 'eloquent',
             'model' => App\Models\User::class,
+        ],
+
+        'admins' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Admin::class,
         ],
 
         'gurus' => [
