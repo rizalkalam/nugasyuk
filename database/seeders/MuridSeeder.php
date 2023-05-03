@@ -47,15 +47,15 @@ class MuridSeeder extends Seeder
         ]);
 
         
-        // Murid::create([
-        //     // 'id'=>'2',
-        //     'nama_siswa'=>'bimawan',
-        //     'email'=>'bimawan07@gmail.com',
-        //     'password'=>bcrypt('bimawan123'),
-        //     // 'nis'=>'0443',
-        //     'foto_profile'=>'gambar1.jpg',
-        //     'kelas_id'=>1,
-        //     // 'tugas_id'=>1,
-        // ]);
+        Murid::create([
+            'id'=>'4',
+            'nama_siswa'=>'bimawan',
+            'email'=>'bimawan07@gmail.com',
+            'password'=>bcrypt('bimawan123'),
+            // 'nis'=>'0443',
+            'foto_profile'=>'gambar1.jpg',
+            'kelas_id'=>2,
+            // 'tugas_id'=>1,
+        ]);
     }
 }

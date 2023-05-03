@@ -1,26 +1,13 @@
 <?php
 
-namespace App\Http\Controllers\API;
+namespace App\Http\Controllers\API\Guru;
 
-use App\Models\Guru;
-use App\Models\Kode;
-use App\Models\Soal;
-use App\Models\Kelas;
-use App\Models\Mapel;
-use App\Models\Murid;
-use App\Models\Tugas;
-use App\Models\Materi;
-use App\Models\Status;
-use App\Models\Pengumpulan;
-use Illuminate\Http\Request;
-use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Validator;
+use Illuminate\Http\Request;
 
-class GuruController extends Controller
+class BerandaController extends Controller
 {
-    public function beranda()
+    public function index()
     {
         $profile = array();
         $profile[]=[
@@ -76,23 +63,6 @@ class GuruController extends Controller
             "mengajar"=>$kelas,
             "materi_diberikan"=>$materi,
             "tugas_diberikan"=>$tugas
-        ], 200);
-    }
-
-    public function profile()
-    {
-        $profile = array();
-        $profile[]=[
-            'foto_profile'=>auth()->user()->foto_profile,
-            'email'=>auth()->user()->email,
-            'nama_guru'=>auth()->user()->nama_guru,
-            'mapel_guru'=>auth()->user()->mapel->kode->nama_mapel
-        ];
-
-        return response()->json([
-            "success" => true,
-            "message" => "Profile Guru",
-            "profile_guru" => $profile,
         ], 200);
     }
 }

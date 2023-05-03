@@ -37,28 +37,28 @@ class TugasSeeder extends Seeder
         //     'mapel_id'=>5
         // ]);
 
-        Tugas::create([
-            'id'=>'2',
-            'soal'=>'Penerapan Aljawir',
-            'date'=>'2023-05-04',
-            'deadline'=>'2023-05-05',
-            'description'=>'lorem ipsum dolor sit amet bla bli blu ble blo ohok ohok',
-            // 'status'=>1,
-            'link'=>null,
-            'file'=>null,
-            'materi_id'=>3
-        ]);
+        // Tugas::create([
+        //     'id'=>'2',
+        //     'soal'=>'Penerapan Aljawir',
+        //     'date'=>'2023-05-04',
+        //     'deadline'=>'2023-05-05',
+        //     'description'=>'lorem ipsum dolor sit amet bla bli blu ble blo ohok ohok',
+        //     // 'status'=>1,
+        //     'link'=>null,
+        //     'file'=>null,
+        //     'materi_id'=>3
+        // ]);
 
-        Tugas::create([
-            'id'=>'3',
-            'soal'=>'Website Landing Page',
-            'date'=>'2023-05-04',
-            'deadline'=>'2023-04-05',
-            'description'=>'lorem ipsum dolor sit amet bla bli blu ble blo ohok ohok',
-            // 'status'=>2,
-            'link'=>null,
-            'file'=>null,
-            'materi_id'=>1
-        ]);
+        // Tugas::create([
+        //     'id'=>'3',
+        //     'soal'=>'Website Landing Page',
+        //     'date'=>'2023-05-04',
+        //     'deadline'=>'2023-04-05',
+        //     'description'=>'lorem ipsum dolor sit amet bla bli blu ble blo ohok ohok',
+        //     // 'status'=>2,
+        //     'link'=>null,
+        //     'file'=>null,
+        //     'materi_id'=>1
+        // ]);
     }
 }

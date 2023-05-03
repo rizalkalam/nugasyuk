@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers\API\Guru;
 
+use App\Models\Kelas;
 use App\Models\Mapel;
+use App\Models\Murid;
 use App\Models\Tugas;
 use App\Models\Materi;
+use App\Models\Pengumpulan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use App\Http\Controllers\Controller;
@@ -298,18 +301,13 @@ class KbmController extends Controller
                         ->where('kodes.nama_mapel', '=', $nama_mapel)
                         ->get('mapels.id');
 
-                        // return response()->json([
-                        //     'message' => 'Tugas berhasil dibuat',
-                        //     'data' => $mapel->first()->id,
-                        // ]);
-
         if (!$mapel->isEmpty()) {
             $validator = Validator::make($request->all(),[
                 'materi_id'=> 'required',
                 'soal'=> 'required',
-                // 'date'=> 'required',
-                // 'deadline'=> 'required',
                 'description'=> 'required',
+                'date'=> 'required',
+                'deadline'=> 'required'
                 // 'link'=> 'required',
                 // 'file'=> 'required'
             ]);
@@ -317,16 +315,38 @@ class KbmController extends Controller
             $tugas = Tugas::create([
                 'materi_id'=> $request->materi_id,
                 'soal'=> $request->soal,
-                // 'date'=> 'required',
-                // 'deadline'=> 'required',
                 'description'=> $request->description,
+                'date'=> $request->date,
+                'deadline'=> $request->deadline,
                 // 'link'=> 'required',
                 // 'file'=> 'required'
             ]);
+
+            $tugasId = Tugas::latest()->first()->id;
+
+            $kelasId = Kelas::where('id', '=', $kelas_id)
+            ->get();
+
+            $muridId = Murid::where('kelas_id', $kelas_id)
+            ->get();
+
+            $data = [];
+            foreach ($muridId as $id) {
+                $data[] = [
+                    'tugas_id' => $tugasId,
+                    'kelas_id' => $kelasId->first()->id,
+                    'murid_id' => $id->id
+                ];
+            }
+            $pengumpulan = Pengumpulan::insert($data);
     
             return response()->json([
                 'message' => 'Tugas berhasil dibuat',
-                'data' => $tugas,
+                'tugas' => $tugas,
+                'pengumpulan' => $pengumpulan,
+                // 'tugasId' => $tugasId,
+                // 'kelasId' => $kelas_id
+                // 'murid' => $tes
             ]);
            
         } else {

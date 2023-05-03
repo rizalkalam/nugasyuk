@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\API\Guru;
 
-use App\Http\Controllers\Controller;
+use App\Models\Murid;
+use App\Models\Pengumpulan;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class PengumpulanController extends Controller
 {
@@ -83,5 +85,34 @@ class PengumpulanController extends Controller
                 "pengumpulan" => $pengumpulan,
             ], 200);
         }
+    }
+
+    public function konfirmasi($murid_id, $pengumpulan_id)
+    {
+
+        // $murid = Murid::find(3)->pengumpulans()->get();
+
+        // return response()->json([
+        //             "success" => true,
+        //             "message" => "Pengumpulan",
+        //             "murid" => $murid,
+        //         ], 200);
+
+        $pengumpulan = Pengumpulan::join('tugas', 'tugas.id', '=', 'pengumpulans.tugas_id')
+        ->join('murids', 'murids.id', '=', 'pengumpulans.murid_id')
+        ->join('materis', 'materis.id', '=', 'tugas.materi_id')
+        ->join('mapels', 'mapels.id', '=', 'materis.mapel_id')
+        ->join('kodes', 'kodes.id', '=', 'mapels.kode_id')
+        ->where('kodes.guru_id', '=', auth()->user()->id)
+        ->where('murids.id', '=', $murid_id)
+        ->where('pengumpulans.id', '=', $pengumpulan_id)
+        ->where('pengumpulans.status', '=', 'belum selesai')
+        ->get('tugas.soal');
+
+        return response()->json([
+            "success" => true,
+            "message" => "Pengumpulan",
+            "pengumpulan" => $pengumpulan,
+        ], 200);
     }
 }
