@@ -419,12 +419,14 @@ class KbmController extends Controller
             ->where('kodes.nama_mapel', $nama_mapel)
             ->where('tugas.id', $id)
             ->first('tugas.id');
-            
+        
             $tugas->delete();
+            $pengumpulan = Pengumpulan::where('tugas_id', $id)->delete();
 
             return response()->json([
                 'success' => true,
                 'message' => 'tugas berhasil di hapus',
+                // 'idpengumpulan' => $data
             ]);
     }
 }

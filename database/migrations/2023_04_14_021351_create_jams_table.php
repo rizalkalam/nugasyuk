@@ -13,6 +13,8 @@ return new class extends Migration
     {
         Schema::create('jams', function (Blueprint $table) {
             $table->id();
+            $table->time('waktu_mulai');
+            $table->time('waktu_selesai');
             $table->timestamps();
         });
     }

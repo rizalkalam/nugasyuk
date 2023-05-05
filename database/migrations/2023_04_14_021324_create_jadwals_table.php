@@ -13,6 +13,10 @@ return new class extends Migration
     {
         Schema::create('jadwals', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('hari_id');
+            $table->foreignId('jam_id');
+            $table->foreignId('kode_id');
+            // $table->foreignId('kelas_id');
             $table->timestamps();
         });
     }

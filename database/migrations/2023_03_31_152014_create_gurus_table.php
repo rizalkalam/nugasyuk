@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('nama_guru');
             $table->string('email');
             $table->string('password');
+            $table->string('konfirmasi')->nullable();
             $table->integer('niy')->unique();
             $table->string('foto_profile');
             $table->foreignId('mapel_id');
