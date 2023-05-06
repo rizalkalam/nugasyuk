@@ -20,6 +20,7 @@ return new class extends Migration
             $table->integer('niy')->unique();
             $table->string('foto_profile');
             $table->foreignId('mapel_id');
+            // $table->foreignId('role_id');
             // $table->foreignId('mapel2_id')->nullable();
             $table->timestamps();
         });

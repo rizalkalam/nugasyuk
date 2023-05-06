@@ -22,6 +22,8 @@ use App\Http\Controllers\API\Guru\PengumpulanController;
 |
 */
 
+Route::get('/tes', [LoginController::class, 'test']);
+
 Route::post('/login', [LoginController::class, 'login'])->name('login.guru');
 // Route::post('/login/murid', [LoginController::class, 'loginMurid'])->name('login.murid');
 // Route::post('/login/ortu', [LoginController::class, 'loginOrtu'])->name('login.ortu');
@@ -31,7 +33,7 @@ Route::middleware('auth:admin')->group(function(){
 });
 
 Route::middleware('auth:guru')->group(function(){
-    Route::get('/beranda', [BerandaController::class, 'index']);
+    Route::get('/beranda/guru', [BerandaController::class, 'index']);
 
     //profile
     Route::get('/profile', [ProfileController::class, 'index']);
@@ -62,6 +64,8 @@ Route::middleware('auth:guru')->group(function(){
 });
 
 Route::middleware('auth:murid')->group(function(){
+    Route::get('/beranda', [MuridBerandaController::class, 'beranda']);
+
     Route::get('/tugas', [TugasController::class, 'index']);
     Route::get('/tugas/detail/{id}', [TugasController::class, 'detail']);
     Route::post('/tugas/kirim/{id}', [TugasController::class, 'kirim']);

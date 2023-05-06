@@ -20,7 +20,8 @@ class GuruSeeder extends Seeder
             'password'=>bcrypt('mrjack123'),
             'niy'=>'0111',
             'foto_profile'=>'gambar1.jpg',
-            'mapel_id'=>1
+            'mapel_id'=>1,
+            // 'role_id'=>2
         ]);
 
         Guru::create([

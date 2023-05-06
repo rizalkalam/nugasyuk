@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers\API\Guru;
 
-use App\Http\Controllers\Controller;
+use App\Models\Kode;
+use App\Models\Mapel;
+use App\Models\Tugas;
+use App\Models\Materi;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class BerandaController extends Controller
 {
@@ -48,7 +52,7 @@ class BerandaController extends Controller
         // jumlah tugas yang diberikan
         $all_tugas = Tugas::all();
         foreach ($all_tugas as $item) {
-            if ($item->mapel->kode->guru->nama_guru == auth()->user()->nama_guru) {
+            if ($item->materi->mapel->kode->guru->nama_guru == auth()->user()->nama_guru) {
                 $tugas[]=[
                     'judul'=>$item->soal,
                 ];

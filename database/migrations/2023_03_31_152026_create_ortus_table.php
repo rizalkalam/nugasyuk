@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('email');
             $table->string('password');
             $table->foreignId('siswa_id');
+            // $table->foreignId('role_id');
             $table->timestamps();
         });
     }
