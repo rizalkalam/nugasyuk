@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Database\Seeders\JamSeeder;
 use Illuminate\Database\Seeder;
 use Database\Seeders\GuruSeeder;
 use Database\Seeders\KodeSeeder;
@@ -13,6 +14,7 @@ use Database\Seeders\KelasSeeder;
 use Database\Seeders\MapelSeeder;
 use Database\Seeders\MuridSeeder;
 use Database\Seeders\TugasSeeder;
+use Database\Seeders\JadwalSeeder;
 use Database\Seeders\MateriSeeder;
 use Database\Seeders\StatusSeeder;
 use Database\Seeders\JurusanSeeder;
@@ -45,7 +47,10 @@ class DatabaseSeeder extends Seeder
             TugasSeeder::class,
             MateriSeeder::class,
             PengumpulanSeeder::class,
-            AdminSeeder::class
+            AdminSeeder::class,
+            JamSeeder::class,
+            HariSeeder::class,
+            JadwalSeeder::class,
             // SoalSeeder::class
             // StatusSeeder::class
          ]);

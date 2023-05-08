@@ -2,10 +2,34 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Jam;
+use App\Models\Hari;
+use App\Models\Kode;
+use App\Models\Kelas;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Jadwal extends Model
 {
     use HasFactory;
+
+    public function jam()
+    {
+        return $this->belongsTo(Jam::class);
+    }
+
+    public function hari()
+    {
+        return $this->belongsTo(Hari::class);
+    }
+
+    public function kode()
+    {
+        return $this->belongsTo(Kode::class);
+    }
+
+    public function kelas()
+    {
+        return $this->belongsTo(Kelas::class);
+    }
 }

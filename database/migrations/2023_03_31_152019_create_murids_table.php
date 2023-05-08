@@ -20,6 +20,7 @@ return new class extends Migration
             // $table->integer('nis')->primary();
             $table->string('foto_profile');
             $table->foreignId('kelas_id');
+            // $table->foreignId('role_id');
             // $table->bigInteger('tugas_id')->nullable();
             // $table->foreignId('materi_id')->nullable();
             $table->timestamps();

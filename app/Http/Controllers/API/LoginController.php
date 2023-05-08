@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use Illuminate\Http\Request;
+use Tymon\JWTAuth\Facades\JWTAuth;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 
@@ -15,20 +16,24 @@ class LoginController extends Controller
             'password'=>'required'
         ]);
 
+        //   Auth::user()->createToken('auth_token')->plainTextToken;
+
         if ($token = auth()->guard('guru')->attempt($credentials)) {
             return response()->json([
                 'token'=>$token,
-                'account'=>auth()->user()->email
+                'account'=>auth()->user()->email,
+                'mapel_id'=>auth()->user()->mapel_id
             ]);
         } elseif ($token = auth()->guard('murid')->attempt($credentials)) {
             return response()->json([
                 'token'=>$token,
-                'account'=>auth()->guard('murid')->user()->email
+                'account'=>auth()->guard('murid')->user()->email,
+                'kelas_id'=>auth()->guard('murid')->user()->kelas_id
             ]);
         } elseif ($token = auth()->guard('ortu')->attempt($credentials)) {
             return response()->json([
                 'token'=>$token,
-                'account'=>auth()->guard('ortu')->user()->email
+                'siswa_id'=>auth()->guard('ortu')->user()->siswa_id
             ]);
         } elseif ($token = auth()->guard('admin')->attempt($credentials)) {
             return response()->json([
@@ -38,6 +43,24 @@ class LoginController extends Controller
         } else {
             return response()->json(['error'=>'Unauthorized'], 401);
         }
+    }
+
+    public function logout()
+    {
+        //remove token
+        $removeToken = JWTAuth::invalidate(JWTAuth::getToken());
+
+        if($removeToken) {
+            //return response JSON
+            return response()->json([
+                'success' => true,
+                'message' => 'Logout Berhasil!',  
+            ]);
+        }
+        // auth()->guard('guru')->$credentials->delete();
+        // return [
+        //     'message' => 'user logged out'
+        // ];
     }
     
     // public function loginMurid(Request $request)
