@@ -26,9 +26,9 @@ class GuruSeeder extends Seeder
 
         Guru::create([
             // 'id'=>'2',
-            'nama_guru'=>'Musfiq Amrullah',
-            'email'=>'musfiqa@gmail.com',
-            'password'=>bcrypt('mrmusfiq123'),
+            'nama_guru'=>'Agus Hidayat',
+            'email'=>'agusganteng@gmail.com',
+            'password'=>bcrypt('agus123'),
             'niy'=>'0112',
             'foto_profile'=>'gambar2.jpg',
             'mapel_id'=>5,

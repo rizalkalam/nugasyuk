@@ -2,67 +2,89 @@
 
 namespace App\Http\Controllers\API\Guru;
 
+use App\Models\Guru;
 use App\Models\Kode;
 use App\Models\Mapel;
 use App\Models\Tugas;
 use App\Models\Materi;
+use App\Models\Pengumpulan;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\BerandaGuruResource;
 
 class BerandaController extends Controller
 {
+    public function test()
+    {
+        return response()->json([
+            'tes'=>'coba',
+            'tes2'=>'hello world!'
+        ]);
+    }
+
+    public function data_guru()
+    {
+        $guru = Guru::where('id', auth()->user()->id)->value('nama_guru');
+
+        $kelas = Mapel::join('kodes', 'kodes.id', '=', 'mapels.kode_id')
+        ->where('kodes.guru_id', auth()->user()->id)->get('mapels.kelas_id');
+
+        $jumlah_kelas = count($kelas);
+
+        $materi = Materi::join('mapels', 'mapels.id', '=', 'materis.mapel_id')
+        ->join('kodes', 'kodes.id', '=', 'mapels.kode_id')
+        ->where('kodes.guru_id', auth()->user()->id)
+        ->get('materis.id');
+
+        $jumlah_materi = count($materi);
+
+        $tugas = Tugas::join('materis', 'materis.id', '=', 'tugas.materi_id')
+        ->join('mapels', 'mapels.id', '=', 'materis.mapel_id')
+        ->join('kodes', 'kodes.id', '=', 'mapels.kode_id')
+        ->where('kodes.guru_id', '=', auth()->user()->id)
+        ->get('tugas.id');
+
+        $jumlah_tugas = count($tugas);
+        // $tugas = Tugas::first();
+
+        // $data = [
+        //     "nama_guru" => $guru,
+        //     "jumlah_kelas" => $jumlah_kelas,
+        //     "jumlah_materi" => $jumlah_materi,
+        //     "jumlah_tugas" => $jumlah_tugas
+        // ];
+
+        return response()->json([
+            "success" => true,
+            "message" => "Jumlah Kelas Diampu",
+            // "data_guru" => $data
+            "nama_guru" => $guru,
+            "jumlah_kelas" => $jumlah_kelas,
+            "jumlah_materi" => $jumlah_materi,
+            "jumlah_tugas" => $jumlah_tugas
+        ]);
+    }
+
     public function index()
     {
-        $profile = array();
-        $profile[]=[
-            'nama_guru'=>auth()->user()->nama_guru,
-            'foto_profile'=>auth()->user()->foto_profile,
-        ];
-
-        // mapel guru
-        $kode = Kode::all();
-        foreach ($kode as $item) {
-            if ($item->guru->nama_guru == auth()->user()->nama_guru) {
-               $mata_pelajaran[]=[
-                'mapel_guru'=>$item->nama_mapel
-               ];
-            }
-        }
+        // $profile[]=[
+        //     'nama_guru'=>auth()->user()->nama_guru,
+        //     'foto_profile'=>auth()->user()->foto_profile,
+        // ];
 
         // jumlah kelas yang diajar
-        $mapels = Mapel::all();
-        foreach ($mapels as $mapel) {
-            if ($mapel->kode->guru->nama_guru == auth()->user()->nama_guru) {
-                $kelas[]=[
-                    'kelas'=>$mapel->kelas->tingkatan->tingkat_ke . ' ' . $mapel->kelas->jurusan->nama_jurusan . ' ' . $mapel->kelas->nama_kelas
-                ];
-            }
-        }
+        
 
         // jumlah materi yang diberikan
-        $materis = Materi::all();
-        foreach ($materis as $item) {
-            if ($item->mapel->kode->guru->nama_guru == auth()->user()->nama_guru) {
-                $materi[]=[
-                    'judul'=>$item->judul
-                ];
-            }
-        }
+        
 
-        // jumlah tugas yang diberikan
-        $all_tugas = Tugas::all();
-        foreach ($all_tugas as $item) {
-            if ($item->materi->mapel->kode->guru->nama_guru == auth()->user()->nama_guru) {
-                $tugas[]=[
-                    'judul'=>$item->soal,
-                ];
-            }
-        }
+        // jumlah tugas yang diberika
 
         return response()->json([
             "success" => true,
             "message" => "Beranda Guru",
-            "profile_guru" => $profile,
+            // "profile_guru" => $profile,
+            "nama_guru" =>auth()->user()->nama_guru,
             "mapel_guru"=>$mata_pelajaran,
             "mengajar"=>$kelas,
             "materi_diberikan"=>$materi,

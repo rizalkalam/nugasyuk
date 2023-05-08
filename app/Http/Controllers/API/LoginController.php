@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use Illuminate\Http\Request;
+use Tymon\JWTAuth\Facades\JWTAuth;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 
@@ -44,12 +45,22 @@ class LoginController extends Controller
         }
     }
 
-    public function test()
+    public function logout()
     {
-        return response()->json([
-            'tes'=>'coba',
-            'tes2'=>'hello world!'
-        ]);
+        //remove token
+        $removeToken = JWTAuth::invalidate(JWTAuth::getToken());
+
+        if($removeToken) {
+            //return response JSON
+            return response()->json([
+                'success' => true,
+                'message' => 'Logout Berhasil!',  
+            ]);
+        }
+        // auth()->guard('guru')->$credentials->delete();
+        // return [
+        //     'message' => 'user logged out'
+        // ];
     }
     
     // public function loginMurid(Request $request)

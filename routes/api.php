@@ -10,6 +10,7 @@ use App\Http\Controllers\API\Admin\JadwalController;
 use App\Http\Controllers\API\Guru\BerandaController;
 use App\Http\Controllers\API\Guru\ProfileController;
 use App\Http\Controllers\API\Guru\PengumpulanController;
+use App\Http\Controllers\API\Admin\AdminBerandaController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,19 +22,24 @@ use App\Http\Controllers\API\Guru\PengumpulanController;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
-
-Route::get('/tes', [LoginController::class, 'test']);
-
 Route::post('/login', [LoginController::class, 'login'])->name('login.guru');
 // Route::post('/login/murid', [LoginController::class, 'loginMurid'])->name('login.murid');
 // Route::post('/login/ortu', [LoginController::class, 'loginOrtu'])->name('login.ortu');
 
 Route::middleware('auth:admin')->group(function(){
+    Route::get('/logout', [LoginController::class, 'logout']);
+    
+    Route::get('/dataadmin', [AdminBerandaController::class, 'data_admin']);
+
     Route::get('/jadwal/{id}', [JadwalController::class, 'index']);
 });
 
 Route::middleware('auth:guru')->group(function(){
-    Route::get('/beranda/guru', [BerandaController::class, 'index']);
+    // logout guru
+    Route::get('/logout', [LoginController::class, 'logout']);
+
+    // Route Beranda Guru
+    Route::get('dataguru', [BerandaController::class, 'data_guru']);
 
     //profile
     Route::get('/profile', [ProfileController::class, 'index']);
@@ -64,6 +70,7 @@ Route::middleware('auth:guru')->group(function(){
 });
 
 Route::middleware('auth:murid')->group(function(){
+    Route::get('/tes', [BerandaController::class, 'test']);
     Route::get('/beranda', [MuridBerandaController::class, 'beranda']);
 
     Route::get('/tugas', [TugasController::class, 'index']);
