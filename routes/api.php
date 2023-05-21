@@ -9,8 +9,10 @@ use App\Http\Controllers\API\Murid\TugasController;
 use App\Http\Controllers\API\Admin\JadwalController;
 use App\Http\Controllers\API\Guru\BerandaController;
 use App\Http\Controllers\API\Guru\ProfileController;
+use App\Http\Controllers\API\Ortu\OrtuMapelController;
 use App\Http\Controllers\API\Ortu\OrtuTugasController;
 use App\Http\Controllers\API\Admin\AdminGuruController;
+use App\Http\Controllers\API\Ortu\OrtuJadwalController;
 use App\Http\Controllers\API\Admin\AdminKelasController;
 use App\Http\Controllers\API\Admin\AdminMuridController;
 use App\Http\Controllers\API\Guru\PengumpulanController;
@@ -130,7 +132,17 @@ Route::middleware('auth:ortu')->group(function(){
         // Route Beranda Ortu
         Route::get('/dataortu', [OrtuBerandaController::class, 'data_ortu']);
 
-        // Route Tugas Murid
+        // Route Tugas Ortu
         Route::get('/tugas', [OrtuTugasController::class, 'tugas']);
+
+        // Route Jadwal Ortu
+        Route::get('/jadwal', [OrtuJadwalController::class, 'index']);
+        Route::get('/jadwal/{id}', [OrtuJadwalController::class, 'detail']);
+
+        // Route Mapel Ortu
+        Route::get('/matapelajaran', [OrtuMapelController::class, 'index']);
+        Route::get('/matapelajaran/{id}', [OrtuMapelController::class, 'detail_mapel']);
+        Route::get('/matapelajaran/materi/{id}', [OrtuMapelController::class, 'materi']);
+        Route::get('/matapelajaran/tugas/{id}', [OrtuMapelController::class, 'tugas']);
     });
 });
