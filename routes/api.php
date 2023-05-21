@@ -9,8 +9,17 @@ use App\Http\Controllers\API\Murid\TugasController;
 use App\Http\Controllers\API\Admin\JadwalController;
 use App\Http\Controllers\API\Guru\BerandaController;
 use App\Http\Controllers\API\Guru\ProfileController;
+use App\Http\Controllers\API\Ortu\OrtuTugasController;
+use App\Http\Controllers\API\Admin\AdminGuruController;
+use App\Http\Controllers\API\Admin\AdminKelasController;
+use App\Http\Controllers\API\Admin\AdminMuridController;
 use App\Http\Controllers\API\Guru\PengumpulanController;
+use App\Http\Controllers\API\Murid\MuridMapelController;
+use App\Http\Controllers\API\Ortu\OrtuBerandaController;
+use App\Http\Controllers\API\Murid\MuridJadwalController;
 use App\Http\Controllers\API\Admin\AdminBerandaController;
+use App\Http\Controllers\API\Murid\MuridBerandaController;
+use App\Http\Controllers\API\Murid\MuridProfileController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,15 +32,32 @@ use App\Http\Controllers\API\Admin\AdminBerandaController;
 |
 */
 Route::post('/login', [LoginController::class, 'login'])->name('login.guru');
-// Route::post('/login/murid', [LoginController::class, 'loginMurid'])->name('login.murid');
-// Route::post('/login/ortu', [LoginController::class, 'loginOrtu'])->name('login.ortu');
+
+// token salah
+Route::get('/salahtoken', [LoginController::class, 'wrongtoken'])->name('salahtoken');
 
 Route::middleware('auth:admin')->group(function(){
-    Route::get('/logout', [LoginController::class, 'logout']);
-    
-    Route::get('/dataadmin', [AdminBerandaController::class, 'data_admin']);
+    Route::group(["prefix"=>"admin"], function(){
+        // Route logout admin
+        Route::get('/logout', [LoginController::class, 'logout']);
+        
+        // Route beranda admin
+        Route::get('/dataadmin', [AdminBerandaController::class, 'data_admin']);
 
-    Route::get('/jadwal/{id}', [JadwalController::class, 'index']);
+        // Route guru admin
+        Route::get('/guru', [AdminGuruController::class, 'index']);
+        Route::get('/guru/{id}', [AdminGuruController::class, 'detail']);
+    
+        // Route murid admin
+        Route::get('/murid', [AdminMuridController::class, 'index']);
+
+        // Route kelas admin
+        Route::get('/kelas', [AdminKelasController::class, 'index']);
+        Route::post('/kelas', [AdminKelasController::class, 'buat_kelas']);
+    
+        // Route jadwal admin
+        Route::get('/jadwal/{id}', [JadwalController::class, 'index']);
+    });
 });
 
 Route::middleware('auth:guru')->group(function(){
@@ -39,7 +65,7 @@ Route::middleware('auth:guru')->group(function(){
     Route::get('/logout', [LoginController::class, 'logout']);
 
     // Route Beranda Guru
-    Route::get('dataguru', [BerandaController::class, 'data_guru']);
+    Route::get('/dataguru', [BerandaController::class, 'data_guru']);
 
     //profile
     Route::get('/profile', [ProfileController::class, 'index']);
@@ -59,7 +85,7 @@ Route::middleware('auth:guru')->group(function(){
     Route::get('/jadwal/{id}', [JadwalController::class, 'index']);
 
     // crud route materi
-    Route::post('/materi/kelas/{kelas_Id}/mapel/{nama_mapel}', [KbmController::class, 'buat_materi']);
+    Route::post('/materi/kelas/{kelas_id}/mapel/{nama_mapel}', [KbmController::class, 'buat_materi']);
     Route::post('/materi/kelas/{kelas_id}/mapel/{nama_mapel}/{id}', [KbmController::class, 'edit_materi']);
     Route::delete('/materi/kelas/{kelas_id}/mapel/{nama_mapel}/{id}', [KbmController::class, 'hapus_materi']);
 
@@ -70,15 +96,41 @@ Route::middleware('auth:guru')->group(function(){
 });
 
 Route::middleware('auth:murid')->group(function(){
-    Route::get('/tes', [BerandaController::class, 'test']);
-    Route::get('/beranda', [MuridBerandaController::class, 'beranda']);
+    Route::group(["prefix"=>"murid"], function(){
 
-    Route::get('/tugas', [TugasController::class, 'index']);
-    Route::get('/tugas/detail/{id}', [TugasController::class, 'detail']);
-    Route::post('/tugas/kirim/{id}', [TugasController::class, 'kirim']);
+        // Route Profile Murid
+        Route::get('/profile', [MuridProfileController::class, 'index']);
+
+        // Route Beranda Murid
+        Route::get('/datamurid', [MuridBerandaController::class, 'data_murid']);
+
+        // Route Tugas Murid
+        Route::get('/tugas', [TugasController::class, 'tugas']);
+
+        // Route Mapel Murid
+        Route::get('/matapelajaran', [MuridMapelController::class, 'index']);
+        Route::get('/matapelajaran/{id}', [MuridMapelController::class, 'detail_mapel']);
+        Route::get('/matapelajaran/materi/{id}', [MuridMapelController::class, 'materi']);
+        Route::get('/matapelajaran/tugas/{id}', [MuridMapelController::class, 'tugas']);
+
+        // Route Jadwal Murid
+        Route::get('/jadwal', [MuridJadwalController::class, 'index']);
+        Route::get('/jadwal/{id}', [MuridJadwalController::class, 'detail']);
+
+        // logout murid
+        Route::get('/logout', [LoginController::class, 'logout']);    
+    });
 });
 
+Route::middleware('auth:ortu')->group(function(){
+    Route::group(["prefix"=>"ortu"], function(){
+        // logout ortu
+        Route::get('/logout', [LoginController::class, 'logout']);
 
-// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-//     return $request->user();
-// });
+        // Route Beranda Ortu
+        Route::get('/dataortu', [OrtuBerandaController::class, 'data_ortu']);
+
+        // Route Tugas Murid
+        Route::get('/tugas', [OrtuTugasController::class, 'tugas']);
+    });
+});

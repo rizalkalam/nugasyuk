@@ -6,6 +6,7 @@ use App\Models\Jam;
 use App\Models\Hari;
 use App\Models\Kode;
 use App\Models\Kelas;
+use App\Models\Mapel;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -28,8 +29,8 @@ class Jadwal extends Model
         return $this->belongsTo(Kode::class);
     }
 
-    public function kelas()
+    public function mapel()
     {
-        return $this->belongsTo(Kelas::class);
+        return $this->belongsTo(Mapel::class);
     }
 }

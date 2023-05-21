@@ -14,7 +14,7 @@ class MateriSeeder extends Seeder
     public function run(): void
     {
         Materi::create([
-            'id'=>'1',
+           'id'=>'1',
            'nama_materi'=>'Wordpress',
            'tanggal_dibuat'=>'2023-05-05',
            'isi'=>'lorem ipsum dolor sit amet bla bli blu ble blo ohok ohok',
@@ -75,14 +75,26 @@ class MateriSeeder extends Seeder
 
         Materi::create([
             'id'=>'6',
-           'nama_materi'=>'Sistem Tata Surya',
+           'nama_materi'=>'SQL Server',
            'tanggal_dibuat'=>'2023-05-05',
            'isi'=>'lorem ipsum dolor sit amet bla bli blu ble blo ohok ohok',
            'link'=>null,
            'file'=>null,
            'tahun_mulai'=>'2023',
            'tahun_selesai'=>'2024',
-           'mapel_id'=>5
+           'mapel_id'=>4
+        ]);
+        
+        Materi::create([
+            'id'=>'7',
+           'nama_materi'=>'Arduino Uno',
+           'tanggal_dibuat'=>'2023-05-05',
+           'isi'=>'lorem ipsum dolor sit amet bla bli blu ble blo ohok ohok',
+           'link'=>null,
+           'file'=>null,
+           'tahun_mulai'=>'2023',
+           'tahun_selesai'=>'2024',
+           'mapel_id'=>3
         ]);
     }
 }

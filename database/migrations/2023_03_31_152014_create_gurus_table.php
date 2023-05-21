@@ -16,10 +16,10 @@ return new class extends Migration
             $table->string('nama_guru');
             $table->string('email');
             $table->string('password');
-            $table->string('konfirmasi')->nullable();
             $table->integer('niy')->unique();
             $table->string('foto_profile');
             $table->foreignId('mapel_id');
+            // $table->string('konfirmasi')->nullable();
             // $table->foreignId('role_id');
             // $table->foreignId('mapel2_id')->nullable();
             $table->timestamps();

@@ -15,48 +15,54 @@ class MapelSeeder extends Seeder
     {
         Mapel::create([
             'id'=>'1',
-           'kode_id'=>1,
-           'kelas_id'=>1,
+            'kode_id'=>1,
+            'kelas_id'=>1,
+            'status_mapel'=>'produktif'
         //    'nama_mapel'=>'ICT',
             // 'asset_id'=>1,
         ]);
 
+        // Mapel::create([
+        //     'id'=>'2',
+        //     'kode_id'=>1,
+        //     'kelas_id'=>2,
+        //     'status_mapel'=>'produktif'
+        // //    'nama_mapel'=>'ICT',
+        //     // 'asset_id'=>1,
+        // ]);
+
         Mapel::create([
             'id'=>'2',
-           'kode_id'=>1,
-           'kelas_id'=>2,
+            'kode_id'=>2,
+            'kelas_id'=>1,
+            'status_mapel'=>'produktif'
         //    'nama_mapel'=>'ICT',
             // 'asset_id'=>1,
         ]);
 
         Mapel::create([
             'id'=>'3',
-           'kode_id'=>1,
-           'kelas_id'=>3,
+            'kode_id'=>3,
+            'kelas_id'=>1,
+            'status_mapel'=>'produktif'
         //    'nama_mapel'=>'ICT',
             // 'asset_id'=>1,
         ]);
 
         Mapel::create([
             'id'=>'4',
-           'kode_id'=>1,
-           'kelas_id'=>4,
-        //    'nama_mapel'=>'ICT',
-            // 'asset_id'=>1,
-        ]);
-
-        Mapel::create([
-            'id'=>'5',
-            'kode_id'=>2,
+            'kode_id'=>5,
             'kelas_id'=>1,
+            'status_mapel'=>'normadaf'
         //    'nama_mapel'=>'Science',
             // 'asset_id'=>2,
         ]);
 
         Mapel::create([
-            'id'=>'6',
-            'kode_id'=>3,
-            'kelas_id'=>2,
+            'id'=>'5',
+            'kode_id'=>6,
+            'kelas_id'=>1,
+            'status_mapel'=>'normadaf'
             // 'nama_mapel'=>'Math',
             // 'asset_id'=>2,
         ]);

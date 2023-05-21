@@ -57,5 +57,16 @@ class MuridSeeder extends Seeder
             'kelas_id'=>2,
             // 'tugas_id'=>1,
         ]);
+
+        Murid::create([
+            'id'=>'5',
+            'nama_siswa'=>'faiq muntashir',
+            'email'=>'faiqmuntashir@gmail.com',
+            'password'=>bcrypt('faiq123'),
+            // 'nis'=>'0443',
+            'foto_profile'=>'gambar1.jpg',
+            'kelas_id'=>3,
+            // 'tugas_id'=>1,
+        ]);
     }
 }

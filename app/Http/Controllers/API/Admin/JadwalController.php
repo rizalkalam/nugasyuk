@@ -8,7 +8,8 @@ use App\Http\Controllers\Controller;
 
 class JadwalController extends Controller
 {
-    public function index($id){
+    public function index($id)
+    {
         $jadwal = Jadwal::join('kodes', 'kodes.id', '=', 'jadwals.kode_id')
         ->join('haris', 'haris.id', '=', 'jadwals.hari_id')
         ->join('jams', 'jams.id', '=', 'jadwals.jam_id')

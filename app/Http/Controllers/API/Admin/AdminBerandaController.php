@@ -16,17 +16,13 @@ class AdminBerandaController extends Controller
     {
         $admin = Admin::where('id', auth()->user()->id)->value('nama');
 
-        $murid = Murid::all();
-        $jumlah_murid = count($murid);
+        $jumlah_murid = Murid::all()->count();
 
-        $kelas = Kelas::all();
-        $jumlah_kelas = count($kelas);
+        $jumlah_kelas = Kelas::all()->count();
 
-        $guru = Guru::all();
-        $jumlah_guru = count($guru);
+        $jumlah_guru = Guru::all()->count();
 
-        $jurusan = Jurusan::all();
-        $jumlah_jurusan = count($jurusan);
+        $jumlah_jurusan = Jurusan::all()->count();
 
         return response()->json([
             "success" => true,

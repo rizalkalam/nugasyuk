@@ -15,7 +15,8 @@ return new class extends Migration
             $table->id();
             $table->foreignId('hari_id');
             $table->foreignId('jam_id');
-            $table->foreignId('kode_id');
+            // $table->foreignId('kode_id');
+            $table->foreignId('mapel_id');
             // $table->foreignId('kelas_id');
             $table->timestamps();
         });

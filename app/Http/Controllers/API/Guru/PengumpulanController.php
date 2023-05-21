@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\API\Guru;
 
+use App\Models\Guru;
+use App\Models\Mapel;
 use App\Models\Murid;
 use App\Models\Pengumpulan;
 use Illuminate\Http\Request;
@@ -9,28 +11,37 @@ use App\Http\Controllers\Controller;
 
 class PengumpulanController extends Controller
 {
-    public function pengumpulan($kelas_id = '1')
+    public function pengumpulan()
     {
+        $kelas_guru = Mapel::join('kodes', 'kodes.id', '=', 'mapels.kode_id')
+        ->where('kodes.guru_id', auth()->user()->id)->select('mapels.kelas_id')->get();
+
+        $kelas = request ('kelas', null);
         $murid = Murid::join('kelas', 'kelas.id', '=', 'murids.kelas_id')
                         ->join('jurusans', 'jurusans.id', '=', 'kelas.jurusan_id')
                         ->join('tingkatans', 'tingkatans.id', '=', 'kelas.tingkatan_id')
-                        ->where('kelas.id', '=', $kelas_id)
-                        ->filter(request(['search']))
+                        ->whereIn('murids.kelas_id', $kelas_guru)
+                        ->when($kelas, function ($query) use ($kelas){
+                            return $query->whereHas('kelas', function ($query) use ($kelas) {
+                                $query->where('id', $kelas);
+                                });
+                        })
                         ->get(['murids.nama_siswa', 'murids.email', 'tingkatans.tingkat_ke', 'jurusans.nama_jurusan', 'kelas.nama_kelas']);
                         
-        if (count($murid) == 0) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Data tidak ada',
-            ], 404);
-        }
-        else {
+        // if (count($murid) == 0) {
+        //     return response()->json([
+        //         'success' => false,
+        //         'message' => 'Data tidak ada',
+        //     ], 404);
+        // }
+        // else {
             return response()->json([
                 "success" => true,
                 "message" => "Pengumpulan",
                 "pengumpulan" => $murid,
+                // "kelas_guru" => $kelas_guru
             ], 200);
-        }
+        // }
     }
 
     public function detail_pengumpulan($nama)
