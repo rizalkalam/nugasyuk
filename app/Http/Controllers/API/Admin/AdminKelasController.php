@@ -47,8 +47,60 @@ class AdminKelasController extends Controller
         ]);
 
         return response()->json([
-            'message' => 'Kelas baru berhasil dibuat',
+            'message' => 'Data Kelas baru berhasil dibuat',
             'data' => $data,
+        ]);
+    }
+
+    public function edit_kelas(Request $request, $id)
+    {
+        $validator = Validator::make($request->all(),[
+            'nama_kelas' => 'required',
+            'guru_id' => 'required',
+            'jurusan_id' => 'required',
+            'tingkatan_id' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => $validator->errors(),
+                'data' => [],
+            ]);
+        }
+
+        try {
+            $kelas = Kelas::where('id', $id)->first();
+
+            $kelas->update([
+                'nama_kelas' => $request->nama_kelas,
+                'guru_id' => $request->guru_id,
+                'jurusan_id' => $request->jurusan_id,
+                'tingkatan_id' => $request->tingkatan_id
+            ]);
+
+            return response()->json([
+                'message' => 'Data Kelas berhasil di ubah',
+                'data' => $kelas,
+            ]);
+        } catch (\Throwable $th) {
+            //throw $th;
+            return response()->json([
+                'message' => 'failed',
+                'errors' => $th->getMessage(),
+            ]);
+        }
+    }
+
+    public function hapus_kelas($id)
+    {
+        $kelas = Kelas::where('id', $id)->first();
+
+        $kelas->delete();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'materi berhasil di hapus',
         ]);
     }
 }

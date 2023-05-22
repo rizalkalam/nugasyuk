@@ -6,6 +6,7 @@ use App\Models\Kelas;
 use App\Models\Murid;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Validator;
 
 class AdminMuridController extends Controller
 {
@@ -33,5 +34,29 @@ class AdminMuridController extends Controller
             "data" => $data,
             "jumlah_siswa" => $jumlah_murid
         ], 200);
+    }
+
+    public function buat_murid(Request $request)
+    {
+        $validator = Validator::make($request->all(),[
+            'nama_siswa'=> 'required',
+            'email'=> 'required',
+            'password'=> 'required',
+            'foto_profile'=> 'required',
+            'kelas_id'=> 'required'
+        ]);
+
+        $data = Murid::create([
+            'nama_siswa' => $request->nama_siswa,
+            'email' => $request->email,
+            'password' => $request->password,
+            'foto_profile' => $request->foto_profile,
+            'kelas_id' => $request->kelas_id
+        ]);
+
+        return response()->json([
+            'message' => 'Data Siswa baru berhasil dibuat',
+            'data' => $data,
+        ]);
     }
 }

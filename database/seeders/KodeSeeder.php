@@ -56,11 +56,11 @@ class KodeSeeder extends Seeder
             'guru_id'=>5,
         ]);
 
-        // Kode::create([
-        //     //  'id'=>'1',
-        //     'kode_guru'=>'BK',
-        //     'nama_mapel'=>'Bimningan Koneseling',
-        //     'guru_id'=>6,
-        // ]);
+        Kode::create([
+             'id'=>'7',
+            'kode_guru'=>'HS1',
+            'nama_mapel'=>"Baca Tulis Al-Qur'an",
+            'guru_id'=>7,
+        ]);
     }
 }

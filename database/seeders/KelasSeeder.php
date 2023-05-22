@@ -103,6 +103,14 @@ class KelasSeeder extends Seeder
                 'guru_id'=>5
             ],
 
+            [
+                'nama_kelas'=>'9E',
+                // 'jumlah_siswa'=>'30',
+                'tingkatan_id'=>2,
+                'jurusan_id'=>1,
+                'guru_id'=>7
+            ],
+
         ])->each(function ($kelas){
             DB::table('kelas')->insert($kelas);
         });

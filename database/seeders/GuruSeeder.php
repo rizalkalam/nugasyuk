@@ -65,13 +65,14 @@ class GuruSeeder extends Seeder
             'mapel_id'=>6,
         ]);
 
-        // Guru::create([
-        //     // 'id'=>'6'
-        //     'nama_guru'=>'Cinta Saraswati'
-        //     'email'=>'heycinta@gmail.com',
-        //     'password'=>bcrypt('cinta123'),
-        //     'niy'=>'0116',
-
-        // ]);
+        Guru::create([
+            // 'id'=>'6'
+            'nama_guru'=>'Cinta Saraswati',
+            'email'=>'heycinta@gmail.com',
+            'password'=>bcrypt('cinta123'),
+            'niy'=>'0116',
+            'foto_profile'=>'gambar7.jpg',
+            'mapel_id'=>7,
+        ]);
     }
 }
