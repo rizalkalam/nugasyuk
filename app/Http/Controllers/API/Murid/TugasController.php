@@ -10,14 +10,36 @@ use Illuminate\Support\Facades\Validator;
 
 class TugasController extends Controller
 {
-    public function index()
+    public function tugas()
     {
+
+        // $deadline = Tugas::join('materis', 'materis.id', '=', 'tugas.materi_id')
+        // ->join('mapels', 'mapels.id', '=', 'materis.mapel_id')
+        // ->where('mapels.kelas_id', auth()->user()->kelas_id)
+        // ->value('tugas.deadline');
+
+        // $dalamdeadline = '<=';
+        // $lebihdeadline = '>=';
+
+        $status = request ('status', null);
+        $status_mapel = request('status_mapel', null);
+        $soal = request('soal', null);
         $data = Pengumpulan::join('tugas', 'tugas.id', '=', 'pengumpulans.tugas_id')
         ->join('materis', 'materis.id', '=', 'tugas.materi_id')
         ->join('mapels', 'mapels.id', '=', 'materis.mapel_id')
+        ->join('kelas', 'kelas.id', '=', 'mapels.kelas_id')
         ->where('pengumpulans.murid_id', '=', auth()->user()->id)
-        ->where('mapels.kelas_id', '=', auth()->user()->kelas_id)
-        ->get(['status', 'tugas.id', 'tugas.soal', 'tugas.date', 'tugas.deadline']);
+        ->where('kelas.id', '=', auth()->user()->kelas_id)
+        ->when($status,function ($query) use ($status){
+            $query->where('status', $status);
+        })
+        ->when($status_mapel, function ($query) use ($status_mapel){
+            $query->where('mapels.status_mapel', $status_mapel);
+        })
+        ->when($soal, function ($query) use ($soal){
+            $query->where('tugas.soal', 'LIKE', '%' . $soal . '%');
+        })
+        ->select(['status', 'tugas.id', 'tugas.soal', 'tugas.date', 'tugas.deadline', 'materis.id'])->get();
 
         return response()->json([
             "success" => true,
@@ -68,8 +90,10 @@ class TugasController extends Controller
                 'message' => 'Jawaban berhasil terkirim',
                 'data' => $jawaban,
             ]);
-        
+    }
 
+    public function pengumpulan()
+    {
         
     }
 }

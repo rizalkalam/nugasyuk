@@ -15,6 +15,15 @@ class Mapel extends Model
 
     protected $guarded = ['id'];
 
+    // public function scopeFilter($query, array $kelas)
+    // {
+    //     $query->when($filters['kelas']??false, function($query, $kelas){
+    //         return $query->whereHas('kelas', function($query) use ($kelas){
+    //             $query->where('id', $kelas);
+    //         });
+    //     });
+    // }    
+
     public function kelas()
     {
         return $this->belongsTo(Kelas::class);

@@ -15,24 +15,52 @@ class KodeSeeder extends Seeder
     public function run(): void
     {
         Kode::create([
-            // 'id'=>'1',
+            'id'=>'1',
            'kode_guru'=>'JA1',
-           'nama_mapel'=>'ICT',
+           'nama_mapel'=>'Web Programming',
            'guru_id'=>1,
         ]);
 
         Kode::create([
-             // 'id'=>'1',
-           'kode_guru'=>'MF1',
-           'nama_mapel'=>'Science',
+             'id'=>'2',
+           'kode_guru'=>'RZ1',
+           'nama_mapel'=>'IOT',
            'guru_id'=>2,
         ]);
 
         Kode::create([
-            // 'id'=>'1',
-            'kode_guru'=>'MF2',
-            'nama_mapel'=>'Math',
+            'id'=>'3',
+            'kode_guru'=>'RZ2',
+            'nama_mapel'=>'Desktop',
             'guru_id'=>2,
         ]);
+
+        Kode::create([
+             'id'=>'4',
+            'kode_guru'=>'MF1',
+            'nama_mapel'=>'Database',
+            'guru_id'=>3,
+        ]);
+
+        Kode::create([
+             'id'=>'5',
+            'kode_guru'=>'LS1',
+            'nama_mapel'=>'Bahasa Indonesia',
+            'guru_id'=>4,
+        ]);
+
+        Kode::create([
+             'id'=>'6',
+            'kode_guru'=>'IP1',
+            'nama_mapel'=>'Sejarah',
+            'guru_id'=>5,
+        ]);
+
+        // Kode::create([
+        //     //  'id'=>'1',
+        //     'kode_guru'=>'BK',
+        //     'nama_mapel'=>'Bimningan Koneseling',
+        //     'guru_id'=>6,
+        // ]);
     }
 }

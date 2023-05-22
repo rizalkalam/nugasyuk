@@ -17,29 +17,41 @@ class KbmController extends Controller
 {
     public function kbm()
     {
-        $kelas = Mapel::join('kodes', 'kodes.id', '=', 'mapels.kode_id')
+        $kelas = request ('kelas', null);
+        $data = Mapel::join('kodes', 'kodes.id', '=', 'mapels.kode_id')
                         ->join('gurus', 'gurus.id', '=', 'kodes.guru_id')
                         ->join('kelas', 'kelas.id', '=', 'mapels.kelas_id')
                         ->join('jurusans', 'jurusans.id', '=', 'kelas.jurusan_id')
                         ->join('tingkatans', 'tingkatans.id', '=', 'kelas.tingkatan_id')
                         ->where('gurus.id', '=', auth()->user()->id)
-                        ->get(['tingkatans.tingkat_ke', 'jurusans.nama_jurusan', 'kelas.nama_kelas']);
+                        ->when($kelas, function ($query) use ($kelas){
+                            return $query->whereHas('kelas', function ($query) use ($kelas) {
+                                $query->where('id', $kelas);
+                                });
+                        })
+                        ->select(['kelas.id', 'tingkatans.tingkat_ke', 'jurusans.nama_jurusan', 'kelas.nama_kelas'])->get();
 
         return response()->json([
             "success" => true,
             "message" => "KBM",
-            "kelas" => $kelas,
+            "kelas" => $data,
         ], 200);
     }
 
     public function materi($kelas_id)
     {
+        $mapel = request ('mapel', null);
         $materi = Materi::join('mapels', 'mapels.id', '=', 'materis.mapel_id')
                             ->join('kodes', 'kodes.id', '=', 'mapels.kode_id')
                             ->join('gurus', 'gurus.id', '=', 'kodes.guru_id')
                             ->join('kelas', 'kelas.id', '=', 'mapels.kelas_id')
-                            ->where('gurus.id', '=', auth()->user()->id)
                             ->where('kelas.id','=',$kelas_id)
+                            ->when($mapel, function ($query) use ($mapel){
+                                return $query->whereHas('mapel', function ($query) use ($mapel) {
+                                    $query->where('id', $mapel);
+                                });
+                            })
+                            ->where('gurus.id', '=', auth()->user()->id)
                             ->get('materis.nama_materi');
 
         if (count($materi) == 0) {
@@ -49,7 +61,7 @@ class KbmController extends Controller
             ], 404);
         }
         else {
-            return response()->json([
+            return response()->json([   
                 "success" => true,
                 "message" => "List Materi",
                 "materi" => $materi,
@@ -59,6 +71,7 @@ class KbmController extends Controller
 
     public function tugas($kelas_id)
     {
+        $mapel = request ('mapel', null);
         $tugas = Tugas::join('materis', 'materis.id', '=', 'tugas.materi_id')
                         ->join('mapels', 'mapels.id', '=', 'materis.mapel_id')
                         ->join('kodes', 'kodes.id', '=', 'mapels.kode_id')
@@ -66,16 +79,21 @@ class KbmController extends Controller
                         ->join('kelas', 'kelas.id', '=', 'mapels.kelas_id')
                         ->join('jurusans', 'jurusans.id', '=', 'kelas.jurusan_id')
                         ->join('tingkatans', 'tingkatans.id', '=', 'kelas.tingkatan_id')
-                        ->where('gurus.id', '=', auth()->user()->id)
                         ->where('kelas.id', '=', $kelas_id)
-                        ->get([
+                        ->when($mapel, function ($query) use ($mapel){
+                            return $query->whereHas('mapel', function ($query) use ($mapel) {
+                                $query->where('id', $mapel);
+                            });
+                        })
+                        ->where('gurus.id', '=', auth()->user()->id)
+                        ->select([
                             'tugas.id',
                             'tugas.soal',
                             'materis.nama_materi',
                             'tingkatans.tingkat_ke',
                             'jurusans.nama_jurusan',
                             'kelas.nama_kelas', 
-                        ]);
+                        ])->get();
 
         if (count($tugas) == 0) {
             return response()->json([
@@ -101,7 +119,7 @@ class KbmController extends Controller
                             ->where('gurus.id', '=', auth()->user()->id)
                             ->where('kelas.id', '=', $kelas_id)
                             ->where('materis.id', '=', $materi_id)
-                            ->get(['materis.nama_materi', 'gurus.nama_guru', 'materis.tanggal_dibuat', 'materis.isi', 'materis.link', 'materis.file']);
+                            ->select(['materis.nama_materi', 'gurus.nama_guru', 'materis.tanggal_dibuat', 'materis.isi', 'materis.link', 'materis.file'])->get();
 
         if (count($materi) == 0) {
             return response()->json([
@@ -128,12 +146,12 @@ class KbmController extends Controller
                         ->where('gurus.id', '=', auth()->user()->id)
                         ->where('kelas.id', '=', $kelas_id)
                         ->where('tugas.id', '=', $tugas_id)
-                        ->get([
+                        ->select([
                             'tugas.soal',
                             'gurus.nama_guru',
                             'tugas.date',
                             'tugas.description'
-                        ]);
+                        ])->get();
 
         if (count($tugas) == 0) {
             return response()->json([
@@ -163,10 +181,10 @@ class KbmController extends Controller
                                     ->where('kelas.id', '=', $kelas_id)
                                     ->where('tugas.id', '=', $tugas_id)
                                     ->where('pengumpulans.status', '=', $status)
-                                    ->get([
+                                    ->select([
                                         'murids.nama_siswa',
                                         'pengumpulans.status'
-                                    ]);
+                                    ])->get();
 
             if (count($pengumpulan) == 0) {
                 return response()->json([
@@ -190,7 +208,7 @@ class KbmController extends Controller
         ->where('kodes.guru_id', '=', auth()->user()->id)
         ->where('kelas_id', $kelas_id)
         ->where('kodes.nama_mapel', $nama_mapel)
-        ->get('mapels.id');
+        ->seelect('mapels.id')->get();
 
          $validator = Validator::make($request->all(),[
                 'mapel_id'=> 'required',
@@ -299,7 +317,7 @@ class KbmController extends Controller
                         ->where('kodes.guru_id', '=', auth()->user()->id)
                         ->where('kelas_id', '=', $kelas_id)
                         ->where('kodes.nama_mapel', '=', $nama_mapel)
-                        ->get('mapels.id');
+                        ->select('mapels.id')->get();
 
         if (!$mapel->isEmpty()) {
             $validator = Validator::make($request->all(),[
@@ -316,7 +334,7 @@ class KbmController extends Controller
                 'materi_id'=> $request->materi_id,
                 'soal'=> $request->soal,
                 'description'=> $request->description,
-                'date'=> $request->date,
+                'date'=> Carbon::now()->format('Y-m-d'),
                 'deadline'=> $request->deadline,
                 // 'link'=> 'required',
                 // 'file'=> 'required'
@@ -335,7 +353,8 @@ class KbmController extends Controller
                 $data[] = [
                     'tugas_id' => $tugasId,
                     'kelas_id' => $kelasId->first()->id,
-                    'murid_id' => $id->id
+                    'murid_id' => $id->id,
+                    'tanggal' => Carbon::now()->format('Y-m-d')
                 ];
             }
             $pengumpulan = Pengumpulan::insert($data);
@@ -343,7 +362,7 @@ class KbmController extends Controller
             return response()->json([
                 'message' => 'Tugas berhasil dibuat',
                 'tugas' => $tugas,
-                'pengumpulan' => $pengumpulan,
+                // 'pengumpulan' => $pengumpulan,
                 // 'tugasId' => $tugasId,
                 // 'kelasId' => $kelas_id
                 // 'murid' => $tes
@@ -351,7 +370,7 @@ class KbmController extends Controller
            
         } else {
             return response()->json([
-                'message' => 'Tugas gagal dibuat',
+                'pesan' => 'Tugas gagal dibuat',
                 'data' => 'error',
             ]);
 

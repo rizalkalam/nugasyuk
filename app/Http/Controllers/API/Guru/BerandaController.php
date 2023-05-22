@@ -27,63 +27,56 @@ class BerandaController extends Controller
         $guru = Guru::where('id', auth()->user()->id)->value('nama_guru');
 
         $kelas = Mapel::join('kodes', 'kodes.id', '=', 'mapels.kode_id')
-        ->where('kodes.guru_id', auth()->user()->id)->get('mapels.kelas_id');
+        ->where('kodes.guru_id', auth()->user()->id)->select('mapels.kelas_id')->get()->count();
 
-        $jumlah_kelas = count($kelas);
 
         $materi = Materi::join('mapels', 'mapels.id', '=', 'materis.mapel_id')
         ->join('kodes', 'kodes.id', '=', 'mapels.kode_id')
-        ->where('kodes.guru_id', auth()->user()->id)
-        ->get('materis.id');
+        ->where('kodes.guru_id', auth()->user()->id)->select('materis.id')->get()->count();
 
-        $jumlah_materi = count($materi);
 
-        $tugas = Tugas::join('materis', 'materis.id', '=', 'tugas.materi_id')
+        // $tugas = Tugas::join('materis', 'materis.id', '=', 'tugas.materi_id')
+        // ->join('mapels', 'mapels.id', '=', 'materis.mapel_id')
+        // ->join('kodes', 'kodes.id', '=', 'mapels.kode_id')
+        // ->where('kodes.guru_id', '=', auth()->user()->id)
+        // ->get('tugas.id');
+
+        // $jumlah_tugas = count($tugas);
+
+        $jumlah_menunggu = Pengumpulan::join('tugas', 'tugas.id', '=', 'pengumpulans.tugas_id')
+        ->join('materis', 'materis.id', '=', 'tugas.materi_id')
         ->join('mapels', 'mapels.id', '=', 'materis.mapel_id')
         ->join('kodes', 'kodes.id', '=', 'mapels.kode_id')
-        ->where('kodes.guru_id', '=', auth()->user()->id)
-        ->get('tugas.id');
+        ->where('kodes.guru_id', auth()->user()->id)
+        ->where('pengumpulans.status', '=', 'menunggu')
+        ->select('pengumpulans.id')
+        ->get()->count();
 
-        $jumlah_tugas = count($tugas);
-        // $tugas = Tugas::first();
+        $jumlah_selesai = Pengumpulan::join('tugas', 'tugas.id', '=', 'pengumpulans.tugas_id')
+        ->join('materis', 'materis.id', '=', 'tugas.materi_id')
+        ->join('mapels', 'mapels.id', '=', 'materis.mapel_id')
+        ->join('kodes', 'kodes.id', '=', 'mapels.kode_id')
+        ->where('kodes.guru_id', auth()->user()->id)
+        ->where('pengumpulans.status', '=', 'selesai')
+        ->select('pengumpulans.id')
+        ->get()->count();
 
-        // $data = [
-        //     "nama_guru" => $guru,
-        //     "jumlah_kelas" => $jumlah_kelas,
-        //     "jumlah_materi" => $jumlah_materi,
-        //     "jumlah_tugas" => $jumlah_tugas
-        // ];
+        $data = [
+            "nama_guru" => $guru,
+            "jumlah_kelas" => $kelas,
+            "jumlah_materi" => $materi,
+            "menunggu" => $jumlah_menunggu,
+            "selesai" => $jumlah_selesai
+        ];
 
         return response()->json([
-            "success" => true,
-            "message" => "Jumlah Kelas Diampu",
-            // "data_guru" => $data
-            "nama_guru" => $guru,
-            "jumlah_kelas" => $jumlah_kelas,
-            "jumlah_materi" => $jumlah_materi,
-            "jumlah_tugas" => $jumlah_tugas
-        ]);
+            "data" => $data
+        ], 200);
     }
 
     public function index()
     {
-        // $profile[]=[
-        //     'nama_guru'=>auth()->user()->nama_guru,
-        //     'foto_profile'=>auth()->user()->foto_profile,
-        // ];
-
-        // jumlah kelas yang diajar
-        
-
-        // jumlah materi yang diberikan
-        
-
-        // jumlah tugas yang diberika
-
         return response()->json([
-            "success" => true,
-            "message" => "Beranda Guru",
-            // "profile_guru" => $profile,
             "nama_guru" =>auth()->user()->nama_guru,
             "mapel_guru"=>$mata_pelajaran,
             "mengajar"=>$kelas,

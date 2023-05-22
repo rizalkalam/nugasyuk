@@ -65,30 +65,42 @@ class KelasSeeder extends Seeder
         collect([
             [
                 'nama_kelas'=>'1',
-                'jumlah_siswa'=>'30',
+                // 'jumlah_siswa'=>'30',
                 'tingkatan_id'=>1,
-                'jurusan_id'=>1
+                'jurusan_id'=>1,
+                'guru_id'=>1
             ],
 
             [
                 'nama_kelas'=>'2',
-                'jumlah_siswa'=>'30',
+                // 'jumlah_siswa'=>'30',
                 'tingkatan_id'=>1,
-                'jurusan_id'=>1
+                'jurusan_id'=>1,
+                'guru_id'=>2
             ],
 
             [
                 'nama_kelas'=>'1',
-                'jumlah_siswa'=>'30',
+                // 'jumlah_siswa'=>'30',
                 'tingkatan_id'=>1,
-                'jurusan_id'=>2
+                'jurusan_id'=>2,
+                'guru_id'=>3
             ],
 
             [
                 'nama_kelas'=>'2',
-                'jumlah_siswa'=>'30',
+                // 'jumlah_siswa'=>'30',
                 'tingkatan_id'=>1,
-                'jurusan_id'=>2
+                'jurusan_id'=>2,
+                'guru_id'=>4
+            ],
+
+            [
+                'nama_kelas'=>'1',
+                // 'jumlah_siswa'=>'30',
+                'tingkatan_id'=>1,
+                'jurusan_id'=>3,
+                'guru_id'=>5
             ],
 
         ])->each(function ($kelas){

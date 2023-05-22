@@ -14,9 +14,10 @@ return new class extends Migration
         Schema::create('kelas', function (Blueprint $table) {
             $table->id();
             $table->string('nama_kelas');
-            $table->integer('jumlah_siswa');
+            // $table->integer('jumlah_siswa');
             $table->foreignId('tingkatan_id');
             $table->foreignId('jurusan_id');
+            $table->foreignId('guru_id');
             $table->timestamps();
         });
     }

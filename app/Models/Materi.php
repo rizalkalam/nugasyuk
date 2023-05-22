@@ -13,7 +13,21 @@ class Materi extends Model
 
     protected $guarded = ['id'];
 
-    public function mapel()
+    public function scopeFilter($query, array $kelas)
+    {
+        $query->join('mapels', 'mapels.id', '=', 'materis.mapel_id')
+        ->join('kelas', 'kelas.id', '=', 'mapels.kelas_id')
+        ->join('jurusans', 'jurusans.id', '=', 'kelas.jurusan_id')
+        ->join('tingkatans', 'tingkatans.id', '=', 'kelas.tingkatan_id')
+        ->where('gurus.id', '=', auth()->user()->id)
+        ->when($filters['kelas.id']??false, function($query, $kelas){
+            return $query->whereHas('kelas.id', function($query) use ($kelas){
+                $query->where('kelas.id', $kelas);
+            });
+        });
+    }    
+
+public function mapel()
     {
         return $this->belongsTo(Mapel::class);
         // return $this->hasMany(Mapel::class);

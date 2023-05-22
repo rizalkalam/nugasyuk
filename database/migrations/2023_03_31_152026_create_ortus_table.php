@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('ortus', function (Blueprint $table) {
             $table->id();
+            $table->string('nama');
             $table->string('email');
             $table->string('password');
             $table->foreignId('siswa_id');

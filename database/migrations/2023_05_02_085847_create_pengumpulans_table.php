@@ -14,8 +14,9 @@ return new class extends Migration
         Schema::create('pengumpulans', function (Blueprint $table) {
             $table->id();
             $table->foreignId('tugas_id');
-            $table->enum('status', ['menunggu', 'selesai', 'belum selesai'])->default('belum selesai');
-            $table->foreignId('kelas_id');
+            $table->enum('status', ['menunggu', 'selesai', 'belum_selesai'])->default('belum_selesai');
+            $table->date('tanggal')->nullable();
+            // $table->foreignId('kelas_id');
             $table->foreignId('murid_id')->nullable();
             $table->timestamps();
         });

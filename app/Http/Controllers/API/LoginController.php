@@ -16,32 +16,31 @@ class LoginController extends Controller
             'password'=>'required'
         ]);
 
-        //   Auth::user()->createToken('auth_token')->plainTextToken;
-
         if ($token = auth()->guard('guru')->attempt($credentials)) {
             return response()->json([
                 'token'=>$token,
-                'account'=>auth()->user()->email,
+                'akun'=>auth()->user()->email,
                 'mapel_id'=>auth()->user()->mapel_id
             ]);
         } elseif ($token = auth()->guard('murid')->attempt($credentials)) {
             return response()->json([
                 'token'=>$token,
-                'account'=>auth()->guard('murid')->user()->email,
+                'akun'=>auth()->guard('murid')->user()->email,
                 'kelas_id'=>auth()->guard('murid')->user()->kelas_id
             ]);
         } elseif ($token = auth()->guard('ortu')->attempt($credentials)) {
             return response()->json([
                 'token'=>$token,
+                'akun'=>auth()->guard('ortu')->user()->email,
                 'siswa_id'=>auth()->guard('ortu')->user()->siswa_id
             ]);
         } elseif ($token = auth()->guard('admin')->attempt($credentials)) {
             return response()->json([
                 'token'=>$token,
-                'account'=>auth()->guard('admin')->user()->email
+                'akun'=>auth()->guard('admin')->user()->email
             ]);
         } else {
-            return response()->json(['error'=>'Unauthorized'], 401);
+            return response()->json(['kesalahan'=>'Tidak sah'], 401);
         }
     }
 
@@ -53,47 +52,15 @@ class LoginController extends Controller
         if($removeToken) {
             //return response JSON
             return response()->json([
-                'success' => true,
                 'message' => 'Logout Berhasil!',  
             ]);
         }
-        // auth()->guard('guru')->$credentials->delete();
-        // return [
-        //     'message' => 'user logged out'
-        // ];
     }
-    
-    // public function loginMurid(Request $request)
-    // {
-    //     $request->validate([
-    //         'email'=>'required',
-    //         'password'=>'required'
-    //     ]);
 
-    //     if (!$token = auth()->guard('murid')->attempt($request->only('email', 'password'))) {
-    //        return response()->json(['error'=>'Unauthorized'], 401);
-    //     }
-
-    //     return response()->json([
-    //             'token'=>$token,
-    //             'account'=>Auth::guard('murid')->user()->email
-    //         ]);
-    // }
-
-    // public function loginOrtu(Request $request)
-    // {
-    //     $request->validate([
-    //         'email'=>'required',
-    //         'password'=>'required'
-    //     ]);
-
-    //     if (!$token = auth()->guard('ortu')->attempt($request->only('email', 'password'))) {
-    //        return response()->json(['error'=>'Unauthorized'], 401);
-    //     }
-
-    //     return response()->json([
-    //             'token'=>$token,
-    //             'account'=>Auth::guard('ortu')->user()->email
-    //         ]);
-    // }
+    public function wrongtoken()
+    {
+        return response()->json([
+            "kesalahan" => "Tidak sah"
+        ],401);
+    }
 }

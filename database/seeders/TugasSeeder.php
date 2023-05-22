@@ -25,17 +25,17 @@ class TugasSeeder extends Seeder
             'materi_id'=>1
         ]);
 
-        // Tugas::create([
-        //     'id'=>'2',
-        //     'judul'=>'Buatlah makalah',
-        //     'date'=>'2023-05-04',
-        //     'deadline'=>'2023-05-05',
-        //     'description'=>'lorem ipsum dolor sit amet bla bli blu ble blo ohok ohok',
-        //     'status'=>1,
-        //     'link'=>null,
-        //     'file'=>null,
-        //     'mapel_id'=>5
-        // ]);
+        Tugas::create([
+            'id'=>'2',
+            'soal'=>'Buatlah makalah',
+            'date'=>'2023-05-04',
+            'deadline'=>'2023-05-05',
+            'description'=>'lorem ipsum dolor sit amet bla bli blu ble blo ohok ohok',
+            // 'status'=>1,
+            'link'=>null,
+            'file'=>null,
+            'materi_id'=>2
+        ]);
 
         // Tugas::create([
         //     'id'=>'2',
