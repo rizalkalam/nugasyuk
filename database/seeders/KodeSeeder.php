@@ -60,7 +60,7 @@ class KodeSeeder extends Seeder
              'id'=>'7',
             'kode_guru'=>'HS1',
             'nama_mapel'=>"Baca Tulis Al-Qur'an",
-            'guru_id'=>7,
+            'guru_id'=>6,
         ]);
     }
 }

@@ -12,7 +12,22 @@ class OrtuJadwalController extends Controller
 {
     public function index()
     {
-        $data = Hari::select(['id', 'hari'])->get();
+        // *ADA REVISI!!!* //
+
+        // $data = Hari::select(['id', 'hari'])->get();
+
+        $kelas_siswa = Murid::where('id', auth()->user()->siswa_id)->value('kelas_id');
+
+        $data = Jadwal::join('haris', 'haris.id', '=', 'jadwals.hari_id')
+        ->join('mapels', 'mapels.id', '=', 'jadwals.mapel_id')
+        // ->when($kelas, function ($query) use ($kelas){
+        //     return $query->whereHas('mapel', function ($query) use ($kelas){
+        //         $query->where('kelas_id', $kelas);
+        //     });
+        // })
+        ->where('mapels.kelas_id', $kelas_siswa)
+        ->orderBy('hari_id', 'ASC')
+        ->select(['haris.id', 'haris.hari'])->get();
 
         return response()->json([
             "success" => true,

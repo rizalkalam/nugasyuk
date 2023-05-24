@@ -100,7 +100,7 @@ class AdminKelasController extends Controller
 
         return response()->json([
             'success' => true,
-            'message' => 'materi berhasil di hapus',
+            'message' => 'Data kelas berhasil di hapus',
         ]);
     }
 }
