@@ -37,4 +37,4 @@ Deploy:
     # - ssh $VAR_USER@$VAR_IP "docker exec webserver php artisan db:seed"
     - ssh $VAR_USER@$VAR_IP "docker exec webserver php artisan jwt:secret"
     - ssh $VAR_USER@$VAR_IP "docker exec webserver php artisan key:generate"
-    - echo "SUKSES!"
+    - echo "SUCCESS!"
