@@ -11,16 +11,11 @@ class MuridJadwalController extends Controller
 {
     public function index()
     {
-        // $data = Jadwal::join('mapels', 'mapels.id', '=', 'jadwals.mapel_id')
-        // ->join('kodes', 'kodes.id', '=', 'mapels.kode_id')
-        // ->join('gurus', 'gurus.id', '=', 'kodes.guru_id')
-        // ->join('haris', 'haris.id', '=', 'jadwals.hari_id')
-        // ->where('mapels.kelas_id', auth()->user()->kelas_id)
-        // ->select(['jadwals.id', 'haris.hari', 'gurus.nama_guru'])->get();
-
-        // nanti value nama guru diganti dengan foto profil guru
-
-        $data = Hari::select(['id', 'hari'])->get();
+        $data = Jadwal::join('haris', 'haris.id', '=', 'jadwals.hari_id')
+        ->join('mapels', 'mapels.id', '=', 'jadwals.mapel_id')
+        ->where('mapels.kelas_id', auth()->user()->kelas_id)
+        ->orderBy('hari_id', 'ASC')
+        ->select(['haris.id', 'haris.hari'])->get();
 
         return response()->json([
             "success" => true,

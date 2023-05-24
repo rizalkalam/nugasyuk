@@ -2,29 +2,60 @@
 
 namespace App\Http\Controllers\API\Admin;
 
+use App\Models\Hari;
 use App\Models\Jadwal;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Validator;
 
 class JadwalController extends Controller
 {
-    public function index($id)
+    public function index()
     {
-        $jadwal = Jadwal::join('kodes', 'kodes.id', '=', 'jadwals.kode_id')
+        // $data = Hari::select(['id', 'hari'])->get();
+
+        $kelas = request ('kelas', null);
+        $data = Jadwal::join('haris', 'haris.id', '=', 'jadwals.hari_id')
+        ->join('mapels', 'mapels.id', '=', 'jadwals.mapel_id')
+        ->when($kelas, function ($query) use ($kelas){
+            return $query->whereHas('mapel', function ($query) use ($kelas){
+                $query->where('kelas_id', $kelas);
+            });
+        })
+        ->orderBy('hari_id', 'ASC')
+        ->select(['haris.id', 'haris.hari'])->get();
+
+        return response()->json([
+            "success" => true,
+            "message" => "Jadwal Mapel Murid",
+            "data" => $data,
+        ], 200);
+    }
+
+    public function detail($id)
+    {
+        $kelas = request ('kelas', 1);
+        $jadwal = Jadwal::join('mapels', 'mapels.id', '=', 'jadwals.mapel_id')
+        ->join('kodes', 'kodes.id', '=', 'mapels.kode_id')
         ->join('haris', 'haris.id', '=', 'jadwals.hari_id')
         ->join('jams', 'jams.id', '=', 'jadwals.jam_id')
         ->join('gurus', 'gurus.id', '=', 'kodes.guru_id')
-        ->join('mapels', 'mapels.id', '=', 'gurus.mapel_id')
         ->join('kelas', 'kelas.id', '=', 'mapels.kelas_id')
         ->join('jurusans', 'jurusans.id', '=', 'kelas.jurusan_id')
         ->join('tingkatans', 'tingkatans.id', '=', 'kelas.tingkatan_id')
-        ->where('gurus.id', auth()->user()->id)
-        ->where('jadwals.hari_id', $id)
+        ->when($kelas, function ($query) use ($kelas){
+            return $query->whereHas('mapel', function ($query) use ($kelas){
+                $query->where('kelas_id', $kelas);
+            });
+        })
+        ->where('haris.id', $id)
         ->get([
+            'jadwals.id',
             'tingkatans.tingkat_ke',
             'jurusans.nama_jurusan',
             'kelas.nama_kelas',
             'kodes.nama_mapel',
+            'gurus.nama_guru',
             'haris.hari',
             'jams.waktu_mulai',
             'jams.waktu_selesai'
@@ -43,5 +74,75 @@ class JadwalController extends Controller
                 "tugas" => $jadwal,
             ], 200);
         }
+    }
+
+    public function buat_jadwal(Request $request)
+    {
+        $validator = Validator::make($request->all(),[
+            'hari_id' => 'required',
+            'jam_id' => 'required',
+            'mapel_id' => 'required'
+        ]);
+
+        $data = Jadwal::create([
+            'hari_id' => $request->hari_id,
+            'jam_id' => $request->jam_id,
+            'mapel_id' => $request->mapel_id
+        ]);
+
+        return response()->json([
+            'message' => 'Data Kelas baru berhasil dibuat',
+            'data' => $data,
+        ]);
+    }
+
+    public function edit_jadwal(Request $request, $id)
+    {
+        $validator = Validator::make($request->all(),[
+            'hari_id' => 'required',
+            'jam_id' => 'required',
+            'mapel_id' => 'required'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => $validator->errors(),
+                'data' => [],
+            ]);
+        }
+
+        try {
+            $jadwal = Jadwal::where('id', $id)->first();
+
+            $jadwal->update([
+                'hari_id' => $request->hari_id,
+                'jam_id' => $request->jam_id,
+                'mapel_id' => $request->mapel_id
+            ]);
+
+            return response()->json([
+                'message' => 'Data jadwal berhasil di ubah',
+                'data' => $jadwal,
+            ]);
+        } catch (\Throwable $th) {
+            //throw $th;
+            return response()->json([
+                'message' => 'failed',
+                'errors' => $th->getMessage(),
+            ]);
+        }
+    }
+
+    public function hapus_jadwal($id)
+    {
+        $jadwal = Jadwal::where('id', $id)->first();
+
+        $jadwal->delete();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Data jadwal berhasil di hapus',
+        ]);
     }
 }

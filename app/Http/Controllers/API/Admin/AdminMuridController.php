@@ -59,4 +59,57 @@ class AdminMuridController extends Controller
             'data' => $data,
         ]);
     }
+
+    public function edit_murid(Request $request, $id)
+    {
+        $validator = Validator::make($request->all(),[
+            'nama_siswa'=> 'required',
+            'email'=> 'required',
+            'password'=> 'required',
+            'foto_profile'=> 'required',
+            'kelas_id'=> 'required'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => $validator->errors(),
+                'data' => [],
+            ]);
+        }
+
+        try {
+            $murid = Murid::where('id', $id)->first();
+
+            $murid->update([
+                'nama_siswa' => $request->nama_siswa,
+                'email' => $request->email,
+                'password' => $request->password,
+                'foto_profile' => $request->foto_profile,
+                'kelas_id' => $request->kelas_id
+            ]);
+
+            return response()->json([
+                'message' => 'Data Kelas berhasil di ubah',
+                'data' => $murid,
+            ]);
+        } catch (\Throwable $th) {
+            //throw $th;
+            return response()->json([
+                'message' => 'failed',
+                'errors' => $th->getMessage(),
+            ]);
+        }
+    }
+
+    public function hapus_murid($id)
+    {
+        $murid = Murid::where('id', $id)->first();
+
+        $murid->delete();
+        return response()->json([
+            'success' => true,
+            'message' => 'materi berhasil di hapus',
+        ]);
+    }
 }

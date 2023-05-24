@@ -12,8 +12,10 @@ use App\Http\Controllers\API\Guru\ProfileController;
 use App\Http\Controllers\API\Ortu\OrtuMapelController;
 use App\Http\Controllers\API\Ortu\OrtuTugasController;
 use App\Http\Controllers\API\Admin\AdminGuruController;
+use App\Http\Controllers\API\Guru\GuruJadwalController;
 use App\Http\Controllers\API\Ortu\OrtuJadwalController;
 use App\Http\Controllers\API\Admin\AdminKelasController;
+use App\Http\Controllers\API\Admin\AdminMapelController;
 use App\Http\Controllers\API\Admin\AdminMuridController;
 use App\Http\Controllers\API\Guru\PengumpulanController;
 use App\Http\Controllers\API\Murid\MuridMapelController;
@@ -53,15 +55,27 @@ Route::middleware('auth:admin')->group(function(){
         // Route murid admin
         Route::get('/murid', [AdminMuridController::class, 'index']);
         Route::post('/murid', [AdminMuridController::class, 'buat_murid']);
+        Route::post('/murid/{id}', [AdminMuridController::class, 'edit_murid']);
+        Route::delete('/murid/{id}', [AdminMuridController::class, 'hapus_murid']);
 
         // Route kelas admin
         Route::get('/kelas', [AdminKelasController::class, 'index']);
         Route::post('/kelas', [AdminKelasController::class, 'buat_kelas']);
         Route::post('/kelas/{id}', [AdminKelasController::class, 'edit_kelas']);
         Route::delete('/kelas/{id}', [AdminKelasController::class, 'hapus_kelas']);
+
+        // Route mapel admin
+        Route::get('/mapel', [AdminMapelController::class, 'index']);
+        Route::post('/mapel', [AdminMapelController::class, 'buat_mapel']);
+        Route::post('/mapel/{id}', [AdminMapelController::class, 'edit_mapel']);
+        Route::delete('/mapel/{id}', [AdminMapelController::class, 'hapus_mapel']);
     
         // Route jadwal admin
-        Route::get('/jadwal/{id}', [JadwalController::class, 'index']);
+        Route::get('/jadwal', [JadwalController::class, 'index']);
+        Route::get('/jadwal/{id}', [JadwalController::class, 'detail']);
+        Route::post('/jadwal', [JadwalController::class, 'buat_jadwal']);
+        Route::post('/jadwal/{id}', [JadwalController::class, 'edit_jadwal']);
+        Route::delete('/jadwal/{id}', [JadwalController::class, 'hapus_jadwal']);
     });
 });
 
@@ -88,6 +102,9 @@ Route::middleware('auth:guru')->group(function(){
         Route::get('/pengumpulan/detail/{nama}', [PengumpulanController::class, 'detail_pengumpulan']);
         Route::get('/pengumpulan/detail/{nama}/{status}', [PengumpulanController::class, 'status_pengumpulan']);
         Route::get('/pengumpulan/konfirmasi/{murid_id}/{pengumpulan_id}', [PengumpulanController::class, 'konfirmasi']);
+
+        // Route Jadwal
+        Route::get('/jadwal', [GuruJadwalController::class, 'index']);
         Route::get('/jadwal/{id}', [JadwalController::class, 'index']);
 
         // crud route materi
