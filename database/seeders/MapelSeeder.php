@@ -93,5 +93,14 @@ class MapelSeeder extends Seeder
             // 'nama_mapel'=>'Math',
             // 'asset_id'=>2,
         ]);
+
+        Mapel::create([
+            'id'=>'10',
+            'kode_id'=>7,
+            'kelas_id'=>1,
+            'status_mapel'=>'normadaf'
+            // 'nama_mapel'=>'Math',
+            // 'asset_id'=>2,
+        ]);
     }
 }

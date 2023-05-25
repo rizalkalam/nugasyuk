@@ -8,6 +8,7 @@ use Illuminate\Database\Seeder;
 use Database\Seeders\GuruSeeder;
 use Database\Seeders\KodeSeeder;
 use Database\Seeders\OrtuSeeder;
+use Database\Seeders\RoleSeeder;
 use Database\Seeders\SoalSeeder;
 use Database\Seeders\AdminSeeder;
 use Database\Seeders\KelasSeeder;
@@ -36,6 +37,7 @@ class DatabaseSeeder extends Seeder
         // ]);
 
         $this->call([
+            RoleSeeder::class,
             GuruSeeder::class,
             MuridSeeder::class,
             OrtuSeeder::class,
