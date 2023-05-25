@@ -4,9 +4,10 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
-class CheckPermission
+class GuruKonseling
 {
     /**
      * Handle an incoming request.
@@ -15,10 +16,12 @@ class CheckPermission
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if ($request->input('token') !== 'my-secret-token') {
+        if (!auth()->check()) {
+            return redirect()->route('salahtoken');
+        } elseif (Auth::user()->hasRole('guru_bk')) {
+            return $next($request);
+        } else {
             return redirect()->route('salahtoken');
         }
- 
-        return $next($request);
     }
 }
