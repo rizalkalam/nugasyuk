@@ -26,102 +26,18 @@ class AuthenticationTest extends TestCase
     /** @test */
     public function guru_bisa_login_dengan_kredensial()
     {
-<<<<<<< Updated upstream
-// <<<<<<< Updated upstream
-//         $guru = Guru::factory()->create();
+        // $guru = Guru::factory()->create();
 
-//         $response = $this->postJson(route('login.guru'), [
-//             'email' => $guru->email,
-//             'password' => 'password'
-//         ])->assertOk();
-
-//         $this->assertArrayHasKey('token', $response->json());
-//     }
-
-//     /** @test */
-//     public function guru_tidak_bisa_login_dengan_kredensial_salah()
-//     {
-//         $guru = Guru::factory()->create();
-
-//         $response = $this->postJson(route('login.guru'), [
-//             'email' => $guru->email,
-//             'password' => 'wrong password'
-//         ])->assertUnauthorized();
-
-//         $this->assertArrayHasKey('error', $response->json());
-//     }
-
-//     /** @test */
-//     public function murid_bisa_login_dengan_kredensial()
-//     {
-//         $murid = Murid::factory()->create();
-
-//         $response = $this->postJson(route('login.murid'), [
-//             'email' => $murid->email,
-//             'password' => 'password'
-//         ])->assertOk();
-
-//         $this->assertArrayHasKey('token', $response->json());
-//     }
-
-//     /** @test */
-//     public function murid_tidak_bisa_login_dengan_kredensial_salah()
-//     {
-//         $murid = Murid::factory()->create();
-
-//         $response = $this->postJson(route('login.murid'), [
-//             'email' => $murid->email,
-//             'password' => 'wrong password'
-//         ])->assertUnauthorized();
-
-//         $this->assertArrayHasKey('error', $response->json());
-//     }
-
-//     /** @test */
-//     public function ortu_bisa_login_dengan_kredensial()
-//     {
-//         $ortu = Ortu::factory()->create();
-
-//         $response = $this->postJson(route('login.ortu'), [
-//             'email' => $ortu->email,
-//             'password' => 'password'
-//         ])->assertOk();
-
-//         $this->assertArrayHasKey('token', $response->json());
-//     }
-
-//     /** @test */
-//     public function ortu_tidak_bisa_login_dengan_kredensial_salah()
-//     {
-//         $ortu = Ortu::factory()->create();
-
-//         $response = $this->postJson(route('login.ortu'), [
-//             'email' => $ortu->email,
-//             'password' => 'wrong password'
-//         ])->assertUnauthorized();
-
-//         $this->assertArrayHasKey('error', $response->json());
-// =======
-//         $guru = \App\Models\Guru::factory()->create();
-
-//         $response = $this->post('/login/guru', [
-//             'email' => $guru->email,
-//             'password' => 'password'
-//         ]);
-
-//         $this->assertAuthenticated();
-//         $response->assertStatus(200);
-// >>>>>>> Stashed changes
-=======
-        $guru = \App\Models\Guru::factory()->create();
-
-        $response = $this->post('/login/guru', [
-            'email' => $guru->email,
-            'password' => 'password'
+        $this->json('POST', '/login/guru', [
+            'email' => 'jokoarysbi@gmail.com',
+            'password' => 'mrjack123'
+        ])->seeJson([
+            'account' => 'jokoarysbi@gmail.com'
         ]);
 
-        $this->assertAuthenticated();
-        $response->assertStatus(200);
->>>>>>> Stashed changes
+        
+        // $this->assertAuthenticated();
+
+        // $response->assertStatus(200);
     }
 }

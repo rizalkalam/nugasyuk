@@ -80,7 +80,7 @@ Route::middleware('auth:admin')->group(function(){
     });
 });
 
-Route::group(["middleware" => ['check-permission', 'role:guru_biasa'], "prefix"=>"guru"], function(){
+Route::group(["middleware" => ['GuruBiasa', 'role:guru_biasa'], "prefix"=>"guru"], function(){
     // logout guru
     Route::get('/logout', [LoginController::class, 'logout']);
 
@@ -168,6 +168,6 @@ Route::middleware('auth:ortu')->group(function(){
     });
 });
 
-Route::group(["middleware" => ['check-permission', 'role:guru_bk'], "prefix" => "konseling"], function(){
+Route::group(["middleware" => ['GuruKonseling', 'role:guru_bk'], "prefix" => "konseling"], function(){
     Route::get('/datakonseling', [KonselingBerandaController::class, 'index']);
 });
