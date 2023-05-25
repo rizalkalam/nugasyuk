@@ -27,6 +27,7 @@ class AuthenticationTest extends TestCase
     public function guru_bisa_login_dengan_kredensial()
     {
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 // <<<<<<< Updated upstream
 //         $guru = Guru::factory()->create();
 
@@ -115,6 +116,10 @@ class AuthenticationTest extends TestCase
 =======
         $guru = \App\Models\Guru::factory()->create();
 
+=======
+        $guru = \App\Models\Guru::factory()->create();
+
+>>>>>>> Stashed changes
         $response = $this->post('/login/guru', [
             'email' => $guru->email,
             'password' => 'password'
@@ -122,6 +127,9 @@ class AuthenticationTest extends TestCase
 
         $this->assertAuthenticated();
         $response->assertStatus(200);
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
     }
 }
