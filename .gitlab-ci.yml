@@ -38,4 +38,4 @@ Deploy:
     - ssh $VAR_USER@$VAR_IP "docker exec webserver php artisan jwt:secret"
     - ssh $VAR_USER@$VAR_IP "docker exec webserver php artisan key:generate"
     - echo "ADDED BK SUCCESS!"rtisan key:generate"
-    - echo "END!"ND!"ND!"ND!"D!"
+    - echo "SUCCESS"
