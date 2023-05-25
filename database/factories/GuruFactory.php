@@ -18,15 +18,15 @@ class GuruFactory extends Factory
      */
     public function definition(): array
     {
-        return [
-            'nama_guru'=> $this->faker->name(),
-            'email'=> $this->faker->email(),
-            'password'=> bcrypt('password'),
-            'niy'=>'0111',
-            'foto_profile'=>'gambar1.jpg',
-            'mapel_id'=>1,
+        // return [
+        //     'nama_guru'=> $this->faker->name(),
+        //     'email'=> $this->faker->email(),
+        //     'password'=> bcrypt('password'),
+        //     'niy'=>'0123',
+        //     'foto_profile'=>'gambar1.jpg',
+        //     'mapel_id'=>1,
 
-            // 'remember_token' => Str::random(10),
-        ];
+        //     // 'remember_token' => Str::random(10),
+        // ];
     }
 }
