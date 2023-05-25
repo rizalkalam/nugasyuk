@@ -13,7 +13,7 @@ class GuruSeeder extends Seeder
      */
     public function run(): void
     {
-        Guru::create([
+        $guru = Guru::create([
             // 'id'=>'1',
             'nama_guru'=>'Joko Arianto',
             'email'=>'jokoarysbi@gmail.com',
@@ -24,7 +24,9 @@ class GuruSeeder extends Seeder
             // 'role_id'=>2
         ]);
 
-        Guru::create([
+        $guru->assignRole('guru_biasa');
+
+        $guru = Guru::create([
             // 'id'=>'2',
             'nama_guru'=>'Rizki Hidayat',
             'email'=>'rizkiganteng@gmail.com',
@@ -35,7 +37,9 @@ class GuruSeeder extends Seeder
             // 'mapel2_id'=>3
         ]);
 
-        Guru::create([
+        $guru->assignRole('guru_biasa');
+
+        $guru = Guru::create([
             // 'id'=>'3',
             'nama_guru'=>'Musfiq Amrullah',
             'email'=>'mrmusfiq@gmail.com',
@@ -45,7 +49,9 @@ class GuruSeeder extends Seeder
             'mapel_id'=>4,
         ]);
 
-        Guru::create([
+        $guru->assignRole('guru_biasa');
+
+        $guru = Guru::create([
              // 'id'=>'4',
              'nama_guru'=>'Lestari',
              'email'=>'estes@gmail.com',
@@ -55,7 +61,9 @@ class GuruSeeder extends Seeder
              'mapel_id'=>5,
         ]);
 
-        Guru::create([
+        $guru->assignRole('guru_biasa');
+
+        $guru = Guru::create([
             // 'id'=>'5',
             'nama_guru'=>'Isyana Putri',
             'email'=>'isyana@gmail.com',
@@ -65,7 +73,9 @@ class GuruSeeder extends Seeder
             'mapel_id'=>6,
         ]);
 
-        Guru::create([
+        $guru->assignRole('guru_biasa');
+
+        $guru = Guru::create([
             // 'id'=>'6'
             'nama_guru'=>'Hana Cinta Saraswati',
             'email'=>'heycinta@gmail.com',
@@ -74,5 +84,20 @@ class GuruSeeder extends Seeder
             'foto_profile'=>'gambar7.jpg',
             'mapel_id'=>7,
         ]);
+
+        $guru->assignRole('guru_biasa');
+
+        $bk = Guru::create([
+            // 'id'=>'7',
+            'nama_guru'=>'Sandita',
+            'email'=>'sandita@gmail.com',
+            'password'=>bcrypt('dita123'),
+            'niy'=>'0117',
+            'foto_profile'=>'gambar1.jpg',
+            'mapel_id'=>8,
+            // 'role_id'=>2
+        ]);
+
+        $bk->assignRole('guru_bk');
     }
 }

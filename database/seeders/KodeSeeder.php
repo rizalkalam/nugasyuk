@@ -62,5 +62,12 @@ class KodeSeeder extends Seeder
             'nama_mapel'=>"Baca Tulis Al-Qur'an",
             'guru_id'=>6,
         ]);
+
+        Kode::create([
+            'id'=>'8',
+           'kode_guru'=>'DT1',
+           'nama_mapel'=>"Bimbingan Konseling",
+           'guru_id'=>7,
+       ]);
     }
 }
