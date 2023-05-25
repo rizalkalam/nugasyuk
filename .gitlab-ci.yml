@@ -27,7 +27,7 @@ Deploy:
     - ssh $VAR_USER@$VAR_IP "git config --global safe.directory '*'"
     - ssh $VAR_USER@$VAR_IP "if [ ! -d $VAR_DIREKTORI/.git ]; then echo 'Project belum ditemukan di direktori $VAR_DIREKTORI' && cd $VAR_DIREKTORI && git clone https://oauth2:$VAR_CLONE_KEY@$VAR_GIT_URL_TANPA_HTTP .; fi"
     # - ssh $VAR_USER@$VAR_IP "cd $VAR_DIREKTORI && git pull origin main && exit"
-    - ssh $VAR_USER@$VAR_IP "cd $VAR_DIREKTORI && git stash && git pull origin main && git stash pop && exit"
+    - ssh $VAR_USER@$VAR_IP "cd $VAR_DIREKTORI && git stash && git pull origin main && git stash pop && git stash apply && exit"
     - ssh $VAR_USER@$VAR_IP "if [ -d $VAR_DIREKTORI/.env ]; then rm .env; fi"
     - ssh $VAR_USER@$VAR_IP "cd $VAR_DIREKTORI && echo '$VAR_FILE_ENV' >> .env"
     - ssh $VAR_USER@$VAR_IP "if [ -d $VAR_DIREKTORI/.htaccess ]; then rm .htaccess; fi"
