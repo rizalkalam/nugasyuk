@@ -18,6 +18,7 @@ class GuruFactory extends Factory
      */
     public function definition(): array
     {
+<<<<<<< Updated upstream
         // return [
         //     'nama_guru'=> $this->faker->name(),
         //     'email'=> $this->faker->email(),
@@ -28,5 +29,15 @@ class GuruFactory extends Factory
 
         //     // 'remember_token' => Str::random(10),
         // ];
+=======
+        return [
+            'nama_guru'=> $this->faker->name(),
+            'email'=> $this->faker->email(),
+            'password'=> bcrypt('password'),
+            'niy'=>'0123',
+            'foto_profile'=>'gambar1.jpg',
+            'mapel_id'=>1
+        ];
+>>>>>>> Stashed changes
     }
 }
