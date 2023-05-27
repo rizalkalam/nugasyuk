@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('password');
             $table->integer('niy')->unique();
             $table->string('foto_profile');
-            $table->foreignId('mapel_id');
+            $table->foreignId('mapel_id')->nullable();
             // $table->string('konfirmasi')->nullable();
             // $table->foreignId('role_id');
             // $table->foreignId('mapel2_id')->nullable();

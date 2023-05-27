@@ -1,29 +1,29 @@
 <?php
 
-namespace App\Http\Controllers\API\Guru;
+namespace App\Http\Controllers\API\Admin;
 
-use App\Models\Guru;
+use App\Models\Admin;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
-class ProfileController extends Controller
+class AdminProfileController extends Controller
 {
     public function index()
     {
-        $profile = array();
-        $profile[]=[
-            'foto_profile'=>auth()->user()->foto_profile,
-            'email'=>auth()->user()->email,
-            'nama_guru'=>auth()->user()->nama_guru,
-            'mapel_guru'=>auth()->user()->mapel->kode->nama_mapel
+        $admin = Admin::select(['nama', 'email'])->get();
+
+        $data = [
+            "nama" => $admin->first()->nama,
+            "email" => $admin->first()->email,
+            "divisi" => "Admin"
         ];
 
         return response()->json([
             "success" => true,
-            "message" => "Profile Guru",
-            "profile_guru" => $profile,
+            "message" => "Profile Admin",
+            "data" => $data,
         ], 200);
     }
 
@@ -44,7 +44,7 @@ class ProfileController extends Controller
                 ]);
             }
         
-            Guru::where('id', auth()->user()->id)->update([
+            Admin::where('id', auth()->user()->id)->update([
                 'password'=>Hash::make($request->password),
                 // 'konfirmasi'=>Hash::make($request->konfirmasi),
                 'updated_at' => now()
