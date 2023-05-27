@@ -102,7 +102,6 @@ Route::group(["middleware" => ['GuruBiasa', 'role:guru_biasa'], "prefix"=>"guru"
     Route::get('/profile', [ProfileController::class, 'index']);
     Route::post('/gantipassword', [ProfileController::class, 'resetpassword']);
 
-
     Route::get('/kbm', [KbmController::class, 'kbm']);
     Route::get('/materi/kelas/{kelas_id}', [KbmController::class, 'materi']);
     Route::get('/tugas/kelas/{kelas_id}', [KbmController::class, 'tugas']);
@@ -124,9 +123,9 @@ Route::group(["middleware" => ['GuruBiasa', 'role:guru_biasa'], "prefix"=>"guru"
     Route::delete('/materi/kelas/{kelas_id}/mapel/{nama_mapel}/{id}', [KbmController::class, 'hapus_materi']);
 
     // crud route tugas
-    Route::post('/tugas/kelas/{kelas_Id}/mapel/{nama_mapel}', [KbmController::class, 'buat_tugas']);
-    Route::post('/tugas/kelas/{kelas_Id}/mapel/{nama_mapel}/{id}', [KbmController::class, 'edit_tugas']);
-    Route::delete('/tugas/kelas/{kelas_Id}/mapel/{nama_mapel}/{id}', [KbmController::class, 'hapus_tugas']);
+    Route::post('/tugas/kelas/{kelas_id}/mapel/{mapel_id}', [KbmController::class, 'buat_tugas']);
+    Route::post('/tugas/kelas/{kelas_id}/mapel/{nama_mapel}/{id}', [KbmController::class, 'edit_tugas']);
+    Route::delete('/tugas/kelas/{kelas_id}/mapel/{nama_mapel}/{id}', [KbmController::class, 'hapus_tugas']);
 });
 
 Route::middleware('auth:murid')->group(function(){
