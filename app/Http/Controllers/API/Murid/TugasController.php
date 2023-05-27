@@ -27,6 +27,8 @@ class TugasController extends Controller
         $data = Pengumpulan::join('tugas', 'tugas.id', '=', 'pengumpulans.tugas_id')
         ->join('materis', 'materis.id', '=', 'tugas.materi_id')
         ->join('mapels', 'mapels.id', '=', 'materis.mapel_id')
+        ->join('kodes', 'kodes.id', '=', 'mapels.kode_id')
+        ->join('gurus', 'gurus.id', '=', 'kodes.guru_id')
         ->join('kelas', 'kelas.id', '=', 'mapels.kelas_id')
         ->where('pengumpulans.murid_id', '=', auth()->user()->id)
         ->where('kelas.id', '=', auth()->user()->kelas_id)
@@ -39,7 +41,7 @@ class TugasController extends Controller
         ->when($soal, function ($query) use ($soal){
             $query->where('tugas.soal', 'LIKE', '%' . $soal . '%');
         })
-        ->select(['status', 'tugas.id', 'tugas.soal', 'tugas.date', 'tugas.deadline', 'materis.id'])->get();
+        ->select(['status', 'gurus.nama_guru', 'tugas.id', 'tugas.soal', 'tugas.date', 'tugas.deadline', 'materis.id'])->get();
 
         return response()->json([
             "success" => true,

@@ -22,6 +22,7 @@ use App\Http\Controllers\API\Murid\MuridMapelController;
 use App\Http\Controllers\API\Ortu\OrtuBerandaController;
 use App\Http\Controllers\API\Murid\MuridJadwalController;
 use App\Http\Controllers\API\Admin\AdminBerandaController;
+use App\Http\Controllers\API\Admin\AdminProfileController;
 use App\Http\Controllers\API\Murid\MuridBerandaController;
 use App\Http\Controllers\API\Murid\MuridProfileController;
 use App\Http\Controllers\API\Konseling\KonselingBerandaController;
@@ -45,6 +46,12 @@ Route::middleware('auth:admin')->group(function(){
     Route::group(["prefix"=>"admin"], function(){
         // Route logout admin
         Route::get('/logout', [LoginController::class, 'logout']);
+
+        // Route reset password admin
+        Route::post('/ubahpassword', [AdminProfileController::class, 'resetpassword']);
+
+        // Route profile admin
+        Route::get('/profile', [AdminProfileController::class, 'index']);
         
         // Route beranda admin
         Route::get('/dataadmin', [AdminBerandaController::class, 'data_admin']);
@@ -52,6 +59,10 @@ Route::middleware('auth:admin')->group(function(){
         // Route guru admin
         Route::get('/guru', [AdminGuruController::class, 'index']);
         Route::get('/guru/{id}', [AdminGuruController::class, 'detail']);
+        Route::post('/guru', [AdminGuruController::class, 'tambah_guru']);
+        Route::post('/guru/{id}', [AdminGuruController::class, 'edit_guru']);
+        Route::delete('/guru/{id}', [AdminGuruController::class, 'hapus_guru']);
+        Route::post('/kode/{id}', [AdminGuruController::class, 'tambah_kode']);
     
         // Route murid admin
         Route::get('/murid', [AdminMuridController::class, 'index']);

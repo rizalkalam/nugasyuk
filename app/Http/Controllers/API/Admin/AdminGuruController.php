@@ -7,6 +7,8 @@ use App\Models\Kode;
 use App\Models\Mapel;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 
 class AdminGuruController extends Controller
 {
@@ -81,5 +83,110 @@ class AdminGuruController extends Controller
             "message" => "Detail Guru",
             "data" => $data
         ], 200);
+    }
+
+    public function tambah_guru(Request $request)
+    {
+        $validator = Validator::make($request->all(),[
+            'nama_guru' => 'required',
+            'email' => 'required',
+            'password' => 'required',
+            'niy' => 'required',
+            'foto_profile' => 'required',
+            // 'mapel_id' => 'required'
+        ]);
+
+        $data = Guru::create([
+            'nama_guru' => $request->nama_guru,
+            'email' => $request->email, 
+            'password' => Hash::make($request->password),
+            'niy' => $request->niy,
+            'foto_profile' => $request->foto_profile,
+        ]);
+
+        $data->assignRole($request->role);
+
+        return response()->json([
+            'message' => 'Data Guru baru berhasil dibuat',
+            'data' => $data,
+        ]);
+    }
+
+    public function edit_guru(Request $request, $id)
+    {
+        $validator = Validator::make($request->all(),[
+            'nama_guru' => 'required',
+            'email' => 'required',
+            'password' => 'required',
+            'niy' => 'required',
+            'foto_profile' => 'required',
+            // 'mapel_id' => 'required'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => $validator->errors(),
+                'data' => [],
+            ]);
+        }
+
+        try {
+            $guru = Guru::where('id', $id)->first();
+
+            $guru->update([
+                'nama_guru' => $request->nama_guru,
+                'email' => $request->email, 
+                'password' => Hash::make($request->password),
+                'niy' => $request->niy,
+                'foto_profile' => $request->foto_profile,
+                'mapel_id' => $request->mapel_id
+            ]);
+
+            // $guru->removeRole('writer');
+            // $guru->assignRole($request->role);
+
+            return response()->json([
+                'message' => 'Data Kelas berhasil di ubah',
+                'data' => $guru,
+            ]);
+        } catch (\Throwable $th) {
+            //throw $th;
+            return response()->json([
+                'message' => 'failed',
+                'errors' => $th->getMessage(),
+            ]);
+        }
+    }
+
+    public function hapus_guru($id)
+    {
+        $guru = Guru::where('id', $id)->first();
+
+        $guru->delete();
+        return response()->json([
+            'success' => true,
+            'message' => 'Data guru berhasil di hapus',
+        ]);
+    }
+
+    public function tambah_kode(Request $request, $id)
+    {
+        $validator = Validator::make($request->all(),[
+            'kode_guru'=> 'required',
+            'nama_mapel'=> 'required',
+            'guru_id'=> 'required',
+        ]);
+
+        $data = Kode::create([
+            'kode_guru'=> $request->kode_guru,
+            'nama_mapel'=> $request->nama_mapel,
+            'guru_id'=> $id,
+        ]);
+
+        return response()->json([
+            'message' => 'Data kode guru baru berhasil dibuat',
+            'data' => $data,
+        ]);
     }
 }
