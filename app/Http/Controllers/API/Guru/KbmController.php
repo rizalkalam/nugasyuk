@@ -201,13 +201,13 @@ class KbmController extends Controller
             }
     }
 
-    public function buat_materi(Request $request, $kelas_id, $nama_mapel)
+    public function buat_materi(Request $request, $kelas_id, $mapel_id)
     {
         $mapel = Mapel::join('kodes', 'kodes.id', '=', 'mapels.kode_id')
         ->join('kelas', 'kelas.id', '=', 'mapels.kelas_id')
         ->where('kodes.guru_id', '=', auth()->user()->id)
         ->where('kelas_id', $kelas_id)
-        ->where('kodes.nama_mapel', $nama_mapel)
+        ->where('mapels.id', $mapel_id)
         ->seelect('mapels.id')->get();
 
          $validator = Validator::make($request->all(),[
@@ -310,13 +310,13 @@ class KbmController extends Controller
         ]);
     }
 
-    public function buat_tugas(Request $request, $kelas_id, $nama_mapel)
+    public function buat_tugas(Request $request, $kelas_id, $mapel_id)
     {
         $mapel = Mapel::join('kodes', 'kodes.id', '=', 'mapels.kode_id')
                         ->join('kelas', 'kelas.id', '=', 'mapels.kelas_id')
                         ->where('kodes.guru_id', '=', auth()->user()->id)
                         ->where('kelas_id', '=', $kelas_id)
-                        ->where('kodes.nama_mapel', '=', $nama_mapel)
+                        ->where('mapels.id', '=', $mapel_id)
                         ->select('mapels.id')->get();
 
         if (!$mapel->isEmpty()) {
@@ -342,8 +342,8 @@ class KbmController extends Controller
 
             $tugasId = Tugas::latest()->first()->id;
 
-            $kelasId = Kelas::where('id', '=', $kelas_id)
-            ->get();
+            // $kelasId = Kelas::where('id', $kelas_id)
+            // ->get();
 
             $muridId = Murid::where('kelas_id', $kelas_id)
             ->get();
@@ -352,7 +352,7 @@ class KbmController extends Controller
             foreach ($muridId as $id) {
                 $data[] = [
                     'tugas_id' => $tugasId,
-                    'kelas_id' => $kelasId->first()->id,
+                    // 'kelas_id' => 1,
                     'murid_id' => $id->id,
                     'tanggal' => Carbon::now()->format('Y-m-d')
                 ];
