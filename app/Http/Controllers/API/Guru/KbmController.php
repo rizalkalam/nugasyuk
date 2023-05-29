@@ -413,13 +413,19 @@ class KbmController extends Controller
             ->where('gurus.id', '=', auth()->user()->id)
             ->where('tugas.id', '=', $tugas_id)
             ->where('kelas.id', '=', $kelas_id)
-            ->first();
+            ->first('tugas.id');
             
             $tugas->update([
                 'soal'=> $request->soal,
                 'description'=> $request->description,
                 'deadline'=> $request->deadline
             ]);
+
+            // $data = [
+            //     'soal' => $tugas->soal,
+            //     'description' => $tugas->description,
+            //     'deadline' => $tugas->deadline
+            // ];
 
             return response()->json([
                 'message' => 'test',
