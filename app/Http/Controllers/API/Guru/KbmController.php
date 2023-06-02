@@ -11,6 +11,7 @@ use App\Models\Pengumpulan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
 class KbmController extends Controller
@@ -224,9 +225,12 @@ class KbmController extends Controller
                 'tanggal_dibuat'=> 'required',
                 'tahun_mulai'=> 'required',
                 'tahun_selesai'=> 'required',
+                'file'=> 'mimes:pdf,docx,xlsx|max:10000',
                 // 'link'=> 'required',
-                // 'file'=> 'required',
             ]);
+
+            $berkas = $request->file('file');
+            $nama = $berkas->getClientOriginalName();
     
             $materi = Materi::create([
                 'mapel_id'=> $mapel_id,
@@ -235,8 +239,8 @@ class KbmController extends Controller
                 'tanggal_dibuat'=> Carbon::now()->format('Y-m-d'),
                 'tahun_mulai'=> $request->tahun_mulai,
                 'tahun_selesai'=> $request->tahun_selesai,
+                'file'=> $berkas->storeAs('file', $nama),
                 // 'link'=> $request->link,
-                // 'file'=> $request->file,
             ]);
     
             return response()->json([
@@ -329,6 +333,7 @@ class KbmController extends Controller
         if (!$mapel->isEmpty()) {
             $validator = Validator::make($request->all(),[
                 'materi_id'=> 'required',
+                'nama_tugas'=> 'required',
                 'soal'=> 'required',
                 'description'=> 'required',
                 'date'=> 'required',
@@ -339,6 +344,7 @@ class KbmController extends Controller
     
             $tugas = Tugas::create([
                 'materi_id'=> $request->materi_id,
+                'nama_tugas'=> $request->nama_tugas,
                 'soal'=> $request->soal,
                 'description'=> $request->description,
                 'date'=> Carbon::now()->format('Y-m-d'),
@@ -387,6 +393,7 @@ class KbmController extends Controller
     public function edit_tugas(Request $request, $kelas_id, $tugas_id)
     {
         $validator = Validator::make($request->all(),[
+            'nama_tugas'=> 'required',
             'soal'=> 'required',
             'description'=> 'required',
             'deadline'=> 'required',
@@ -416,6 +423,7 @@ class KbmController extends Controller
             ->first('tugas.id');
             
             $tugas->update([
+                'nama_tugas'=> $request->nama_tugas,
                 'soal'=> $request->soal,
                 'description'=> $request->description,
                 'deadline'=> $request->deadline

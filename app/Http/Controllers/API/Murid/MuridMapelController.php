@@ -20,7 +20,7 @@ class MuridMapelController extends Controller
         return response()->json([
             "success" => true,
             "message" => "List Mata Pelajaran",
-            "kelas" => $mapel,
+            "data" => $mapel,
         ], 200);
     }
 
@@ -35,7 +35,7 @@ class MuridMapelController extends Controller
         return response()->json([
             "success" => true,
             "message" => "Detail Mata Pelajaran",
-            "mapel" => $mapel,
+            "data" => $mapel,
         ], 200);
     }
 
@@ -55,21 +55,21 @@ class MuridMapelController extends Controller
         ], 200);
     }
 
-    public function tugas($id)
-    {
-        $tugas = Pengumpulan::join('tugas', 'tugas.id', '=', 'pengumpulans.tugas_id')
-        ->join('materis', 'materis.id', '=', 'tugas.materi_id')
-        ->join('mapels', 'mapels.id', '=', 'materis.mapel_id')
-        ->join('kodes', 'kodes.id', '=', 'mapels.kode_id')
-        ->join('gurus', 'gurus.id', '=', 'kodes.guru_id')
-        ->where('mapels.id', $id)
-        ->where('pengumpulans.murid_id', auth()->user()->id)
-        ->select(['tugas.id', 'pengumpulans.status', 'tugas.soal', 'gurus.nama_guru', 'tugas.deadline'])->get();
+    // public function tugas($id)
+    // {
+    //     $tugas = Pengumpulan::join('tugas', 'tugas.id', '=', 'pengumpulans.tugas_id')
+    //     ->join('materis', 'materis.id', '=', 'tugas.materi_id')
+    //     ->join('mapels', 'mapels.id', '=', 'materis.mapel_id')
+    //     ->join('kodes', 'kodes.id', '=', 'mapels.kode_id')
+    //     ->join('gurus', 'gurus.id', '=', 'kodes.guru_id')
+    //     ->where('mapels.id', $id)
+    //     ->where('pengumpulans.murid_id', auth()->user()->id)
+    //     ->select(['tugas.id', 'pengumpulans.status', 'tugas.soal', 'gurus.nama_guru', 'tugas.deadline'])->get();
 
-        return response()->json([
-            "success" => true,
-            "message" => "List Tugas",
-            "data" => $tugas,
-        ], 200);
-    }
+    //     return response()->json([
+    //         "success" => true,
+    //         "message" => "List Tugas",
+    //         "data" => $tugas,
+    //     ], 200);
+    // }
 }

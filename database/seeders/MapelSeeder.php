@@ -96,7 +96,7 @@ class MapelSeeder extends Seeder
 
         Mapel::create([
             'id'=>'10',
-            'kode_id'=>7,
+            'kode_id'=>8,
             'kelas_id'=>1,
             'status_mapel'=>'normadaf'
             // 'nama_mapel'=>'Math',

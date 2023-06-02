@@ -1,45 +1,25 @@
 <?php
 
-namespace App\Http\Controllers\API\Guru;
+namespace App\Http\Controllers\API\Ortu;
 
-use App\Models\Guru;
-use App\Models\Mapel;
+use App\Models\Ortu;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
-class ProfileController extends Controller
+class OrtuProfileController extends Controller
 {
     public function index()
     {
-        // $profile = array();
-        // $profile[]=[
-        //     'foto_profile'=>auth()->user()->foto_profile,
-        //     'email'=>auth()->user()->email,
-        //     'nama_guru'=>auth()->user()->nama_guru,
-        //     'mapel_guru'=>auth()->user()->mapel->kode->nama_mapel
-        // ];
-
-        $profile = Guru::join('mapels', 'mapels.id', '=', 'gurus.mapel_id')
-        ->join('kodes', 'kodes.id', '=', 'mapels.kode_id')
-        ->where('gurus.id', auth()->user()->id)
-        ->select(['email', 'nama_guru'])->first();
-
-        $mapel = Mapel::join('kodes', 'kodes.id', '=', 'mapels.kode_id')
-        ->join('gurus', 'gurus.id', '=', 'kodes.guru_id')
-        ->where('kodes.guru_id', auth()->user()->id)
-        ->select(['kodes.nama_mapel'])->get();
-
-        $data = [
-            "email" => $profile->email,
-            "nama_guru" => $profile->nama_guru,
-            "mapel" => $mapel
-        ];
+        $data = Ortu::join('murids', 'murids.id', '=', 'ortus.siswa_id')
+        ->where('ortus.id', auth()->user()->id)
+        ->select(['ortus.email', 'ortus.nama', 'murids.nama_siswa'])
+        ->get();
 
         return response()->json([
             "success" => true,
-            "message" => "Profile Guru",
+            "message" => "Data profile",
             "data" => $data,
         ], 200);
     }
@@ -61,7 +41,7 @@ class ProfileController extends Controller
                 ]);
             }
         
-            Guru::where('id', auth()->user()->id)->update([
+            Ortu::where('id', auth()->user()->id)->update([
                 'password'=>Hash::make($request->password),
                 // 'konfirmasi'=>Hash::make($request->konfirmasi),
                 'updated_at' => now()

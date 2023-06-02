@@ -41,27 +41,30 @@ class TugasController extends Controller
         ->when($soal, function ($query) use ($soal){
             $query->where('tugas.soal', 'LIKE', '%' . $soal . '%');
         })
-        ->select(['status', 'gurus.nama_guru', 'tugas.id', 'tugas.soal', 'tugas.date', 'tugas.deadline', 'materis.id'])->get();
+        ->select(['tugas.id', 'status', 'nama_tugas', 'tugas.soal', 'gurus.nama_guru', 'tugas.date', 'tugas.deadline', 'materis.id'])->get();
 
         return response()->json([
             "success" => true,
             "message" => "List Tugas",
-            "tugas" => $data,
+            "data" => $data,
         ], 200);
     }
 
     public function detail($id)
     {
-        $data = Tugas::join('materis', 'materis.id', '=', 'tugas.materi_id')
-        ->join('mapels', 'mapels.id', '=', 'materis.mapel_id')
-        ->where('mapels.kelas_id', '=', auth()->user()->kelas_id)
-        ->where('tugas.id', $id)
-        ->get(['tugas.id', 'soal', 'tugas.date', 'tugas.deadline']);
+        $data = Pengumpulan::join('tugas', 'tugas.id', '=', 'pengumpulans.tugas_id')
+            ->join('materis', 'materis.id', '=', 'tugas.materi_id')
+            ->join('mapels', 'mapels.id', '=', 'materis.mapel_id')
+            ->join('kodes', 'kodes.id', '=', 'mapels.kode_id')
+            ->join('gurus', 'gurus.id', '=', 'kodes.guru_id')
+            ->where('mapels.id', $id)
+            ->where('pengumpulans.murid_id', auth()->user()->id)
+        ->get(['tugas.id', 'nama_tugas', 'soal', 'pengumpulans.status', 'tugas.date', 'tugas.deadline']);
 
         return response()->json([
             "success" => true,
             "message" => "List Tugas",
-            "tugas" => $data,
+            "data" => $data,
         ], 200);
     }
 
