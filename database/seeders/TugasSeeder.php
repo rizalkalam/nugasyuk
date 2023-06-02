@@ -15,6 +15,7 @@ class TugasSeeder extends Seeder
     {
         Tugas::create([
             'id'=>'1',
+            'nama_tugas'=>'Wordpress',
             'soal'=>'Hosting Wordpres di 000 Webhost',
             'date'=>'2023-05-04',
             'deadline'=>'2023-05-05',
@@ -27,6 +28,7 @@ class TugasSeeder extends Seeder
 
         Tugas::create([
             'id'=>'2',
+            'nama_tugas'=>'Science',
             'soal'=>'Buatlah makalah',
             'date'=>'2023-05-04',
             'deadline'=>'2023-05-05',

@@ -14,12 +14,14 @@ use App\Http\Controllers\API\Ortu\OrtuTugasController;
 use App\Http\Controllers\API\Admin\AdminGuruController;
 use App\Http\Controllers\API\Guru\GuruJadwalController;
 use App\Http\Controllers\API\Ortu\OrtuJadwalController;
+use App\Http\Controllers\API\Admin\AdminAssetController;
 use App\Http\Controllers\API\Admin\AdminKelasController;
 use App\Http\Controllers\API\Admin\AdminMapelController;
 use App\Http\Controllers\API\Admin\AdminMuridController;
 use App\Http\Controllers\API\Guru\PengumpulanController;
 use App\Http\Controllers\API\Murid\MuridMapelController;
 use App\Http\Controllers\API\Ortu\OrtuBerandaController;
+use App\Http\Controllers\API\Ortu\OrtuProfileController;
 use App\Http\Controllers\API\Murid\MuridJadwalController;
 use App\Http\Controllers\API\Admin\AdminBerandaController;
 use App\Http\Controllers\API\Admin\AdminProfileController;
@@ -88,6 +90,10 @@ Route::middleware('auth:admin')->group(function(){
         Route::post('/jadwal', [JadwalController::class, 'buat_jadwal']);
         Route::post('/jadwal/{id}', [JadwalController::class, 'edit_jadwal']);
         Route::delete('/jadwal/{id}', [JadwalController::class, 'hapus_jadwal']);
+
+        // Route asset admin
+        Route::get('/asset', [AdminAssetController::class, 'index']);
+        Route::post('/asset', [AdminAssetController::class, 'buat_asset']);
     });
 });
 
@@ -100,7 +106,7 @@ Route::group(["middleware" => ['GuruBiasa', 'role:guru_biasa'], "prefix"=>"guru"
 
     //profile
     Route::get('/profile', [ProfileController::class, 'index']);
-    Route::post('/gantipassword', [ProfileController::class, 'resetpassword']);
+    Route::post('/ubahpassword', [ProfileController::class, 'resetpassword']);
 
     Route::get('/kbm', [KbmController::class, 'kbm']);
     
@@ -136,18 +142,19 @@ Route::middleware('auth:murid')->group(function(){
 
         // Route Profile Murid
         Route::get('/profile', [MuridProfileController::class, 'index']);
+        Route::post('/ubahpassword', [MuridProfileController::class, 'resetpassword']);
 
         // Route Beranda Murid
         Route::get('/datamurid', [MuridBerandaController::class, 'data_murid']);
 
         // Route Tugas Murid
         Route::get('/tugas', [TugasController::class, 'tugas']);
+        Route::get('/matapelajaran/tugas/{id}', [TugasController::class, 'detail']);
 
         // Route Mapel Murid
         Route::get('/matapelajaran', [MuridMapelController::class, 'index']);
         Route::get('/matapelajaran/{id}', [MuridMapelController::class, 'detail_mapel']);
         Route::get('/matapelajaran/materi/{id}', [MuridMapelController::class, 'materi']);
-        Route::get('/matapelajaran/tugas/{id}', [MuridMapelController::class, 'tugas']);
 
         // Route Jadwal Murid
         Route::get('/jadwal', [MuridJadwalController::class, 'index']);
@@ -162,6 +169,10 @@ Route::middleware('auth:ortu')->group(function(){
     Route::group(["prefix"=>"ortu"], function(){
         // logout ortu
         Route::get('/logout', [LoginController::class, 'logout']);
+
+        // profile ortu
+        Route::get('/profile', [OrtuProfileController::class, 'index']);
+        Route::post('/ubahpassword', [OrtuProfileController::class, 'resetpassword']);
 
         // Route Beranda Ortu
         Route::get('/dataortu', [OrtuBerandaController::class, 'data_ortu']);

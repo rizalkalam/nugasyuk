@@ -6,6 +6,8 @@ use App\Models\Kelas;
 use App\Models\Murid;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
 class AdminMuridController extends Controller
@@ -42,15 +44,18 @@ class AdminMuridController extends Controller
             'nama_siswa'=> 'required',
             'email'=> 'required',
             'password'=> 'required',
-            'foto_profile'=> 'required',
+            'foto_profile'=> 'required|mimes:jpeg,png,jpg',
             'kelas_id'=> 'required'
         ]);
+
+        $berkas = $request->file('foto_profile');
+        $nama = $berkas->getClientOriginalName();
 
         $data = Murid::create([
             'nama_siswa' => $request->nama_siswa,
             'email' => $request->email,
-            'password' => $request->password,
-            'foto_profile' => $request->foto_profile,
+            'password' => Hash::make($request->password),
+            'foto_profile' => $berkas->storeAs('gambar_profile_siswa',$nama),
             'kelas_id' => $request->kelas_id
         ]);
 

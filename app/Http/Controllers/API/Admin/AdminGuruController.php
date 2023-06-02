@@ -8,6 +8,7 @@ use App\Models\Mapel;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
 class AdminGuruController extends Controller
@@ -92,16 +93,19 @@ class AdminGuruController extends Controller
             'email' => 'required',
             'password' => 'required',
             'niy' => 'required',
-            'foto_profile' => 'required',
+            'foto_profile' => 'required|mimes:jpeg,png,jpg',
             // 'mapel_id' => 'required'
         ]);
+
+        $berkas = $request->file('foto_profile');
+        $nama = $berkas->getClientOriginalName();
 
         $data = Guru::create([
             'nama_guru' => $request->nama_guru,
             'email' => $request->email, 
             'password' => Hash::make($request->password),
             'niy' => $request->niy,
-            'foto_profile' => $request->foto_profile,
+            'foto_profile' => $berkas->storeAs('gambar_profile_guru', $nama),
         ]);
 
         $data->assignRole($request->role);

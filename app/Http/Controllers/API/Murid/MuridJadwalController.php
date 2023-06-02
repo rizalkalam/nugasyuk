@@ -11,11 +11,8 @@ class MuridJadwalController extends Controller
 {
     public function index()
     {
-        $data = Jadwal::join('haris', 'haris.id', '=', 'jadwals.hari_id')
-        ->join('mapels', 'mapels.id', '=', 'jadwals.mapel_id')
-        ->where('mapels.kelas_id', auth()->user()->kelas_id)
-        ->orderBy('hari_id', 'ASC')
-        ->select(['haris.id', 'haris.hari'])->get();
+        $data = Hari::orderBy('id', 'ASC')
+        ->select(['id', 'hari'])->get();
 
         return response()->json([
             "success" => true,
