@@ -79,8 +79,7 @@ class KbmController extends Controller
     public function tugas($kelas_id)
     {
         $mapel = request ('mapel', null);
-        $tugas = Tugas::join('materis', 'materis.id', '=', 'tugas.materi_id')
-                        ->join('mapels', 'mapels.id', '=', 'materis.mapel_id')
+        $tugas = Tugas::join('mapels', 'mapels.id', '=', 'tugas.mapel_id')
                         ->join('kodes', 'kodes.id', '=', 'mapels.kode_id')
                         ->join('gurus', 'gurus.id', '=', 'kodes.guru_id')
                         ->join('kelas', 'kelas.id', '=', 'mapels.kelas_id')
@@ -96,7 +95,7 @@ class KbmController extends Controller
                         ->select([
                             'tugas.id',
                             'tugas.soal',
-                            'materis.nama_materi',
+                            // 'materis.nama_materi',
                             'tingkatans.tingkat_ke',
                             'jurusans.nama_jurusan',
                             'kelas.nama_kelas', 
@@ -146,8 +145,7 @@ class KbmController extends Controller
 
     public function detail_tugas($kelas_id, $tugas_id)
     {
-        $tugas = Tugas::join('materis', 'materis.id', '=', 'tugas.materi_id')
-                        ->join('mapels', 'mapels.id', '=', 'materis.mapel_id')
+        $tugas = Tugas::join('mapels', 'mapels.id', '=', 'tugas.mapel_id')
                         ->join('kodes','kodes.id', '=', 'mapels.kode_id')
                         ->join('kelas', 'kelas.id', '=', 'mapels.kelas_id')
                         ->join('gurus', 'gurus.id', '=', 'kodes.guru_id')
@@ -323,16 +321,18 @@ class KbmController extends Controller
 
     public function buat_tugas(Request $request, $kelas_id, $mapel_id)
     {
-        $mapel = Mapel::join('kodes', 'kodes.id', '=', 'mapels.kode_id')
+        // $mapel = request ('id', null);
+        $mapel = Tugas::join('mapels', 'mapels.id', '=', 'materis.mapel_id')
+                        ->join('kodes', 'kodes.id', '=', 'mapels.kode_id')
                         ->join('kelas', 'kelas.id', '=', 'mapels.kelas_id')
                         ->where('kodes.guru_id', '=', auth()->user()->id)
                         ->where('kelas_id', '=', $kelas_id)
-                        ->where('mapels.id', '=', $mapel_id)
-                        ->select('mapels.id')->get();
+                        // ->where('mapels.id', '=', $mapel_id)
+                        ->get();
 
         if (!$mapel->isEmpty()) {
             $validator = Validator::make($request->all(),[
-                'materi_id'=> 'required',
+                'mapel_id'=> 'required',
                 'nama_tugas'=> 'required',
                 'soal'=> 'required',
                 'description'=> 'required',
@@ -343,7 +343,8 @@ class KbmController extends Controller
             ]);
     
             $tugas = Tugas::create([
-                'materi_id'=> $request->materi_id,
+                'mapel_id'=> $mapel_id,
+                // 'mapel_id'=>$mapel_id,
                 'nama_tugas'=> $request->nama_tugas,
                 'soal'=> $request->soal,
                 'description'=> $request->description,

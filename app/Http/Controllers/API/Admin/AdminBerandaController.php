@@ -24,15 +24,19 @@ class AdminBerandaController extends Controller
 
         $jumlah_jurusan = Jurusan::all()->count();
 
-        return response()->json([
-            "success" => true,
-            "message" => "Jumlah Kelas Diampu",
-            // "data_guru" => $data
+        $data = [
             "nama" => $admin,
             "jumlah_siswa" => $jumlah_murid,
             "jumlah_kelas" => $jumlah_kelas,
             "jumlah_guru" => $jumlah_guru,
             "jumlah_jurusan" => $jumlah_jurusan
+        ];
+
+        return response()->json([
+            // "success" => true,
+            // "message" => "Jumlah Kelas Diampu",
+            // "data_guru" => $data
+            "data" => $data
         ]);
     }
 }
