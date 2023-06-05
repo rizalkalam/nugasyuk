@@ -20,7 +20,7 @@ return new class extends Migration
             $table->text('description');
             $table->string('link')->nullable();
             $table->string('file')->nullable();
-            $table->foreignId('materi_id');
+            $table->foreignId('mapel_id');
             $table->timestamps();
         });
     }

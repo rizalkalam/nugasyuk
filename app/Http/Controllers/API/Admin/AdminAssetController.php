@@ -38,4 +38,37 @@ class AdminAssetController extends Controller
             'data' => $data,
         ]);
     }
+
+    public function edit_asset(Request $request)
+    {
+        // $validator = Validator::make($request->all(),[
+        //     'file_asset' => 'required|mimes:jpg,png,jpeg,svg'
+        // ]);
+
+        // if ($validator->fails()) {
+        //     return response()->json([
+        //         'success' => false,
+        //         'message' => $validator->errors(),
+        //         'data' => [],
+        //     ]);
+        // }
+
+        // try {
+        //     $data = Asset::where('id', $id)->first();
+
+        //     $berkas = $request->file('file_asset');
+        //     $nama = $berkas->getClientOriginalName();
+
+        //     $data->update([
+        //         'file_asset' => '',
+        //     ])
+        // } catch (\Throwable $th) {
+        //     //throw $th;
+        // }
+    }
+
+    public function hapus_asset()
+    {
+
+    }
 }

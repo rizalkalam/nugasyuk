@@ -23,20 +23,21 @@ class TugasSeeder extends Seeder
             // 'status'=>1,
             'link'=>null,
             'file'=>null,
-            'materi_id'=>1
+            'mapel_id'=>'1'
+            // 'materi_id'=>1
         ]);
 
         Tugas::create([
             'id'=>'2',
-            'nama_tugas'=>'Science',
-            'soal'=>'Buatlah makalah',
+            'nama_tugas'=>'Arduino Uno',
+            'soal'=>'Cek Suhu',
             'date'=>'2023-05-04',
             'deadline'=>'2023-05-05',
             'description'=>'lorem ipsum dolor sit amet bla bli blu ble blo ohok ohok',
             // 'status'=>1,
             'link'=>null,
             'file'=>null,
-            'materi_id'=>2
+            'mapel_id'=>2
         ]);
 
         // Tugas::create([
