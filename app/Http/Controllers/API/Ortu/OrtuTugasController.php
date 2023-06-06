@@ -19,8 +19,7 @@ class OrtuTugasController extends Controller
         $status_mapel = request('status_mapel', null);
         $soal = request('soal', null);
         $data = Pengumpulan::join('tugas', 'tugas.id', '=', 'pengumpulans.tugas_id')
-        ->join('materis', 'materis.id', '=', 'tugas.materi_id')
-        ->join('mapels', 'mapels.id', '=', 'materis.mapel_id')
+        ->join('mapels', 'mapels.id', '=', 'tugas.mapel_id')
         ->join('kelas', 'kelas.id', '=', 'mapels.kelas_id')
         ->where('pengumpulans.murid_id', '=', auth()->user()->siswa_id)
         ->where('kelas.id', '=', $kelas_id)

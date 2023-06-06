@@ -25,8 +25,7 @@ class TugasController extends Controller
         $status_mapel = request('status_mapel', null);
         $soal = request('soal', null);
         $data = Pengumpulan::join('tugas', 'tugas.id', '=', 'pengumpulans.tugas_id')
-        ->join('materis', 'materis.id', '=', 'tugas.materi_id')
-        ->join('mapels', 'mapels.id', '=', 'materis.mapel_id')
+        ->join('mapels', 'mapels.id', '=', 'tugas.mapel_id')
         ->join('kodes', 'kodes.id', '=', 'mapels.kode_id')
         ->join('gurus', 'gurus.id', '=', 'kodes.guru_id')
         ->join('kelas', 'kelas.id', '=', 'mapels.kelas_id')
@@ -41,7 +40,7 @@ class TugasController extends Controller
         ->when($soal, function ($query) use ($soal){
             $query->where('tugas.soal', 'LIKE', '%' . $soal . '%');
         })
-        ->select(['tugas.id', 'status', 'nama_tugas', 'tugas.soal', 'gurus.nama_guru', 'tugas.date', 'tugas.deadline', 'materis.id'])->get();
+        ->select(['tugas.id', 'status', 'nama_tugas', 'tugas.soal', 'gurus.nama_guru', 'tugas.date', 'tugas.deadline'])->get();
 
         return response()->json([
             "success" => true,
@@ -53,8 +52,7 @@ class TugasController extends Controller
     public function detail($id)
     {
         $data = Pengumpulan::join('tugas', 'tugas.id', '=', 'pengumpulans.tugas_id')
-            ->join('materis', 'materis.id', '=', 'tugas.materi_id')
-            ->join('mapels', 'mapels.id', '=', 'materis.mapel_id')
+            ->join('mapels', 'mapels.id', '=', 'tugas.mapel_id')
             ->join('kodes', 'kodes.id', '=', 'mapels.kode_id')
             ->join('gurus', 'gurus.id', '=', 'kodes.guru_id')
             ->where('mapels.id', $id)
