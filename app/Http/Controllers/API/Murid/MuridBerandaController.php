@@ -27,13 +27,11 @@ class MuridBerandaController extends Controller
         ->where('kelas.id', auth()->user()->kelas_id)
         ->value('gurus.nama_guru');
 
-        $tugas = Tugas::join('materis', 'materis.id', '=', 'tugas.materi_id')
-        ->join('mapels', 'mapels.id', '=', 'materis.mapel_id')
+        $tugas = Tugas::join('mapels', 'mapels.id', '=', 'tugas.mapel_id')
         ->where('mapels.kelas_id', auth()->user()->kelas_id)
         ->select('tugas.id')->get()->count();
 
-        $deadline = Tugas::join('materis', 'materis.id', '=', 'tugas.materi_id')
-        ->join('mapels', 'mapels.id', '=', 'materis.mapel_id')
+        $deadline = Tugas::join('mapels', 'mapels.id', '=', 'tugas.mapel_id')
         ->where('mapels.kelas_id', auth()->user()->kelas_id)
         ->value('tugas.deadline');
 

@@ -178,8 +178,7 @@ class KbmController extends Controller
     {
         $pengumpulan = Pengumpulan::join('tugas', 'tugas.id', '=', 'pengumpulans.tugas_id')
                                     ->join('murids', 'murids.id', '=', 'pengumpulans.murid_id')
-                                    ->join('materis', 'materis.id', '=', 'tugas.materi_id')
-                                    ->join('mapels', 'mapels.id', '=', 'materis.mapel_id')
+                                    ->join('mapels', 'mapels.id', '=', 'tugas.mapel_id')
                                     ->join('kelas', 'kelas.id', '=', 'mapels.kelas_id')
                                     ->join('kodes', 'kodes.id', '=', 'mapels.kode_id')
                                     ->join('gurus', 'gurus.id', '=', 'kodes.guru_id')
@@ -413,8 +412,7 @@ class KbmController extends Controller
         }
 
         try {
-            $tugas =  Tugas::join('materis', 'materis.id', '=', 'tugas.materi_id')
-            ->join('mapels', 'mapels.id', '=', 'materis.mapel_id')
+            $tugas =  Tugas::join('mapels', 'mapels.id', '=', 'tugas.mapel_id')
             ->join('kodes','kodes.id', '=', 'mapels.kode_id')
             ->join('kelas', 'kelas.id', '=', 'mapels.kelas_id')
             ->join('gurus', 'gurus.id', '=', 'kodes.guru_id')
@@ -452,8 +450,7 @@ class KbmController extends Controller
 
     public function hapus_tugas($kelas_id, $tugas_id)
     {
-        $tugas = Tugas::join('materis', 'materis.id', '=', 'tugas.materi_id')
-            ->join('mapels', 'mapels.id', '=', 'materis.mapel_id')
+        $tugas = Tugas::join('mapels', 'mapels.id', '=', 'tugas.mapel_id')
             ->join('kelas', 'kelas.id', '=', 'mapels.kelas_id')
             ->join('kodes', 'kodes.id', '=', 'mapels.kode_id')
             ->where('kodes.guru_id', '=', auth()->user()->id)
