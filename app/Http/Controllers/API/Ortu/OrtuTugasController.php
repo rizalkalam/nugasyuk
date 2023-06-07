@@ -32,7 +32,7 @@ class OrtuTugasController extends Controller
         ->when($soal, function ($query) use ($soal){
             $query->where('tugas.soal', 'LIKE', '%' . $soal . '%');
         })
-        ->select(['status', 'tugas.id', 'tugas.soal', 'tugas.date', 'tugas.deadline', 'materis.id'])->get();
+        ->select(['status', 'tugas.id', 'nama_tugas', 'tugas.soal', 'tugas.date', 'tugas.deadline'])->get();
 
         return response()->json([
             "success" => true,

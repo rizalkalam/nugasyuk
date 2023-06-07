@@ -34,7 +34,7 @@ class PengumpulanSeeder extends Seeder
         Pengumpulan::create([
             'id'=>3,
             'tugas_id'=>1,
-            'status'=>'menunggu',
+            'status'=>'selesai',
             // 'kelas_id'=>1,
             'murid_id'=>2,
             'tanggal'=>'2023-04-04'

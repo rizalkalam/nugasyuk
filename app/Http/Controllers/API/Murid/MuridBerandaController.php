@@ -68,7 +68,8 @@ class MuridBerandaController extends Controller
             "selesai_dalamdeadline" => $selesai_dalamdeadline,
             "belum_lebihdeadline" => $belum_lebihdeadline,
             "selesai_lebihdeadline" => $selesai_lebihdeadline,
-            "jumlah_tugas" => $tugas
+            "jumlah_tugas" => $tugas,
+            // "deadline"=>$deadline
         ];
 
         return response()->json([
