@@ -15,8 +15,8 @@ class Tugas extends Model
     
     protected $guarded = ['id'];
 
-    public function materi()
+    public function mapel()
     {
-        return $this->belongsTo(Materi::class);
+        return $this->belongsTo(Mapel::class);
     }
 }

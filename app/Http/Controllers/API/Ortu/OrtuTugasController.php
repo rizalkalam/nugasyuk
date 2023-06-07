@@ -32,12 +32,29 @@ class OrtuTugasController extends Controller
         ->when($soal, function ($query) use ($soal){
             $query->where('tugas.soal', 'LIKE', '%' . $soal . '%');
         })
-        ->select(['status', 'tugas.id', 'tugas.soal', 'tugas.date', 'tugas.deadline', 'materis.id'])->get();
+        ->select(['status', 'tugas.id', 'nama_tugas', 'tugas.soal', 'tugas.date', 'tugas.deadline'])->get();
 
         return response()->json([
             "success" => true,
             "message" => "List Tugas",
             "tugas" => $data,
+        ], 200);
+    }
+
+    public function detail()
+    {
+        $data = Pengumpulan::join('tugas', 'tugas.id', '=', 'pengumpulans.tugas_id')
+            ->join('mapels', 'mapels.id', '=', 'tugas.mapel_id')
+            ->join('kodes', 'kodes.id', '=', 'mapels.kode_id')
+            ->join('gurus', 'gurus.id', '=', 'kodes.guru_id')
+            ->where('mapels.id', $id)
+            ->where('pengumpulans.murid_id', auth()->user()->id)
+        ->get(['tugas.id', 'nama_tugas', 'soal', 'pengumpulans.status', 'tugas.date', 'tugas.deadline']);
+
+        return response()->json([
+            "success" => true,
+            "message" => "List Tugas",
+            "data" => $data,
         ], 200);
     }
 }
