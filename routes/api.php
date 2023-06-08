@@ -68,6 +68,7 @@ Route::middleware('auth:admin')->group(function(){
     
         // Route murid admin
         Route::get('/murid', [AdminMuridController::class, 'index']);
+        Route::get('/murid/{id}', [AdminMuridController::class, 'detail']);
         Route::post('/murid', [AdminMuridController::class, 'buat_murid']);
         Route::post('/murid/{id}', [AdminMuridController::class, 'edit_murid']);
         Route::delete('/murid/{id}', [AdminMuridController::class, 'hapus_murid']);

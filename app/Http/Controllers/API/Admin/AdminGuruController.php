@@ -58,9 +58,12 @@ class AdminGuruController extends Controller
         ->where('gurus.id', $id)
         ->select([
             'gurus.id',
+            'gurus.niy',
             'gurus.foto_profile',
             'gurus.nama_guru',
             'gurus.email',
+            'gurus.nomor_tlp',
+            'gurus.alamat'
             // 'kodes.nama_mapel',
             // 'kodes.kode_guru',
             // 'tingkatans.tingkat_ke',
@@ -75,6 +78,8 @@ class AdminGuruController extends Controller
             'foto_profile'=>$guru->foto_profile,
             'nama_guru'=>$guru->nama_guru,
             'email'=>$guru->email,
+            'nomor_tlp'=>$guru->nomor_tlp,
+            'alamat'=>$guru->alamat,
             'detail'=>$mapel
             // 'profile' => $guru,
             // 'detail' => $mapel
@@ -95,6 +100,8 @@ class AdminGuruController extends Controller
             'password' => 'required',
             'niy' => 'required',
             'foto_profile' => 'required|mimes:jpeg,png,jpg',
+            'nomor_tlp' => 'required|number',
+            'alamat' => 'required'
             // 'mapel_id' => 'required'
         ]);
 
@@ -107,6 +114,8 @@ class AdminGuruController extends Controller
             'password' => Hash::make($request->password),
             'niy' => $request->niy,
             'foto_profile' => $berkas->storeAs('gambar_profile_guru', $nama),
+            'nomor_tlp' => $request->nomor_tlp,
+            'alamat' => $request->alamat,
             'mapel_id' => $request->mapel_id
         ]);
 
@@ -121,12 +130,12 @@ class AdminGuruController extends Controller
     public function edit_guru(Request $request, $id)
     {
         $validator = Validator::make($request->all(),[
+            'email' => 'email',
+            'foto_profile' => 'mimes:jpeg,png,jpg',
             'nama_guru' => 'required',
-            'email' => 'required',
             'password' => 'required',
             'niy' => 'required',
-            'foto_profile' => 'required|mimes:jpeg,png,jpg',
-            // 'mapel_id' => 'required'
+            'mapel_id' => 'required'
         ]);
 
         if ($validator->fails()) {
@@ -138,6 +147,16 @@ class AdminGuruController extends Controller
         }
 
         $file_path = Guru::where('id', $id)->value('foto_profile');
+
+        // if (Storage::exists($file_path)) {
+        //     Storage::delete($file_path);
+        //     $berkas = $request->file('foto_profile');
+        //     $nama = $berkas->getClientOriginalName();
+        // }
+        // elseif ($request->hasFile('foto_profile')) {
+        //     $berkas = $request->file('foto_profile');
+        //     $nama = $berkas->getClientOriginalName();
+        // }
 
         if (Storage::exists($file_path)) {
             Storage::delete($file_path);
@@ -157,6 +176,8 @@ class AdminGuruController extends Controller
                 'password' => Hash::make($request->password),
                 'niy' => $request->niy,
                 'foto_profile' => $berkas->storeAs('gambar_profile_guru', $nama),
+                'nomor_tlp' => $request->nomor_tlp,
+                'alamat' => $request->alamat,
                 'mapel_id' => $request->mapel_id
             ]);
 

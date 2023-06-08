@@ -19,7 +19,9 @@ class GuruSeeder extends Seeder
             'email'=>'jokoarysbi@gmail.com',
             'password'=>bcrypt('mrjack123'),
             'niy'=>'0111',
-            'foto_profile'=>'gambar1.jpg',
+            'alamat'=>'Fajar Indah, Surakarta',
+            'nomor_tlp'=>'085842220006',
+            'foto_profile'=>'gambar_profile_guru/mrjack.jpg',
             'mapel_id'=>1,
             // 'role_id'=>2
         ]);
@@ -32,7 +34,9 @@ class GuruSeeder extends Seeder
             'email'=>'rizkiganteng@gmail.com',
             'password'=>bcrypt('rizki123'),
             'niy'=>'0112',
-            'foto_profile'=>'gambar2.jpg',
+            'alamat'=>'Ngemplak, Boyolali',
+            'nomor_tlp'=>'085728838642',
+            'foto_profile'=>'gambar_profile_guru/1-1.png',
             'mapel_id'=>2,
             // 'mapel2_id'=>3
         ]);
@@ -45,7 +49,9 @@ class GuruSeeder extends Seeder
             'email'=>'mrmusfiq@gmail.com',
             'password'=>bcrypt('musfiq123'),
             'niy'=>'0113',
-            'foto_profile'=>'gambar3.jpg',
+            'alamat'=>'Gatak, Sukoharjo',
+            'nomor_tlp'=>'081676893341',
+            'foto_profile'=>'gambar_profile_guru/musfiq.jpg',
             'mapel_id'=>4,
         ]);
 
@@ -57,7 +63,9 @@ class GuruSeeder extends Seeder
              'email'=>'estes@gmail.com',
              'password'=>bcrypt('estes123'),
              'niy'=>'0114',
-             'foto_profile'=>'gambar3.jpg',
+             'alamat'=>'Colomadu, Karanganyar',
+             'nomor_tlp'=>'085647511650',
+             'foto_profile'=>'gambar_profile_guru/lestari.jpg',
              'mapel_id'=>5,
         ]);
 
@@ -69,7 +77,9 @@ class GuruSeeder extends Seeder
             'email'=>'isyana@gmail.com',
             'password'=>bcrypt('isyana123'),
             'niy'=>'0115',
-            'foto_profile'=>'gambar3.jpg',
+            'alamat'=>'Simo, Boyolali',
+            'nomor_tlp'=>'089844872221',
+            'foto_profile'=>'gambar_profile_guru/picturesshot.jpg',
             'mapel_id'=>6,
         ]);
 
@@ -81,7 +91,9 @@ class GuruSeeder extends Seeder
             'email'=>'heycinta@gmail.com',
             'password'=>bcrypt('cinta123'),
             'niy'=>'0116',
-            'foto_profile'=>'gambar7.jpg',
+            'alamat'=>'Pasar Kliwon, Surakarta',
+            'nomor_tlp'=>'085155370503',
+            'foto_profile'=>'gambar_profile_guru/ustdz-hana.jpg',
             'mapel_id'=>7,
         ]);
 
@@ -93,7 +105,9 @@ class GuruSeeder extends Seeder
             'email'=>'sandita@gmail.com',
             'password'=>bcrypt('dita123'),
             'niy'=>'0117',
-            'foto_profile'=>'gambar1.jpg',
+            'alamat'=>'Banjarsari, Surakarta',
+            'nomor_tlp'=>'089523051222',
+            'foto_profile'=>'gambar_profile_guru/sandita.jpg',
             'mapel_id'=>8,
             // 'role_id'=>2
         ]);
@@ -106,7 +120,9 @@ class GuruSeeder extends Seeder
             'email'=>'anarmdhn@gmail.com',
             'password'=>bcrypt('ana123'),
             'niy'=>'0118',
-            'foto_profile'=>'gambar1.jpg',
+            'alamat'=>'Palur, Sukoharjo',
+            'nomor_tlp'=>'085789895342',
+            'foto_profile'=>'gambar_profile_guru/alyssaseobandono.jpg',
             'mapel_id'=>8,
             // 'role_id'=>2
         ]);
