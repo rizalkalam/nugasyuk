@@ -20,22 +20,22 @@ class OrtuBerandaController extends Controller
 
         $jumlah_murid = Murid::where('kelas_id', $kelas_siswa)->select('id')->get()->count();
 
-        // $mapel = 
-        // $jumlah_mapel = count($mapel);
+        $jumlah_mapel = Mapel::where('kelas_id', $kelas_siswa)
+        ->select('id')->get()->count();
 
         $wali_kelas = Kelas::join('gurus', 'gurus.id', '=', 'kelas.guru_id')
-        ->where('kelas.id', auth()->user()->kelas_id)
+        ->where('kelas.id', $kelas_siswa)
         ->value('gurus.nama_guru');
 
-            return response()->json([
-                "success" => true,
-                "message" => "Jumlah Kelas Diampu",
-                // "data_guru" => $data
-                "nama" => $ortu,
-                "jumlah_siswa" => $jumlah_murid,
-                // "jumlah_mapel" =>
-                // "wali_kelas" => $wali_kelas
-            ]); 
-       
+        $data = [
+            "nama" => $ortu,
+            "jumlah_siswa" => $jumlah_murid,
+            "jumlah_mapel" => $jumlah_mapel,
+            "wali_kelas" => $wali_kelas
+        ];
+
+        return response()->json([
+            "data" => $data
+        ]);  
     }
 }
