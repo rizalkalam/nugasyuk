@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API\Admin;
 
+use App\Models\Ortu;
 use App\Models\Kelas;
 use App\Models\Murid;
 use Illuminate\Http\Request;
@@ -33,8 +34,46 @@ class AdminMuridController extends Controller
         return response()->json([
             "success" => true,
             "message" => "List Siswa",
+            "jumlah_siswa" => $jumlah_murid,
             "data" => $data,
-            "jumlah_siswa" => $jumlah_murid
+        ], 200);
+    }
+
+    public function detail($id)
+    {
+        $siswa = Murid::join('kelas', 'kelas.id', '=', 'murids.kelas_id')
+        ->join('tingkatans', 'tingkatans.id', '=', 'kelas.tingkatan_id')
+        ->join('jurusans', 'jurusans.id', '=', 'kelas.jurusan_id')
+        ->where('murids.id', $id)
+        ->select([
+            'murids.id',
+            'murids.nama_siswa',
+            'murids.email',
+            // 'murids.nis',
+            // 'alamat',
+            'jurusans.nama_jurusan',
+            'kelas.nama_kelas',
+            'tingkatans.tingkat_ke',
+            // 'ortus.email'
+        ])->first();
+
+        $email_ortu = Ortu::join('murids', 'murids.id', '=', 'ortus.siswa_id')
+        ->where('siswa_id', $id)->value('ortus.email');
+
+        $data = [
+            'id'=>$siswa->id,
+            'nama_siswa'=>$siswa->nama_siswa,
+            'email'=>$siswa->email,
+            'tingkat_ke'=>$siswa->tingkat_ke,
+            'jurusan'=>$siswa->nama_jurusans,
+            'kelas'=>$siswa->nama_kelas,
+            'email_wali_murid'=>$email_ortu
+        ];
+
+        return response()->json([
+            "success" => true,
+            "message" => "Detail Siswa",
+            "data" => $data,
         ], 200);
     }
 

@@ -13,11 +13,13 @@ return new class extends Migration
     {
         Schema::create('gurus', function (Blueprint $table) {
             $table->id();
+            $table->integer('niy')->unique();
             $table->string('nama_guru');
             $table->string('email');
             $table->string('password');
-            $table->integer('niy')->unique();
             $table->string('foto_profile');
+            $table->string('alamat');
+            $table->string('nomor_tlp');
             $table->foreignId('mapel_id')->nullable();
             // $table->string('konfirmasi')->nullable();
             // $table->foreignId('role_id');
