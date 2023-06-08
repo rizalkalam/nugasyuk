@@ -44,6 +44,7 @@ class AdminGuruController extends Controller
         ->join('tingkatans', 'tingkatans.id', '=', 'kelas.tingkatan_id')
         ->where('kodes.guru_id', $id)
         ->select([
+            'kodes.kode_guru',
             'kodes.nama_mapel',
             'tingkatans.tingkat_ke',
             'jurusans.nama_jurusan',
