@@ -71,6 +71,7 @@ class AdminGuruController extends Controller
 
         $data = [
             'id'=>$guru->id,
+            'niy'=>$guru->niy,
             'foto_profile'=>$guru->foto_profile,
             'nama_guru'=>$guru->nama_guru,
             'email'=>$guru->email,
