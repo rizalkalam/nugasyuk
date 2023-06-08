@@ -141,11 +141,10 @@ class AdminGuruController extends Controller
         if (Storage::exists($file_path)) {
             Storage::delete($file_path);
         } else {
-            dd('file not found');
+            $berkas = $request->file('foto_profile');
+            $nama = $berkas->getClientOriginalName();
         }
 
-        $berkas = $request->file('foto_profile');
-        $nama = $berkas->getClientOriginalName();
 
         try {
             $guru = Guru::where('id', $id)->first();
