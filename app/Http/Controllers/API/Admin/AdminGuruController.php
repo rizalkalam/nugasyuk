@@ -24,7 +24,7 @@ class AdminGuruController extends Controller
         ->when($nama_guru, function ($query) use ($nama_guru){
             $query->where('gurus.nama_guru', 'LIKE', '%' . $nama_guru . '%');
         })
-        ->select(['gurus.id', 'gurus.nama_guru', 'gurus.email', 'mapels.status_mapel'])->get();
+        ->select(['gurus.id', 'gurus.niy', 'gurus.foto_profile', 'gurus.nama_guru', 'gurus.email', 'mapels.status_mapel'])->get();
 
         $jumlah_guru = count(Guru::all());
 
@@ -106,6 +106,7 @@ class AdminGuruController extends Controller
             'password' => Hash::make($request->password),
             'niy' => $request->niy,
             'foto_profile' => $berkas->storeAs('gambar_profile_guru', $nama),
+            'mapel_id' => $request->mapel_id
         ]);
 
         $data->assignRole($request->role);
@@ -123,7 +124,7 @@ class AdminGuruController extends Controller
             'email' => 'required',
             'password' => 'required',
             'niy' => 'required',
-            'foto_profile' => 'required',
+            'foto_profile' => 'required|mimes:jpeg,png,jpg',
             // 'mapel_id' => 'required'
         ]);
 
@@ -135,6 +136,17 @@ class AdminGuruController extends Controller
             ]);
         }
 
+        $file_path = Guru::where('id', $id)->value('foto_profile');
+
+        if (Storage::exists($file_path)) {
+            Storage::delete($file_path);
+        } else {
+            dd('file not found');
+        }
+
+        $berkas = $request->file('foto_profile');
+        $nama = $berkas->getClientOriginalName();
+
         try {
             $guru = Guru::where('id', $id)->first();
 
@@ -143,7 +155,7 @@ class AdminGuruController extends Controller
                 'email' => $request->email, 
                 'password' => Hash::make($request->password),
                 'niy' => $request->niy,
-                'foto_profile' => $request->foto_profile,
+                'foto_profile' => $berkas->storeAs('gambar_profile_guru', $nama),
                 'mapel_id' => $request->mapel_id
             ]);
 
@@ -166,6 +178,9 @@ class AdminGuruController extends Controller
     public function hapus_guru($id)
     {
         $guru = Guru::where('id', $id)->first();
+
+        $file_path = Guru::where('id', $id)->value('foto_profile');
+        Storage::delete($file_path);
 
         $guru->delete();
         return response()->json([

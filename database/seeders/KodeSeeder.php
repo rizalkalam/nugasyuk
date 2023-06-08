@@ -66,8 +66,15 @@ class KodeSeeder extends Seeder
         Kode::create([
             'id'=>'8',
            'kode_guru'=>'DT1',
-           'nama_mapel'=>"Bimbingan Konseling",
+           'nama_mapel'=>"Bahasa Inggris",
            'guru_id'=>7,
-       ]);
+        ]);
+
+        Kode::create([
+            'id'=>'9',
+           'kode_guru'=>'AN1',
+           'nama_mapel'=>"Bimbingan Konseling",
+           'guru_id'=>8,
+        ]);
     }
 }
