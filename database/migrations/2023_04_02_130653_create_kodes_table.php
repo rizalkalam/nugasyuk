@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('nama_mapel');
             // $table->string('nama_guru');
             $table->foreignId('guru_id');
+            $table->enum('status_mapel', ['produktif', 'normadaf']);
             $table->timestamps();
         });
     }

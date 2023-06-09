@@ -15,18 +15,28 @@ class AdminGuruController extends Controller
 {
     public function index()
     {
+        // $guru = Guru::when($nama_guru, function ($query) use ($nama_guru){
+        //     $query->where('gurus.nama_guru', 'LIKE', '%' . $nama_guru . '%');
+        // })
+        // ->select(['gurus.id', 'gurus.niy', 'gurus.foto_profile', 'gurus.nama_guru', 'gurus.email'])->get();
+        
+        
         $nama_guru = request('nama_guru', null);
         $status_mapel = request('status_mapel', null);
-        $data = Guru::join('mapels', 'mapels.id', '=', 'gurus.mapel_id')
+        $data = Guru::leftjoin('kodes', 'kodes.id', '=', 'gurus.kode_id')
         ->when($status_mapel, function ($query) use ($status_mapel){
-            $query->where('mapels.status_mapel', $status_mapel);
+            $query->where('kodes.status_mapel', $status_mapel);
         })
         ->when($nama_guru, function ($query) use ($nama_guru){
             $query->where('gurus.nama_guru', 'LIKE', '%' . $nama_guru . '%');
         })
-        ->select(['gurus.id', 'gurus.niy', 'gurus.foto_profile', 'gurus.nama_guru', 'gurus.email', 'mapels.status_mapel'])->get();
+        ->select(['gurus.id', 'gurus.niy', 'gurus.foto_profile', 'gurus.nama_guru', 'gurus.email', 'kodes.status_mapel'])->get();
 
         $jumlah_guru = count(Guru::all());
+
+        // $data = [
+        //     'id'=>$guru->id
+        // ];
 
         return response()->json([
             "success" => true,
@@ -51,8 +61,30 @@ class AdminGuruController extends Controller
             'kelas.nama_kelas',
         ])->get();
 
-        $guru = Guru::join('mapels', 'mapels.id', '=', 'gurus.mapel_id')
-        ->join('kodes', 'kodes.id', '=', 'mapels.kode_id')
+        // $guru = Guru::join('mapels', 'mapels.id', '=', 'gurus.mapel_id')
+        // ->join('kodes', 'kodes.id', '=', 'mapels.kode_id')
+        // ->join('kelas', 'kelas.id', '=', 'mapels.kelas_id')
+        // ->join('jurusans', 'jurusans.id', '=', 'kelas.jurusan_id')
+        // ->join('tingkatans', 'tingkatans.id', '=', 'kelas.tingkatan_id')
+        // ->where('gurus.id', $id)
+        // ->select([
+        //     'gurus.id',
+        //     'gurus.niy',
+        //     'gurus.foto_profile',
+        //     'gurus.nama_guru',
+        //     'gurus.email',
+        //     'gurus.nomor_tlp',
+        //     'gurus.alamat'
+        //     // 'kodes.nama_mapel',
+        //     // 'kodes.kode_guru',
+        //     // 'tingkatans.tingkat_ke',
+        //     // 'jurusans.nama_jurusan',
+        //     // 'kelas.nama_kelas',
+        // ])
+        // ->first();
+
+        $guru = Mapel::join('kodes', 'kodes.id', '=', 'mapels.kode_id')
+        ->join('gurus', 'gurus.id', '=', 'kodes.guru_id')
         ->join('kelas', 'kelas.id', '=', 'mapels.kelas_id')
         ->join('jurusans', 'jurusans.id', '=', 'kelas.jurusan_id')
         ->join('tingkatans', 'tingkatans.id', '=', 'kelas.tingkatan_id')
@@ -117,7 +149,7 @@ class AdminGuruController extends Controller
             'foto_profile' => $berkas->storeAs('gambar_profile_guru', $nama),
             'nomor_tlp' => $request->nomor_tlp,
             'alamat' => $request->alamat,
-            'mapel_id' => $request->mapel_id
+            // 'kode_id' => $request->kode_id
         ]);
 
         $data->assignRole($request->role);
@@ -136,7 +168,7 @@ class AdminGuruController extends Controller
             'nama_guru' => 'required',
             'password' => 'required',
             'niy' => 'required',
-            'mapel_id' => 'required'
+            // 'kode_id' => 'required'
         ]);
 
         if ($validator->fails()) {
@@ -179,7 +211,7 @@ class AdminGuruController extends Controller
                 'foto_profile' => $berkas->storeAs('gambar_profile_guru', $nama),
                 'nomor_tlp' => $request->nomor_tlp,
                 'alamat' => $request->alamat,
-                'mapel_id' => $request->mapel_id
+                // 'kode_id' => $request->kode_id
             ]);
 
             // $guru->removeRole('writer');
@@ -200,11 +232,14 @@ class AdminGuruController extends Controller
 
     public function hapus_guru($id)
     {
-        $guru = Guru::where('id', $id)->first();
-
+        
         $file_path = Guru::where('id', $id)->value('foto_profile');
         Storage::delete($file_path);
-
+        
+        $kode = Kode::where('guru_id', $id);
+        $kode->delete();
+        
+        $guru = Guru::where('id', $id)->first();
         $guru->delete();
         return response()->json([
             'success' => true,
@@ -217,13 +252,20 @@ class AdminGuruController extends Controller
         $validator = Validator::make($request->all(),[
             'kode_guru'=> 'required',
             'nama_mapel'=> 'required',
+            'status_mapel'=> 'required',
             'guru_id'=> 'required',
         ]);
 
         $data = Kode::create([
             'kode_guru'=> $request->kode_guru,
             'nama_mapel'=> $request->nama_mapel,
+            'status_mapel'=> $request->status_mapel,
             'guru_id'=> $id,
+        ]);
+
+        $guru = Guru::where('id', $id)->first();
+        $guru->update([
+            'kode_id' => $data->id
         ]);
 
         return response()->json([

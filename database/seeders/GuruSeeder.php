@@ -22,7 +22,7 @@ class GuruSeeder extends Seeder
             'alamat'=>'Fajar Indah, Surakarta',
             'nomor_tlp'=>'085842220006',
             'foto_profile'=>'gambar_profile_guru/mrjack.jpg',
-            'mapel_id'=>1,
+            'kode_id'=>1,
             // 'role_id'=>2
         ]);
 
@@ -37,7 +37,7 @@ class GuruSeeder extends Seeder
             'alamat'=>'Ngemplak, Boyolali',
             'nomor_tlp'=>'085728838642',
             'foto_profile'=>'gambar_profile_guru/1-1.png',
-            'mapel_id'=>2,
+            'kode_id'=>2,
             // 'mapel2_id'=>3
         ]);
 
@@ -52,7 +52,7 @@ class GuruSeeder extends Seeder
             'alamat'=>'Gatak, Sukoharjo',
             'nomor_tlp'=>'081676893341',
             'foto_profile'=>'gambar_profile_guru/musfiq.jpg',
-            'mapel_id'=>4,
+            'kode_id'=>4,
         ]);
 
         $guru->assignRole('guru_biasa');
@@ -66,7 +66,7 @@ class GuruSeeder extends Seeder
              'alamat'=>'Colomadu, Karanganyar',
              'nomor_tlp'=>'085647511650',
              'foto_profile'=>'gambar_profile_guru/lestari.jpg',
-             'mapel_id'=>5,
+             'kode_id'=>5,
         ]);
 
         $guru->assignRole('guru_biasa');
@@ -80,7 +80,7 @@ class GuruSeeder extends Seeder
             'alamat'=>'Simo, Boyolali',
             'nomor_tlp'=>'089844872221',
             'foto_profile'=>'gambar_profile_guru/picturesshot.jpg',
-            'mapel_id'=>6,
+            'kode_id'=>6,
         ]);
 
         $guru->assignRole('guru_biasa');
@@ -94,7 +94,7 @@ class GuruSeeder extends Seeder
             'alamat'=>'Pasar Kliwon, Surakarta',
             'nomor_tlp'=>'085155370503',
             'foto_profile'=>'gambar_profile_guru/ustdz-hana.jpg',
-            'mapel_id'=>7,
+            'kode_id'=>7,
         ]);
 
         $guru->assignRole('guru_biasa');
@@ -108,25 +108,25 @@ class GuruSeeder extends Seeder
             'alamat'=>'Banjarsari, Surakarta',
             'nomor_tlp'=>'089523051222',
             'foto_profile'=>'gambar_profile_guru/sandita.jpg',
-            'mapel_id'=>8,
+            'kode_id'=>8,
             // 'role_id'=>2
         ]);
 
         $guru->assignRole('guru_biasa');
 
-        $bk = Guru::create([
-            // 'id'=>'7',
-            'nama_guru'=>'Ana Ramadhani',
-            'email'=>'anarmdhn@gmail.com',
-            'password'=>bcrypt('ana123'),
-            'niy'=>'0118',
-            'alamat'=>'Palur, Sukoharjo',
-            'nomor_tlp'=>'085789895342',
-            'foto_profile'=>'gambar_profile_guru/alyssaseobandono.jpg',
-            'mapel_id'=>8,
-            // 'role_id'=>2
-        ]);
+        // $bk = Guru::create([
+        //     // 'id'=>'7',
+        //     'nama_guru'=>'Ana Ramadhani',
+        //     'email'=>'anarmdhn@gmail.com',
+        //     'password'=>bcrypt('ana123'),
+        //     'niy'=>'0118',
+        //     'alamat'=>'Palur, Sukoharjo',
+        //     'nomor_tlp'=>'085789895342',
+        //     'foto_profile'=>'gambar_profile_guru/alyssaseobandono.jpg',
+        //     'kode_id'=>8,
+        //     // 'role_id'=>2
+        // ]);
 
-        $bk->assignRole('guru_bk');
+        // $bk->assignRole('guru_bk');
     }
 }

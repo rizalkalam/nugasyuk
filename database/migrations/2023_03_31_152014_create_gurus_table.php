@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('foto_profile');
             $table->string('alamat');
             $table->string('nomor_tlp');
-            $table->foreignId('mapel_id')->nullable();
+            $table->foreignId('kode_id')->nullable()->default(null);
             // $table->string('konfirmasi')->nullable();
             // $table->foreignId('role_id');
             // $table->foreignId('mapel2_id')->nullable();

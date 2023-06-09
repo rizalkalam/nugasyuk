@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Kode;
 use App\Models\Mapel;
 use Illuminate\Support\Str;
 use Spatie\Permission\Traits\HasRoles;
@@ -65,9 +66,9 @@ class Guru extends Authenticatable implements JWTSubject
     }
 
     // relation 
-    public function mapel()
+    public function kode()
     {
-        return $this->belongsTo(Mapel::class);
+        return $this->belongsTo(Kode::class);
     }
 
     // public function mapel2()
