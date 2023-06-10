@@ -27,7 +27,7 @@ class AdminMuridController extends Controller
         ->join('tingkatans', 'tingkatans.id', '=', 'kelas.tingkatan_id')
         ->join('jurusans', 'jurusans.id', '=', 'kelas.jurusan_id')
         ->where('jurusans.id', $jurusan_id->id)
-        ->select(['murids.id', 'murids.nis', 'murids.nama_siswa', 'murids.email', 'jurusans.nama_jurusan'])->get();
+        ->select(['murids.id', 'murids.nis', 'murids.foto_profile', 'murids.nama_siswa', 'murids.email', 'jurusans.nama_jurusan'])->get();
 
         $jumlah_murid = count(Murid::all());
 
