@@ -78,12 +78,12 @@ class KodeSeeder extends Seeder
            'guru_id'=>7,
         ]);
 
-        // Kode::create([
-        //     'id'=>'9',
-        //    'kode_guru'=>'AN1',
-        //    'nama_mapel'=>"Bimbingan Konseling",
-        //    'status_mapel'=>'normadaf',
-        //    'guru_id'=>8,
-        // ]);
+        Kode::create([
+            'id'=>'9',
+           'kode_guru'=>'AN1',
+           'nama_mapel'=>"Bimbingan Konseling",
+           'status_mapel'=>'normadaf',
+           'guru_id'=>8,
+        ]);
     }
 }

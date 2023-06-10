@@ -14,7 +14,7 @@ class OrtuProfileController extends Controller
     {
         $data = Ortu::join('murids', 'murids.id', '=', 'ortus.siswa_id')
         ->where('ortus.id', auth()->user()->id)
-        ->select(['ortus.email', 'ortus.nama', 'murids.nama_siswa'])
+        ->select(['ortus.email', 'ortus.nama', 'murids.nama_siswa', 'murids.nis'])
         ->get();
 
         return response()->json([

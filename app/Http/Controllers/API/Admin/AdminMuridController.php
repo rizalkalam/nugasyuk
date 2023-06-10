@@ -27,7 +27,7 @@ class AdminMuridController extends Controller
         ->join('tingkatans', 'tingkatans.id', '=', 'kelas.tingkatan_id')
         ->join('jurusans', 'jurusans.id', '=', 'kelas.jurusan_id')
         ->where('jurusans.id', $jurusan_id->id)
-        ->select(['murids.id', 'murids.nama_siswa', 'murids.email', 'jurusans.nama_jurusan'])->get();
+        ->select(['murids.id', 'murids.nis', 'murids.nama_siswa', 'murids.email', 'jurusans.nama_jurusan'])->get();
 
         $jumlah_murid = count(Murid::all());
 
@@ -47,9 +47,9 @@ class AdminMuridController extends Controller
         ->where('murids.id', $id)
         ->select([
             'murids.id',
+            'murids.nis',
             'murids.nama_siswa',
             'murids.email',
-            // 'murids.nis',
             // 'alamat',
             'jurusans.nama_jurusan',
             'kelas.nama_kelas',
@@ -65,8 +65,9 @@ class AdminMuridController extends Controller
             'nama_siswa'=>$siswa->nama_siswa,
             'email'=>$siswa->email,
             'tingkat_ke'=>$siswa->tingkat_ke,
-            'jurusan'=>$siswa->nama_jurusans,
+            'jurusan'=>$siswa->nama_jurusan,
             'kelas'=>$siswa->nama_kelas,
+            'nis'=>$siswa->nis,
             'email_wali_murid'=>$email_ortu
         ];
 
@@ -80,17 +81,25 @@ class AdminMuridController extends Controller
     public function buat_murid(Request $request)
     {
         $validator = Validator::make($request->all(),[
+            'nis'=>'required',
             'nama_siswa'=> 'required',
             'email'=> 'required',
             'password'=> 'required',
             'foto_profile'=> 'required|mimes:jpeg,png,jpg',
-            'kelas_id'=> 'required'
+            'kelas_id'=> 'required',
+
+            // validasi input wali murid
+            'nama'=>'required',
+            'email'=>'required',
+            'password'=>'required',
+            'siswa_id'=>'required'
         ]);
 
         $berkas = $request->file('foto_profile');
         $nama = $berkas->getClientOriginalName();
 
         $data = Murid::create([
+            'nis' => $request->nis,
             'nama_siswa' => $request->nama_siswa,
             'email' => $request->email,
             'password' => Hash::make($request->password),
@@ -98,20 +107,35 @@ class AdminMuridController extends Controller
             'kelas_id' => $request->kelas_id
         ]);
 
+        $wali_murid = Ortu::create([
+            'nama'=>$request->nama,
+            'email'=>$request->email_wali,
+            'password'=>Hash::make($request->password_wali),
+            'siswa_id'=>Murid::latest()->first()->id
+        ]);
+
         return response()->json([
-            'message' => 'Data Siswa baru berhasil dibuat',
-            'data' => $data,
+            'message' => 'Data Siswa dan Wali Murid baru berhasil dibuat',
+            'siswa' => $data,
+            'wali_murid' => $wali_murid
         ]);
     }
 
     public function edit_murid(Request $request, $id)
     {
         $validator = Validator::make($request->all(),[
+            'nis'=>'required',
             'nama_siswa'=> 'required',
             'email'=> 'required',
             'password'=> 'required',
-            'foto_profile'=> 'required',
-            'kelas_id'=> 'required'
+            'foto_profile'=> 'mimes:jpeg,png,jpg',
+            'kelas_id'=> 'required',
+
+             // validasi input wali murid
+             'nama'=>'required',
+             'email'=>'required',
+             'password'=>'required',
+            //  'siswa_id'=>'required'
         ]);
 
         if ($validator->fails()) {
@@ -122,20 +146,41 @@ class AdminMuridController extends Controller
             ]);
         }
 
+        $file_path = Murid::where('id', $id)->value('foto_profile');
+
+        if (Storage::exists($file_path)) {
+            Storage::delete($file_path);
+            $berkas = $request->file('foto_profile');
+            $nama = $berkas->getClientOriginalName();
+        } else {
+            $berkas = $request->file('foto_profile');
+            $nama = $berkas->getClientOriginalName();
+        }
+
         try {
             $murid = Murid::where('id', $id)->first();
 
             $murid->update([
+                'nis' => $request->nis,
                 'nama_siswa' => $request->nama_siswa,
                 'email' => $request->email,
-                'password' => $request->password,
-                'foto_profile' => $request->foto_profile,
+                'password' => Hash::make($request->password),
+                'foto_profile' => $berkas->storeAs('gambar_profile_siswa', $nama),
                 'kelas_id' => $request->kelas_id
             ]);
 
+            $ortu = Ortu::where('siswa_id', $id)->first();
+            $ortu->update([
+                'nama'=>$request->nama,
+                'email'=>$request->email_wali,
+                'password'=>Hash::make($request->password_wali),
+                // 'siswa_id'=>Murid::latest()->first()->id
+            ]);
+
             return response()->json([
-                'message' => 'Data Kelas berhasil di ubah',
-                'data' => $murid,
+                'message' => 'Data Siswa dan Wali Murid berhasil di ubah',
+                'siswa' => $murid,
+                'wali_murid' => $ortu
             ]);
         } catch (\Throwable $th) {
             //throw $th;
@@ -148,8 +193,13 @@ class AdminMuridController extends Controller
 
     public function hapus_murid($id)
     {
+        $file_path = Murid::where('id', $id)->value('foto_profile');
+        Storage::delete($file_path);
         $murid = Murid::where('id', $id)->first();
 
+        $ortu = Ortu::where('siswa_id', $id)->first();
+
+        $ortu->delete();
         $murid->delete();
         return response()->json([
             'success' => true,
