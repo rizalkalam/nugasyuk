@@ -114,19 +114,19 @@ class GuruSeeder extends Seeder
 
         $guru->assignRole('guru_biasa');
 
-        // $bk = Guru::create([
-        //     // 'id'=>'7',
-        //     'nama_guru'=>'Ana Ramadhani',
-        //     'email'=>'anarmdhn@gmail.com',
-        //     'password'=>bcrypt('ana123'),
-        //     'niy'=>'0118',
-        //     'alamat'=>'Palur, Sukoharjo',
-        //     'nomor_tlp'=>'085789895342',
-        //     'foto_profile'=>'gambar_profile_guru/alyssaseobandono.jpg',
-        //     'kode_id'=>8,
-        //     // 'role_id'=>2
-        // ]);
+        $bk = Guru::create([
+            // 'id'=>'7',
+            'nama_guru'=>'Ana Ramadhani',
+            'email'=>'anarmdhn@gmail.com',
+            'password'=>bcrypt('ana123'),
+            'niy'=>'0118',
+            'alamat'=>'Palur, Sukoharjo',
+            'nomor_tlp'=>'085789895342',
+            'foto_profile'=>'gambar_profile_guru/alyssaseobandono.jpg',
+            'kode_id'=>8,
+            // 'role_id'=>2
+        ]);
 
-        // $bk->assignRole('guru_bk');
+        $bk->assignRole('guru_bk');
     }
 }
