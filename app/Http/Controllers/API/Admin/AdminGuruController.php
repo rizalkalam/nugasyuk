@@ -48,7 +48,7 @@ class AdminGuruController extends Controller
 
     public function detail($id)
     {
-        $mapel = Mapel::join('kodes', 'kodes.id', '=', 'mapels.kode_id')
+        $mapel = Mapel::leftjoin('kodes', 'kodes.id', '=', 'mapels.kode_id')
         ->join('kelas', 'kelas.id', '=', 'mapels.kelas_id')
         ->join('jurusans', 'jurusans.id', '=', 'kelas.jurusan_id')
         ->join('tingkatans', 'tingkatans.id', '=', 'kelas.tingkatan_id')
@@ -83,11 +83,7 @@ class AdminGuruController extends Controller
         // ])
         // ->first();
 
-        $guru = Mapel::join('kodes', 'kodes.id', '=', 'mapels.kode_id')
-        ->join('gurus', 'gurus.id', '=', 'kodes.guru_id')
-        ->join('kelas', 'kelas.id', '=', 'mapels.kelas_id')
-        ->join('jurusans', 'jurusans.id', '=', 'kelas.jurusan_id')
-        ->join('tingkatans', 'tingkatans.id', '=', 'kelas.tingkatan_id')
+        $guru = Guru::leftjoin('kodes', 'kodes.id', '=', 'gurus.kode_id')
         ->where('gurus.id', $id)
         ->select([
             'gurus.id',

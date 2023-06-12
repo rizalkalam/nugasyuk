@@ -62,7 +62,7 @@ class MuridSeeder extends Seeder
             'id'=>'5',
             'nis'=>'0445',
             'nama_siswa'=>'Muh Wahyu Ageng Pambudi',
-            'email'=>'faiqmuntashir@gmail.com',
+            'email'=>'wahyu@gmail.com',
             'password'=>bcrypt('wahyu123'),
             'foto_profile'=>'gambar_profile_siswa/wahyu.png',
             'kelas_id'=>3,
