@@ -48,14 +48,26 @@ class AdminGuruController extends Controller
 
     public function detail($id)
     {
-        $mapel = Mapel::leftjoin('kodes', 'kodes.id', '=', 'mapels.kode_id')
+        $kode = Kode::where('guru_id', '=', $id)
+        ->select([
+            'kodes.kode_guru',
+            // 'kodes.nama_mapel',
+        ])->get();
+
+        $mapel = Kode::where('guru_id', '=', $id)
+        ->select([
+            // 'kodes.kode_guru',
+            'kodes.nama_mapel',
+        ])->get();
+
+        $kelas = Mapel::leftjoin('kodes', 'kodes.id', '=', 'mapels.kode_id')
         ->join('kelas', 'kelas.id', '=', 'mapels.kelas_id')
         ->join('jurusans', 'jurusans.id', '=', 'kelas.jurusan_id')
         ->join('tingkatans', 'tingkatans.id', '=', 'kelas.tingkatan_id')
-        ->where('kodes.guru_id', $id)
+        ->where('kodes.guru_id', '=', $id)
         ->select([
-            'kodes.kode_guru',
-            'kodes.nama_mapel',
+            // 'kodes.kode_guru',
+            // 'kodes.nama_mapel',
             'tingkatans.tingkat_ke',
             'jurusans.nama_jurusan',
             'kelas.nama_kelas',
@@ -92,7 +104,7 @@ class AdminGuruController extends Controller
             'gurus.nama_guru',
             'gurus.email',
             'gurus.nomor_tlp',
-            'gurus.alamat'
+            'gurus.alamat',
             // 'kodes.nama_mapel',
             // 'kodes.kode_guru',
             // 'tingkatans.tingkat_ke',
@@ -100,6 +112,10 @@ class AdminGuruController extends Controller
             // 'kelas.nama_kelas',
         ])
         ->first();
+
+        $detail = [
+
+        ];
 
         $data = [
             'id'=>$guru->id,
@@ -109,7 +125,9 @@ class AdminGuruController extends Controller
             'email'=>$guru->email,
             'nomor_tlp'=>$guru->nomor_tlp,
             'alamat'=>$guru->alamat,
-            'detail'=>$mapel
+            'mengajar'=>$mapel,
+            'kode'=>$kode,
+            'mengajar_kelas'=>$kelas,
             // 'profile' => $guru,
             // 'detail' => $mapel
         ];
