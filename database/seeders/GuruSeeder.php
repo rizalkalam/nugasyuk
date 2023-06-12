@@ -36,7 +36,7 @@ class GuruSeeder extends Seeder
             'niy'=>'0112',
             'alamat'=>'Ngemplak, Boyolali',
             'nomor_tlp'=>'085728838642',
-            'foto_profile'=>'gambar_profile_guru/1-1.png',
+            'foto_profile'=>'gambar_profile_guru/mrrizky.jpg',
             'kode_id'=>2,
             // 'mapel2_id'=>3
         ]);

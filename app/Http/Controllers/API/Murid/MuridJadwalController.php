@@ -32,9 +32,13 @@ class MuridJadwalController extends Controller
         ->where('haris.id', $id)
         ->select(['jadwals.id', 'kodes.nama_mapel', 'gurus.nama_guru', 'jams.waktu_mulai', 'jams.waktu_selesai'])->get();
 
+        $hari = Hari::where('id', $id)
+        ->select(['id', 'hari'])->value('hari');
+
         return response()->json([
             "success" => true,
             "message" => "Detail Jadwal Mapel Murid",
+            "hari"=>$hari,
             "data" => $data,
         ], 200);
     }
