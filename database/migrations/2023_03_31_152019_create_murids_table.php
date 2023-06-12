@@ -15,6 +15,7 @@ return new class extends Migration
             // $table->string('id')->unique();
             $table->id();
             $table->string('nis')->unique();
+            $table->string('nama_panggilan');
             $table->string('nama_siswa');
             $table->string('email');
             $table->string('password');

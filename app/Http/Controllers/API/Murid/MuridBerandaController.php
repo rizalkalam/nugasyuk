@@ -15,7 +15,7 @@ class MuridBerandaController extends Controller
 {
     public function data_murid()
     {
-        $murid = Murid::where('id', auth()->user()->id)->value('nama_siswa');
+        $murid = Murid::where('id', auth()->user()->id)->value('nama_pengguna');
 
         $jumlah_murid = Murid::where('kelas_id', auth()->user()->kelas_id)
         ->select('id')->get()->count();

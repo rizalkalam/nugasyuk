@@ -20,7 +20,7 @@ class LoginController extends Controller
             return response()->json([
                 'token'=>$token,
                 'akun'=>auth()->user()->email,
-                'mapel_id'=>auth()->user()->mapel_id
+                'mapel_id'=>'ini adalah akun guru'
             ]);
         } elseif ($token = auth()->guard('murid')->attempt($credentials)) {
             return response()->json([
