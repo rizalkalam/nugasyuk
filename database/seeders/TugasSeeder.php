@@ -40,6 +40,19 @@ class TugasSeeder extends Seeder
             'mapel_id'=>2
         ]);
 
+        Tugas::create([
+            'id'=>'3',
+            'nama_tugas'=>"Baca Tulis Al-Qur'an",
+            'soal'=>'Bacalah surat Al-Kahfi ayat 1-20',
+            'date'=>'2023-05-04',
+            'deadline'=>'2023-05-05',
+            'description'=>'Berikan bukti video saat membaca',
+            // 'status'=>1,
+            'link'=>null,
+            'file'=>null,
+            'mapel_id'=>7
+        ]);
+
         // Tugas::create([
         //     'id'=>'2',
         //     'soal'=>'Penerapan Aljawir',

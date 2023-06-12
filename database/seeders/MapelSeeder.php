@@ -65,7 +65,7 @@ class MapelSeeder extends Seeder
             'id'=>'7',
             'kode_id'=>7,
             'kelas_id'=>1,
-            // 'nama_mapel'=>'Math',
+            // 'nama_mapel'=>'Qur'an',
             // 'asset_id'=>2,
         ]);
 
