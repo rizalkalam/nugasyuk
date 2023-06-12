@@ -20,7 +20,7 @@ class MuridProfileController extends Controller
             'murids.id',
             'murids.foto_profile',
             'murids.email',
-            'murids.nama_pengguna',
+            'murids.nama_panggilan',
             'murids.nama_siswa', 
             'jurusans.nama_jurusan',
             'tingkatans.tingkat_ke'
