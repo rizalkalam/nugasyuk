@@ -187,13 +187,15 @@ class AdminGuruController extends Controller
         //     $nama = $berkas->getClientOriginalName();
         // }
 
-        if (Storage::exists($file_path)) {
+        if ($request->hasFile('foto_profile')) {
             Storage::delete($file_path);
             $berkas = $request->file('foto_profile');
             $nama = $berkas->getClientOriginalName();
+            $edit = $berkas->storeAs('gambar_profile_guru', $nama);
         } else {
-            $berkas = $request->file('foto_profile');
-            $nama = $berkas->getClientOriginalName();
+            // $berkas = $file_path;
+            // $nama = $berkas;
+            $edit = $file_path;
         }
 
         try {
@@ -204,7 +206,7 @@ class AdminGuruController extends Controller
                 'email' => $request->email, 
                 'password' => Hash::make($request->password),
                 'niy' => $request->niy,
-                'foto_profile' => $berkas->storeAs('gambar_profile_guru', $nama),
+                'foto_profile' => $edit,
                 'nomor_tlp' => $request->nomor_tlp,
                 'alamat' => $request->alamat,
                 // 'kode_id' => $request->kode_id
@@ -269,4 +271,17 @@ class AdminGuruController extends Controller
             'data' => $data,
         ]);
     }
+
+    public function hapus_kode($id)
+    {
+        //  **MASIH ADA REVISI**
+        $kode = Kode::where('id', $id);
+        $kode->delete();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Data kode berhasil di hapus',
+        ]);
+    }
+
 }

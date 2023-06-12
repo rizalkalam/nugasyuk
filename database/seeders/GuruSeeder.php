@@ -115,7 +115,7 @@ class GuruSeeder extends Seeder
         $guru->assignRole('guru_biasa');
 
         $bk = Guru::create([
-            // 'id'=>'7',
+            // 'id'=>'8',
             'nama_guru'=>'Ana Ramadhani',
             'email'=>'anarmdhn@gmail.com',
             'password'=>bcrypt('ana123'),
@@ -123,7 +123,7 @@ class GuruSeeder extends Seeder
             'alamat'=>'Palur, Sukoharjo',
             'nomor_tlp'=>'085789895342',
             'foto_profile'=>'gambar_profile_guru/alyssaseobandono.jpg',
-            'kode_id'=>8,
+            'kode_id'=>9,
             // 'role_id'=>2
         ]);
 

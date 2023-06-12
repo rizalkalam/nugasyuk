@@ -85,5 +85,13 @@ class KodeSeeder extends Seeder
            'status_mapel'=>'bk',
            'guru_id'=>8,
         ]);
+
+        Kode::create([
+            'id'=>'10',
+           'kode_guru'=>'AN2',
+           'nama_mapel'=>"Bahasa Jawa",
+           'status_mapel'=>'normadaf',
+           'guru_id'=>8,
+        ]);
     }
 }

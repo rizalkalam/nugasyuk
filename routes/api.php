@@ -64,7 +64,6 @@ Route::middleware('auth:admin')->group(function(){
         Route::post('/guru', [AdminGuruController::class, 'tambah_guru']);
         Route::post('/guru/{id}', [AdminGuruController::class, 'edit_guru']);
         Route::delete('/guru/{id}', [AdminGuruController::class, 'hapus_guru']);
-        Route::post('/kode/{id}', [AdminGuruController::class, 'tambah_kode']);
     
         // Route murid admin
         Route::get('/murid', [AdminMuridController::class, 'index']);
@@ -95,6 +94,10 @@ Route::middleware('auth:admin')->group(function(){
         // Route asset admin
         Route::get('/asset', [AdminAssetController::class, 'index']);
         Route::post('/asset', [AdminAssetController::class, 'buat_asset']);
+
+        // Route kode admin
+        Route::post('/kode/{id}', [AdminGuruController::class, 'tambah_kode']);
+        Route::delete('/kode/{id}', [AdminGuruController::class, 'hapus_kode']);
     });
 });
 
