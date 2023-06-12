@@ -82,7 +82,7 @@ class KodeSeeder extends Seeder
             'id'=>'9',
            'kode_guru'=>'AN1',
            'nama_mapel'=>"Bimbingan Konseling",
-           'status_mapel'=>'normadaf',
+           'status_mapel'=>'bk',
            'guru_id'=>8,
         ]);
     }
