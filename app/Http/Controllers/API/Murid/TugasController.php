@@ -57,7 +57,7 @@ class TugasController extends Controller
             ->join('gurus', 'gurus.id', '=', 'kodes.guru_id')
             ->where('mapels.id', $id)
             ->where('pengumpulans.murid_id', auth()->user()->id)
-        ->get(['tugas.id', 'nama_tugas', 'soal', 'pengumpulans.status', 'tugas.date', 'tugas.deadline']);
+        ->get(['tugas.id', 'kodes.nama_mapel', 'nama_tugas', 'soal', 'pengumpulans.status', 'tugas.date', 'tugas.deadline']);
 
         return response()->json([
             "success" => true,
