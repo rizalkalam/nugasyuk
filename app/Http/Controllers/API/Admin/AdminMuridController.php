@@ -82,6 +82,7 @@ class AdminMuridController extends Controller
     {
         $validator = Validator::make($request->all(),[
             'nis'=>'required',
+            'nama_panggilan'=>'required',
             'nama_siswa'=> 'required',
             'email'=> 'required',
             'password'=> 'required',
@@ -100,6 +101,7 @@ class AdminMuridController extends Controller
 
         $data = Murid::create([
             'nis' => $request->nis,
+            'nama_panggilan'=>$request->nama_panggilan,
             'nama_siswa' => $request->nama_siswa,
             'email' => $request->email,
             'password' => Hash::make($request->password),
@@ -125,6 +127,7 @@ class AdminMuridController extends Controller
     {
         $validator = Validator::make($request->all(),[
             'nis'=>'required',
+            'nama_panggilan'=>'required',
             'nama_siswa'=> 'required',
             'email'=> 'required',
             'password'=> 'required',
@@ -162,6 +165,7 @@ class AdminMuridController extends Controller
 
             $murid->update([
                 'nis' => $request->nis,
+                'nama_panggilan'=>$request->nama_panggilan,
                 'nama_siswa' => $request->nama_siswa,
                 'email' => $request->email,
                 'password' => Hash::make($request->password),
