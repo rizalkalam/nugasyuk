@@ -28,7 +28,7 @@ class MuridProfileController extends Controller
 
             return response()->json([
                 "success" => true,
-                "message" => "Detail Jadwal Mapel Murid",
+                "message" => "Profile Murid",
                 "data" => $data,
             ], 200);
     }
