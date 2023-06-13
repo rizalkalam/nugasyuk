@@ -30,7 +30,7 @@ class MuridJadwalController extends Controller
         ->join('jams', 'jams.id', '=', 'jadwals.jam_id')
         ->where('mapels.kelas_id', auth()->user()->kelas_id)
         ->where('haris.id', $id)
-        ->select(['jadwals.id', 'kodes.nama_mapel', 'gurus.nama_guru', 'jams.waktu_mulai', 'jams.waktu_selesai'])->get();
+        ->select(['jadwals.id', 'kodes.nama_mapel', 'gurus.foto_profile', 'gurus.nama_guru', 'jams.waktu_mulai', 'jams.waktu_selesai'])->get();
 
         $hari = Hari::where('id', $id)
         ->select(['id', 'hari'])->value('hari');
