@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API\Admin;
 use App\Models\Asset;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
 class AdminAssetController extends Controller
@@ -39,36 +40,17 @@ class AdminAssetController extends Controller
         ]);
     }
 
-    public function edit_asset(Request $request)
+    public function hapus_asset($id)
     {
-        // $validator = Validator::make($request->all(),[
-        //     'file_asset' => 'required|mimes:jpg,png,jpeg,svg'
-        // ]);
+        $file_path = Asset::where('id', $id)->value('file_asset');
+        Storage::delete($file_path);
 
-        // if ($validator->fails()) {
-        //     return response()->json([
-        //         'success' => false,
-        //         'message' => $validator->errors(),
-        //         'data' => [],
-        //     ]);
-        // }
+        $asset = Asset::where('id', $id)->first();
+        $asset->delete();
 
-        // try {
-        //     $data = Asset::where('id', $id)->first();
-
-        //     $berkas = $request->file('file_asset');
-        //     $nama = $berkas->getClientOriginalName();
-
-        //     $data->update([
-        //         'file_asset' => '',
-        //     ])
-        // } catch (\Throwable $th) {
-        //     //throw $th;
-        // }
-    }
-
-    public function hapus_asset()
-    {
-
+        return response()->json([
+            'success' => true,
+            'message' => 'Data asset berhasil dihapus',
+        ]);
     }
 }

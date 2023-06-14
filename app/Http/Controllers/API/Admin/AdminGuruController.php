@@ -15,12 +15,6 @@ class AdminGuruController extends Controller
 {
     public function index()
     {
-        // $guru = Guru::when($nama_guru, function ($query) use ($nama_guru){
-        //     $query->where('gurus.nama_guru', 'LIKE', '%' . $nama_guru . '%');
-        // })
-        // ->select(['gurus.id', 'gurus.niy', 'gurus.foto_profile', 'gurus.nama_guru', 'gurus.email'])->get();
-        
-        
         $nama_guru = request('nama_guru', null);
         $status_mapel = request('status_mapel', null);
         $data = Guru::leftjoin('kodes', 'kodes.id', '=', 'gurus.kode_id')
@@ -33,10 +27,6 @@ class AdminGuruController extends Controller
         ->select(['gurus.id', 'gurus.niy', 'gurus.foto_profile', 'gurus.nama_guru', 'gurus.email', 'kodes.status_mapel'])->get();
 
         $jumlah_guru = count(Guru::all());
-
-        // $data = [
-        //     'id'=>$guru->id
-        // ];
 
         return response()->json([
             "success" => true,
@@ -73,28 +63,6 @@ class AdminGuruController extends Controller
             'kelas.nama_kelas',
         ])->get();
 
-        // $guru = Guru::join('mapels', 'mapels.id', '=', 'gurus.mapel_id')
-        // ->join('kodes', 'kodes.id', '=', 'mapels.kode_id')
-        // ->join('kelas', 'kelas.id', '=', 'mapels.kelas_id')
-        // ->join('jurusans', 'jurusans.id', '=', 'kelas.jurusan_id')
-        // ->join('tingkatans', 'tingkatans.id', '=', 'kelas.tingkatan_id')
-        // ->where('gurus.id', $id)
-        // ->select([
-        //     'gurus.id',
-        //     'gurus.niy',
-        //     'gurus.foto_profile',
-        //     'gurus.nama_guru',
-        //     'gurus.email',
-        //     'gurus.nomor_tlp',
-        //     'gurus.alamat'
-        //     // 'kodes.nama_mapel',
-        //     // 'kodes.kode_guru',
-        //     // 'tingkatans.tingkat_ke',
-        //     // 'jurusans.nama_jurusan',
-        //     // 'kelas.nama_kelas',
-        // ])
-        // ->first();
-
         $guru = Guru::leftjoin('kodes', 'kodes.id', '=', 'gurus.kode_id')
         ->where('gurus.id', $id)
         ->select([
@@ -105,11 +73,6 @@ class AdminGuruController extends Controller
             'gurus.email',
             'gurus.nomor_tlp',
             'gurus.alamat',
-            // 'kodes.nama_mapel',
-            // 'kodes.kode_guru',
-            // 'tingkatans.tingkat_ke',
-            // 'jurusans.nama_jurusan',
-            // 'kelas.nama_kelas',
         ])
         ->first();
 
@@ -195,24 +158,12 @@ class AdminGuruController extends Controller
 
         $file_path = Guru::where('id', $id)->value('foto_profile');
 
-        // if (Storage::exists($file_path)) {
-        //     Storage::delete($file_path);
-        //     $berkas = $request->file('foto_profile');
-        //     $nama = $berkas->getClientOriginalName();
-        // }
-        // elseif ($request->hasFile('foto_profile')) {
-        //     $berkas = $request->file('foto_profile');
-        //     $nama = $berkas->getClientOriginalName();
-        // }
-
         if ($request->hasFile('foto_profile')) {
             Storage::delete($file_path);
             $berkas = $request->file('foto_profile');
             $nama = $berkas->getClientOriginalName();
             $edit = $berkas->storeAs('gambar_profile_guru', $nama);
         } else {
-            // $berkas = $file_path;
-            // $nama = $berkas;
             $edit = $file_path;
         }
 
@@ -229,9 +180,6 @@ class AdminGuruController extends Controller
                 'alamat' => $request->alamat,
                 // 'kode_id' => $request->kode_id
             ]);
-
-            // $guru->removeRole('writer');
-            // $guru->assignRole($request->role);
 
             return response()->json([
                 'message' => 'Data Kelas berhasil di ubah',
