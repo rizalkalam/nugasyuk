@@ -7,6 +7,7 @@ use App\Models\Murid;
 use App\Models\Jadwal;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\JadwalResourceWali;
 
 class OrtuJadwalController extends Controller
 {
@@ -16,12 +17,23 @@ class OrtuJadwalController extends Controller
 
         // $data = Hari::select(['id', 'hari'])->get();
 
-        $data = Hari::orderBy('id', 'ASC')
+        $hari = Hari::orderBy('id', 'ASC')
         ->select(['id', 'hari'])->get();
+
+        // $foto = Jadwal::join('mapels', 'mapels.id', '=', 'jadwals.mapel_id')
+        // ->join('kodes', 'kodes.id', '=', 'mapels.kode_id')
+        // ->join('gurus', 'gurus.id', '=', 'kodes.guru_id')
+        // ->join('haris', 'haris.id', '=', 'jadwals.hari_id')
+        // ->orderBy('haris.id', 'ASC')
+        // ->select(['gurus.foto_profile'])->get();
+
+        $data = JadwalResourceWali::collection($hari);
+
+        $kelas_siswa = Murid::where('id', auth()->user()->siswa_id)->value('kelas_id');
 
         return response()->json([
             "success" => true,
-            "message" => "List Hari",
+            "message" => "List Jadwal",
             "data" => $data,
         ], 200);
     }
@@ -40,9 +52,13 @@ class OrtuJadwalController extends Controller
         ->where('haris.id', $id)
         ->select(['jadwals.id', 'gurus.foto_profile', 'gurus.nama_guru', 'kodes.nama_mapel', 'jams.waktu_mulai', 'jams.waktu_selesai'])->get();
 
+        $hari = Hari::where('id', $id)
+        ->select(['id', 'hari'])->value('hari');
+
         return response()->json([
             "success" => true,
             "message" => "Detail Jadwal Mapel Murid",
+            "hari" => $hari,
             "data" => $data,
         ], 200);
     }

@@ -6,26 +6,28 @@ use App\Models\Hari;
 use App\Models\Jadwal;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\JadwalResource;
 
 class MuridJadwalController extends Controller
 {
     public function index()
     {
-        $data = Hari::orderBy('id', 'ASC')
+        $hari = Hari::orderBy('id', 'ASC')
         ->select(['id', 'hari'])->get();
 
-        // $foto = Jadwal::join('mapels', 'mapels.id', '=', 'jadwals.mapel_id')
-        // ->join('kodes', 'kodes.id', '=', 'mapels.kode_id')
-        // ->join('gurus', 'gurus.id', '=', 'kodes.guru_id')
-        // ->join('haris', 'haris.id', '=', 'jadwals.hari_id')
-        // ->orderBy('haris.id', 'ASC')
-        // ->get(['gurus.foto_profile']);
+        $foto = Jadwal::join('mapels', 'mapels.id', '=', 'jadwals.mapel_id')
+        ->join('kodes', 'kodes.id', '=', 'mapels.kode_id')
+        ->join('gurus', 'gurus.id', '=', 'kodes.guru_id')
+        ->join('haris', 'haris.id', '=', 'jadwals.hari_id')
+        ->orderBy('haris.id', 'ASC')
+        ->select(['gurus.foto_profile'])->get();
+
+        $data = JadwalResource::collection($hari);
 
         return response()->json([
             "success" => true,
-            "message" => "Jadwal Mapel Murid",
-            "data" => $data,
-            // "foto_profile" => $foto
+            "message" => "List Jadwal",
+            "data" => $data
         ], 200);
     }
 

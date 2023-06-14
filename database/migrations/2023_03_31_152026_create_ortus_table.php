@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('nama');
             $table->string('email');
             $table->string('password');
+            $table->string('foto_profile')->nullable();
             $table->foreignId('siswa_id');
             // $table->foreignId('role_id');
             $table->timestamps();
