@@ -14,10 +14,18 @@ class MuridJadwalController extends Controller
         $data = Hari::orderBy('id', 'ASC')
         ->select(['id', 'hari'])->get();
 
+        // $foto = Jadwal::join('mapels', 'mapels.id', '=', 'jadwals.mapel_id')
+        // ->join('kodes', 'kodes.id', '=', 'mapels.kode_id')
+        // ->join('gurus', 'gurus.id', '=', 'kodes.guru_id')
+        // ->join('haris', 'haris.id', '=', 'jadwals.hari_id')
+        // ->orderBy('haris.id', 'ASC')
+        // ->get(['gurus.foto_profile']);
+
         return response()->json([
             "success" => true,
             "message" => "Jadwal Mapel Murid",
             "data" => $data,
+            // "foto_profile" => $foto
         ], 200);
     }
 
