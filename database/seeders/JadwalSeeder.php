@@ -72,7 +72,42 @@ class JadwalSeeder extends Seeder
         Jadwal::create([
             'id'=>'9',
             'hari_id'=>1,
-            'jam_id'=>2,
+            'jam_id'=>1,
+            'mapel_id'=>8
+        ]);
+
+        Jadwal::create([
+            'id'=>'10',
+            'hari_id'=>2,
+            'jam_id'=>1,
+            'mapel_id'=>8
+        ]);
+
+        Jadwal::create([
+            'id'=>'11',
+            'hari_id'=>3,
+            'jam_id'=>1,
+            'mapel_id'=>8
+        ]);
+
+        Jadwal::create([
+            'id'=>'12',
+            'hari_id'=>4,
+            'jam_id'=>1,
+            'mapel_id'=>8
+        ]);
+
+        Jadwal::create([
+            'id'=>'13',
+            'hari_id'=>5,
+            'jam_id'=>1,
+            'mapel_id'=>8
+        ]);
+
+        Jadwal::create([
+            'id'=>'14',
+            'hari_id'=>6,
+            'jam_id'=>1,
             'mapel_id'=>8
         ]);
     }
