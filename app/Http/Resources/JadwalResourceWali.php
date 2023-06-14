@@ -28,6 +28,7 @@ class JadwalResourceWali extends JsonResource
         ->select(['gurus.foto_profile'])->get();
 
         return [
+            'id'=>$this->id,
             'hari' => $this->hari,
             'detail' => $foto
             // 'links' => [

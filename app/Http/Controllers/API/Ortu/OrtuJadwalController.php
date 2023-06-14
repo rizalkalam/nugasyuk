@@ -57,7 +57,7 @@ class OrtuJadwalController extends Controller
 
         return response()->json([
             "success" => true,
-            "message" => "Detail Jadwal Mapel Murid",
+            "message" => "Detail Jadwal",
             "hari" => $hari,
             "data" => $data,
         ], 200);
