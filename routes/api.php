@@ -94,6 +94,7 @@ Route::middleware('auth:admin')->group(function(){
         // Route asset admin
         Route::get('/asset', [AdminAssetController::class, 'index']);
         Route::post('/asset', [AdminAssetController::class, 'buat_asset']);
+        Route::delete('/asset/{id}', [AdminAssetController::class, 'hapus_asset']);
 
         // Route kode admin
         Route::post('/kode/{id}', [AdminGuruController::class, 'tambah_kode']);
@@ -181,6 +182,7 @@ Route::middleware('auth:ortu')->group(function(){
 
         // Route Tugas Ortu
         Route::get('/tugas', [OrtuTugasController::class, 'tugas']);
+        Route::get('/tugas/{id}', [OrtuTugasController::class, 'detail']);
 
         // Route Jadwal Ortu
         Route::get('/jadwal', [OrtuJadwalController::class, 'index']);
