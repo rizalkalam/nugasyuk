@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Kode;
+use App\Models\Asset;
 use App\Models\Kelas;
 use App\Models\Tugas;
 use App\Models\Materi;
@@ -32,6 +33,11 @@ class Mapel extends Model
     public function kode()
     {
         return $this->belongsTo(Kode::class);
+    }
+
+    public function asset()
+    {
+        return $this->belongsTo(Asset::class);
     }
 
 }

@@ -15,6 +15,7 @@ class AdminMapelController extends Controller
         $nama_mapel = request('nama_mapel', null);
         $jurusan = request('jurusan', null);
         $data = Mapel::join('kodes', 'kodes.id', '=', 'mapels.kode_id')
+        ->join('assets', 'assets.id', '=', 'mapels.asset_id')
         ->join('gurus', 'gurus.id', '=', 'kodes.guru_id')
         ->join('kelas', 'kelas.id', '=', 'mapels.kelas_id')
         ->join('tingkatans', 'tingkatans.id', '=', 'kelas.tingkatan_id')
@@ -34,7 +35,8 @@ class AdminMapelController extends Controller
             'gurus.nama_guru',
             'tingkatans.tingkat_ke',
             'jurusans.nama_jurusan',
-            'kelas.nama_kelas'
+            'kelas.nama_kelas',
+            'assets.file_asset'
         ])->get();
 
         return response()->json([
@@ -49,13 +51,13 @@ class AdminMapelController extends Controller
         $validator = Validator::make($request->all(),[
             'kode_id' => 'required',
             'kelas_id' => 'required',
-            'status_mapel' => 'required'
+            'asset_id' => 'required'
         ]);
 
         $data = Mapel::create([
             'kode_id' => $request->kode_id,
             'kelas_id' => $request->kelas_id,
-            'status_mapel' => $request->status_mapel
+            'asset_id' => $request->asset_id
         ]);
 
         return response()->json([
@@ -69,7 +71,7 @@ class AdminMapelController extends Controller
         $validator = Validator::make($request->all(),[
             'kode_id' => 'required',
             'kelas_id' => 'required',
-            'status_mapel' => 'required'
+            'asset_id' => 'required'
         ]);
 
         if ($validator->fails()) {
@@ -86,7 +88,7 @@ class AdminMapelController extends Controller
             $mapel->update([
                 'kode_id' => $request->kode_id,
                 'kelas_id' => $request->kelas_id,
-                'status_mapel' => $request->status_mapel
+                'asset_id' => $request->asset_id
             ]);
 
             return response()->json([

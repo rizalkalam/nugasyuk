@@ -45,5 +45,50 @@ class AdminSeeder extends Seeder
             'id'=>'5',
             'file_asset'=>'assets/asset-5.svg'
         ]);
+
+        Asset::create([
+            'id'=>'6',
+            'file_asset'=>'assets/asset-6.svg'
+        ]);
+
+        Asset::create([
+            'id'=>'7',
+            'file_asset'=>'assets/asset-7.svg'
+        ]);
+
+        Asset::create([
+            'id'=>'8',
+            'file_asset'=>'assets/asset-8.svg'
+        ]);
+
+        Asset::create([
+            'id'=>'9',
+            'file_asset'=>'assets/asset-9.svg'
+        ]);
+
+        Asset::create([
+            'id'=>'10',
+            'file_asset'=>'assets/asset-10.svg'
+        ]);
+
+        Asset::create([
+            'id'=>'11',
+            'file_asset'=>'assets/asset-11.svg'
+        ]);
+
+        Asset::create([
+            'id'=>'12',
+            'file_asset'=>'assets/asset-12.svg'
+        ]);
+
+        Asset::create([
+            'id'=>'13',
+            'file_asset'=>'assets/asset-13.svg'
+        ]);
+
+        Asset::create([
+            'id'=>'14',
+            'file_asset'=>'assets/asset-14.svg'
+        ]);
     }
 }
