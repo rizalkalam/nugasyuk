@@ -15,15 +15,12 @@ return new class extends Migration
             $table->id();
             $table->string('niy')->unique();
             $table->string('nama_guru');
-            $table->string('email');
+            $table->string('email')->unique();
             $table->string('password');
             $table->string('foto_profile');
             $table->string('alamat');
             $table->string('nomor_tlp');
             $table->foreignId('kode_id')->nullable()->default(null);
-            // $table->string('konfirmasi')->nullable();
-            // $table->foreignId('role_id');
-            // $table->foreignId('mapel2_id')->nullable();
             $table->timestamps();
         });
     }

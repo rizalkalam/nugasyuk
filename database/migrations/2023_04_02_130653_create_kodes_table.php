@@ -13,9 +13,8 @@ return new class extends Migration
     {
         Schema::create('kodes', function (Blueprint $table) {
             $table->id();
-            $table->string('kode_guru');
+            $table->string('kode_guru')->unique();
             $table->string('nama_mapel');
-            // $table->string('nama_guru');
             $table->foreignId('guru_id');
             $table->enum('status_mapel', ['produktif', 'normadaf', 'bk']);
             $table->timestamps();

@@ -73,7 +73,6 @@ return [
         // public_path('storage') => storage_path('app/public'),
         public_path('gambar_profile_guru') => storage_path('app/gambar_profile_guru'),
         public_path('gambar_profile_siswa') => storage_path('app/gambar_profile_siswa'),
-        public_path('gambar_profile_ortu') => storage_path('app/gambar_profile_ortu'),
         public_path('assets') => storage_path('app/assets'),
         public_path('file') => storage_path('app/file'),
     ],
