@@ -20,6 +20,8 @@ class OrtuTugasController extends Controller
         $soal = request('soal', null);
         $data = Pengumpulan::join('tugas', 'tugas.id', '=', 'pengumpulans.tugas_id')
         ->join('mapels', 'mapels.id', '=', 'tugas.mapel_id')
+        ->join('kodes', 'kodes.id', '=', 'mapels.kode_id')
+        ->join('gurus', 'gurus.id', '=', 'kodes.guru_id')
         ->join('kelas', 'kelas.id', '=', 'mapels.kelas_id')
         ->where('pengumpulans.murid_id', '=', auth()->user()->siswa_id)
         ->where('kelas.id', '=', $kelas_id)
@@ -32,7 +34,7 @@ class OrtuTugasController extends Controller
         ->when($soal, function ($query) use ($soal){
             $query->where('tugas.soal', 'LIKE', '%' . $soal . '%');
         })
-        ->select(['status', 'tugas.id', 'nama_tugas', 'tugas.soal', 'tugas.date', 'tugas.deadline'])->get();
+        ->select(['status', 'tugas.id', 'gurus.nama_guru', 'nama_tugas', 'tugas.soal', 'tugas.date', 'tugas.deadline'])->get();
 
         return response()->json([
             "success" => true,
@@ -53,7 +55,7 @@ class OrtuTugasController extends Controller
             ->join('gurus', 'gurus.id', '=', 'kodes.guru_id')
             ->where('tugas.id', $id)
             ->where('pengumpulans.murid_id', auth()->user()->siswa_id)
-        ->get(['tugas.id', 'nama_tugas', 'soal', 'pengumpulans.status', 'tugas.date', 'tugas.deadline']);
+        ->get(['tugas.id', 'gurus.nama_guru', 'nama_tugas', 'soal', 'pengumpulans.status', 'tugas.date', 'tugas.deadline']);
 
         return response()->json([
             "success" => true,

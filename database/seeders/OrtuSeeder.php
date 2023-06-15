@@ -18,7 +18,6 @@ class OrtuSeeder extends Seeder
             'nama'=>'Hermanto',
             'email'=>'hermannn19@gmail.com',
             'password'=>bcrypt('herman123'),
-            'foto_profile'=>'gambar_profile_guru/gambar1.jpg',
             'siswa_id'=>1
         ]);
 
@@ -27,7 +26,6 @@ class OrtuSeeder extends Seeder
             'nama'=>'Sri Ningsih',
             'email'=>'busri33@gmail.com',
             'password'=>bcrypt('busri123'),
-            'foto_profile'=>'gambar_profile_guru/gambar1.jpg',
             'siswa_id'=>2
         ]);
 
@@ -35,7 +33,6 @@ class OrtuSeeder extends Seeder
             'nama'=>'Didit Hartanto',
             'email'=>'didit@gmail.com',
             'password'=>bcrypt('didit123'),
-            'foto_profile'=>'gambar_profile_guru/gambar1.jpg',
             'siswa_id'=>3
         ]);
     }

@@ -14,11 +14,9 @@ return new class extends Migration
         Schema::create('ortus', function (Blueprint $table) {
             $table->id();
             $table->string('nama');
-            $table->string('email');
+            $table->string('email')->unique();
             $table->string('password');
-            $table->string('foto_profile')->nullable();
             $table->foreignId('siswa_id');
-            // $table->foreignId('role_id');
             $table->timestamps();
         });
     }
