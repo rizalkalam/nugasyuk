@@ -13,9 +13,10 @@ class MuridMapelController extends Controller
     public function index()
     {
         $mapel = Mapel::join('kodes', 'kodes.id', '=', 'mapels.kode_id')
+        ->join('assets', 'assets.id', '=', 'mapels.asset_id')
         ->join('gurus', 'gurus.id', '=', 'kodes.guru_id')
         ->where('kelas_id', auth()->user()->kelas_id)
-        ->select(['mapels.id', 'kodes.nama_mapel', 'gurus.nama_guru', 'mapels.kelas_id'])->get();
+        ->select(['mapels.id', 'kodes.nama_mapel', 'gurus.nama_guru', 'mapels.kelas_id', 'assets.file_asset'])->get();
 
         return response()->json([
             "success" => true,

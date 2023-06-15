@@ -116,7 +116,7 @@ class AdminGuruController extends Controller
         ]);
 
         $berkas = $request->file('foto_profile');
-        $nama = $berkas->getClientOriginalName();
+        $nama = time().'-'.$berkas->getClientOriginalName();
 
         $data = Guru::create([
             'nama_guru' => $request->nama_guru,
@@ -161,7 +161,7 @@ class AdminGuruController extends Controller
         if ($request->hasFile('foto_profile')) {
             Storage::delete($file_path);
             $berkas = $request->file('foto_profile');
-            $nama = $berkas->getClientOriginalName();
+            $nama = time().'-'.$berkas->getClientOriginalName();
             $edit = $berkas->storeAs('gambar_profile_guru', $nama);
         } else {
             $edit = $file_path;

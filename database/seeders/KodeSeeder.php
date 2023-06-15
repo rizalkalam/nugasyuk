@@ -17,7 +17,7 @@ class KodeSeeder extends Seeder
         Kode::create([
             'id'=>'1',
            'kode_guru'=>'JA1',
-           'nama_mapel'=>'Web Programming',
+           'nama_mapel'=>'Web Dev',
            'status_mapel'=>'produktif',
            'guru_id'=>1,
         ]);
@@ -33,7 +33,7 @@ class KodeSeeder extends Seeder
         Kode::create([
             'id'=>'3',
             'kode_guru'=>'RZ2',
-            'nama_mapel'=>'Desktop',
+            'nama_mapel'=>'Desktop Dev',
             'status_mapel'=>'produktif',
             'guru_id'=>2,
         ]);
@@ -65,7 +65,7 @@ class KodeSeeder extends Seeder
         Kode::create([
              'id'=>'7',
             'kode_guru'=>'HS1',
-            'nama_mapel'=>"Baca Tulis Al-Qur'an",
+            'nama_mapel'=>"PAI",
             'status_mapel'=>'normadaf',
             'guru_id'=>6,
         ]);
