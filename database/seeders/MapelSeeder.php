@@ -26,7 +26,7 @@ class MapelSeeder extends Seeder
             'id'=>'2',
             'kode_id'=>2,
             'kelas_id'=>1,
-            'asset_id'=>1,
+            'asset_id'=>12,
         //    'nama_mapel'=>'ICT',
             // 'asset_id'=>1,
         ]);
@@ -35,7 +35,7 @@ class MapelSeeder extends Seeder
             'id'=>'3',
             'kode_id'=>3,
             'kelas_id'=>1,
-            'asset_id'=>2,
+            'asset_id'=>13,
         //    'nama_mapel'=>'ICT',
             // 'asset_id'=>1,
         ]);
@@ -44,7 +44,7 @@ class MapelSeeder extends Seeder
             'id'=>'4',
             'kode_id'=>4,
             'kelas_id'=>1,
-            'asset_id'=>3,
+            'asset_id'=>10,
         //    'nama_mapel'=>'Science',
             // 'asset_id'=>2,
         ]);
@@ -53,7 +53,7 @@ class MapelSeeder extends Seeder
             'id'=>'5',
             'kode_id'=>5,
             'kelas_id'=>1,
-            'asset_id'=>5,
+            'asset_id'=>1,
             // 'nama_mapel'=>'Math',
             // 'asset_id'=>2,
         ]);
@@ -98,7 +98,7 @@ class MapelSeeder extends Seeder
             'id'=>'10',
             'kode_id'=>8,
             'kelas_id'=>1,
-            'asset_id'=>10,
+            'asset_id'=>1,
             // 'status_mapel'=>'normadaf'
             // 'nama_mapel'=>'Math',
             // 'asset_id'=>2,
@@ -108,7 +108,7 @@ class MapelSeeder extends Seeder
             'id'=>'11',
             'kode_id'=>9,
             'kelas_id'=>1,
-            'asset_id'=>11,
+            'asset_id'=>5,
             // 'status_mapel'=>'normadaf'
             // 'nama_mapel'=>'Math',
             // 'asset_id'=>2,

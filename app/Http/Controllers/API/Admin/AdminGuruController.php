@@ -109,39 +109,55 @@ class AdminGuruController extends Controller
             'email' => 'required',
             'password' => 'required',
             'niy' => 'required',
-            'foto_profile' => 'required|mimes:jpeg,png,jpg',
-            'nomor_tlp' => 'required|number',
+            'foto_profile' => 'required|file|size:2048|mimes:jpeg,png,jpg',
+            'nomor_tlp' => 'required',
             'alamat' => 'required'
             // 'mapel_id' => 'required'
         ]);
 
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => $validator->errors(),
+                'data' => [],
+            ]);
+        }
+
         $berkas = $request->file('foto_profile');
         $nama = time().'-'.$berkas->getClientOriginalName();
 
-        $data = Guru::create([
-            'nama_guru' => $request->nama_guru,
-            'email' => $request->email, 
-            'password' => Hash::make($request->password),
-            'niy' => $request->niy,
-            'foto_profile' => $berkas->storeAs('gambar_profile_guru', $nama),
-            'nomor_tlp' => $request->nomor_tlp,
-            'alamat' => $request->alamat,
-            // 'kode_id' => $request->kode_id
-        ]);
-
-        $data->assignRole($request->role);
-
-        return response()->json([
-            'message' => 'Data Guru baru berhasil dibuat',
-            'data' => $data,
-        ]);
+        try {
+            $data = Guru::create([
+                'nama_guru' => $request->nama_guru,
+                'email' => $request->email, 
+                'password' => Hash::make($request->password),
+                'niy' => $request->niy,
+                'foto_profile' => $berkas->storeAs('gambar_profile_guru', $nama),
+                'nomor_tlp' => $request->nomor_tlp,
+                'alamat' => $request->alamat,
+                // 'kode_id' => $request->kode_id
+            ]);
+    
+            $data->assignRole($request->role);
+    
+            return response()->json([
+                'message' => 'Data Guru baru berhasil dibuat',
+                'data' => $data,
+            ]);   
+        } catch (\Throwable $th) {
+            //throw $th;
+            return response()->json([
+                'message' => 'failed',
+                'errors' => $th->getMessage(),
+            ]);
+        }
     }
 
     public function edit_guru(Request $request, $id)
     {
         $validator = Validator::make($request->all(),[
             'email' => 'email',
-            'foto_profile' => 'mimes:jpeg,png,jpg',
+            'foto_profile' => 'mimes:jpeg,png,jpg|file|size:2048',
             'nama_guru' => 'required',
             'password' => 'required',
             'niy' => 'required',
