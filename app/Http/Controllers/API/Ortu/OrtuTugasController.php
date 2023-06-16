@@ -55,7 +55,7 @@ class OrtuTugasController extends Controller
             ->join('gurus', 'gurus.id', '=', 'kodes.guru_id')
             ->where('tugas.id', $id)
             ->where('pengumpulans.murid_id', auth()->user()->siswa_id)
-        ->get(['tugas.id', 'gurus.nama_guru', 'nama_tugas', 'soal', 'pengumpulans.status', 'tugas.date', 'tugas.deadline']);
+        ->get(['tugas.id', 'gurus.nama_guru', 'kodes.nama_mapel', 'nama_tugas', 'soal', 'pengumpulans.status', 'tugas.date', 'tugas.deadline']);
 
         return response()->json([
             "success" => true,

@@ -86,7 +86,7 @@ class AdminMuridController extends Controller
             'nama_siswa'=> 'required',
             'email'=> 'required',
             'password'=> 'required',
-            'foto_profile'=> 'required|mimes:jpeg,png,jpg|file|size:2048',
+            'foto_profile'=> 'required|mimes:jpeg,png,jpg|file|max:2048',
             'kelas_id'=> 'required',
 
             // validasi input wali murid
@@ -147,7 +147,7 @@ class AdminMuridController extends Controller
             'nama_siswa'=> 'required',
             'email'=> 'required',
             'password'=> 'required',
-            'foto_profile'=> 'mimes:jpeg,png,jpg|file|size:2048',
+            'foto_profile'=> 'mimes:jpeg,png,jpg|file|max:2048',
             'kelas_id'=> 'required',
 
              // validasi input wali murid

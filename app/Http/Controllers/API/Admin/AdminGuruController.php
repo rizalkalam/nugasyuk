@@ -109,7 +109,7 @@ class AdminGuruController extends Controller
             'email' => 'required',
             'password' => 'required',
             'niy' => 'required',
-            'foto_profile' => 'required|file|size:2048|mimes:jpeg,png,jpg',
+            'foto_profile' => 'required|file|max:2048|mimes:jpeg,png,jpg',
             'nomor_tlp' => 'required',
             'alamat' => 'required'
             // 'mapel_id' => 'required'
@@ -157,7 +157,7 @@ class AdminGuruController extends Controller
     {
         $validator = Validator::make($request->all(),[
             'email' => 'email',
-            'foto_profile' => 'mimes:jpeg,png,jpg|file|size:2048',
+            'foto_profile' => 'mimes:jpeg,png,jpg|file|max:2048',
             'nama_guru' => 'required',
             'password' => 'required',
             'niy' => 'required',
