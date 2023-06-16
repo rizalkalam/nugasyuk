@@ -38,7 +38,9 @@ class AdminAssetController extends Controller
         $nama_vector = $file_vector->getClientOriginalName();
 
         $data = Asset::create([
-            'file_asset' => $berkas->storeAs('assets', $nama_asset)
+            'file_asset' => $file_asset->storeAs('assets', $nama_asset),
+            'file_vector' => $file_vector->storeAs('assets', $nama_vector),
+            'color' => $request->color
         ]);
 
         return response()->json([

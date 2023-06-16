@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Tugas;
+use Illuminate\Support\Carbon;
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
@@ -44,8 +45,8 @@ class TugasSeeder extends Seeder
             'id'=>'3',
             'nama_tugas'=>"Baca Tulis Al-Qur'an",
             'soal'=>'Bacalah surat Al-Kahfi ayat 1-20',
-            'date'=>'2023-05-04',
-            'deadline'=>'2023-05-05',
+            'date'=>Carbon::now()->format('Y-m-d'),
+            'deadline'=>'2023-07-10',
             'description'=>'Berikan bukti video saat membaca',
             // 'status'=>1,
             'link'=>null,

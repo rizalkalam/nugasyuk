@@ -237,6 +237,7 @@ class KbmController extends Controller
                 'tahun_mulai'=> $request->tahun_mulai,
                 'tahun_selesai'=> $request->tahun_selesai,
                 'file'=> $berkas->storeAs('file', $nama),
+                // 'tanggal_dibuat'=>'2023-06-15',
                 // 'link'=> $request->link,
             ]);
     
@@ -321,7 +322,7 @@ class KbmController extends Controller
     public function buat_tugas(Request $request, $kelas_id, $mapel_id)
     {
         // $mapel = request ('id', null);
-        $mapel = Tugas::join('mapels', 'mapels.id', '=', 'materis.mapel_id')
+        $mapel = Tugas::join('mapels', 'mapels.id', '=', 'tugas.mapel_id')
                         ->join('kodes', 'kodes.id', '=', 'mapels.kode_id')
                         ->join('kelas', 'kelas.id', '=', 'mapels.kelas_id')
                         ->where('kodes.guru_id', '=', auth()->user()->id)
@@ -349,6 +350,7 @@ class KbmController extends Controller
                 'description'=> $request->description,
                 'date'=> Carbon::now()->format('Y-m-d'),
                 'deadline'=> $request->deadline,
+                // 'date'=>'2023-06-15',
                 // 'link'=> 'required',
                 // 'file'=> 'required'
             ]);

@@ -27,6 +27,9 @@ use App\Http\Controllers\API\Admin\AdminBerandaController;
 use App\Http\Controllers\API\Admin\AdminProfileController;
 use App\Http\Controllers\API\Murid\MuridBerandaController;
 use App\Http\Controllers\API\Murid\MuridProfileController;
+use App\Http\Controllers\API\Guru\GuruNotificationController;
+use App\Http\Controllers\API\Ortu\OrtuNotificationController;
+use App\Http\Controllers\API\Murid\MuridNotificationController;
 use App\Http\Controllers\API\Konseling\KonselingBerandaController;
 
 /*
@@ -109,9 +112,12 @@ Route::group(["middleware" => ['GuruBiasa', 'role:guru_biasa'], "prefix"=>"guru"
     // Route Beranda Guru
     Route::get('/dataguru', [BerandaController::class, 'data_guru']);
 
-    //profile
+    // profile
     Route::get('/profile', [ProfileController::class, 'index']);
     Route::post('/ubahpassword', [ProfileController::class, 'resetpassword']);
+
+    // notifikasi
+    Route::get('/notifikasi', [GuruNotificationController::class, 'index']);
 
     Route::get('/kbm', [KbmController::class, 'kbm']);
     
@@ -147,6 +153,9 @@ Route::middleware('auth:murid')->group(function(){
         Route::get('/profile', [MuridProfileController::class, 'index']);
         Route::post('/ubahpassword', [MuridProfileController::class, 'resetpassword']);
 
+        // notifikasi
+        Route::get('/notifikasi', [MuridNotificationController::class, 'index']);
+
         // Route Beranda Murid
         Route::get('/datamurid', [MuridBerandaController::class, 'data_murid']);
 
@@ -176,6 +185,9 @@ Route::middleware('auth:ortu')->group(function(){
         // profile ortu
         Route::get('/profile', [OrtuProfileController::class, 'index']);
         Route::post('/ubahpassword', [OrtuProfileController::class, 'resetpassword']);
+
+        // notifikasi
+        Route::get('/notifikasi', [OrtuNotificationController::class, 'index']);
 
         // Route Beranda Ortu
         Route::get('/dataortu', [OrtuBerandaController::class, 'data_ortu']);
