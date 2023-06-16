@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\API\Guru;
+namespace App\Http\Controllers\API\Murid;
 
 use App\Models\Tugas;
 use App\Models\Materi;
@@ -8,14 +8,14 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use App\Http\Controllers\Controller;
 
-class GuruNotificationController extends Controller
+class MuridNotificationController extends Controller
 {
     public function index()
     {
         $tugas_sekarang = Tugas::join('mapels', 'mapels.id', '=', 'tugas.mapel_id')
         ->join('kodes', 'kodes.id', '=', 'mapels.kode_id')
         ->join('gurus', 'gurus.id', '=', 'kodes.guru_id')
-        ->where('gurus.id', auth()->user()->id)
+        ->where('mapels.kelas_id', auth()->user()->kelas_id)
         ->whereDate('date', '=', Carbon::now()->format('Y-m-d'))
         ->select([
             'tugas.id',
@@ -26,7 +26,7 @@ class GuruNotificationController extends Controller
         $tugas_kemarin = Tugas::join('mapels', 'mapels.id', '=', 'tugas.mapel_id')
         ->join('kodes', 'kodes.id', '=', 'mapels.kode_id')
         ->join('gurus', 'gurus.id', '=', 'kodes.guru_id')
-        ->where('gurus.id', auth()->user()->id)
+        ->where('mapels.kelas_id', auth()->user()->kelas_id)
         ->whereDate('date', '=', Carbon::yesterday()->format('Y-m-d'))
         ->select([
             'tugas.id',
@@ -37,7 +37,7 @@ class GuruNotificationController extends Controller
         $materi_sekarang = Materi::join('mapels', 'mapels.id', '=', 'materis.mapel_id')
         ->join('kodes', 'kodes.id', '=', 'mapels.kode_id')
         ->join('gurus', 'gurus.id', '=', 'kodes.guru_id')
-        ->where('gurus.id', auth()->user()->id)
+        ->where('mapels.kelas_id', auth()->user()->kelas_id)
         ->whereDate('tanggal_dibuat', '=', Carbon::now()->format('Y-m-d'))
         ->select([
             'materis.id',
@@ -48,7 +48,7 @@ class GuruNotificationController extends Controller
         $materi_kemarin = Materi::join('mapels', 'mapels.id', '=', 'materis.mapel_id')
         ->join('kodes', 'kodes.id', '=', 'mapels.kode_id')
         ->join('gurus', 'gurus.id', '=', 'kodes.guru_id')
-        ->where('gurus.id', auth()->user()->id)
+        ->where('mapels.kelas_id', auth()->user()->kelas_id)
         ->whereDate('tanggal_dibuat', '=', Carbon::yesterday()->format('Y-m-d'))
         ->select([
             'materis.id',

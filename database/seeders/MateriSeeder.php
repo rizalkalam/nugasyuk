@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Materi;
+use Illuminate\Support\Carbon;
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
@@ -95,6 +96,30 @@ class MateriSeeder extends Seeder
            'tahun_mulai'=>'2023',
            'tahun_selesai'=>'2024',
            'mapel_id'=>3
+        ]);
+
+        Materi::create([
+            'id'=>'8',
+            'nama_materi'=>"Keutamaan membaca Al-Qur'an",
+            'isi'=>'lorem ipsum dolor sit amet',
+            'tanggal_dibuat'=>Carbon::yesterday()->format('Y-m-d'),
+            'tahun_mulai'=>'2022',
+            'tahun_selesai'=>'2023',
+            'link'=>null,
+            'file'=>null,
+            'mapel_id'=>7
+        ]);
+
+        Materi::create([
+            'id'=>'9',
+            'nama_materi'=>'Keimanan',
+            'isi'=>'lorem ipsum dolor sit amet',
+            'tanggal_dibuat'=>Carbon::now()->format('Y-m-d'),
+            'tahun_mulai'=>'2022',
+            'tahun_selesai'=>'2023',
+            'link'=>null,
+            'file'=>null,
+            'mapel_id'=>7
         ]);
     }
 }
