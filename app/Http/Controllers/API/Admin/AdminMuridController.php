@@ -86,7 +86,7 @@ class AdminMuridController extends Controller
             'nama_siswa'=> 'required',
             'email'=> 'required',
             'password'=> 'required',
-            'foto_profile'=> 'required|mimes:jpeg,png,jpg',
+            'foto_profile'=> 'required|mimes:jpeg,png,jpg|file|size:2048',
             'kelas_id'=> 'required',
 
             // validasi input wali murid
@@ -96,31 +96,47 @@ class AdminMuridController extends Controller
             'siswa_id'=>'required'
         ]);
 
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => $validator->errors(),
+                'data' => [],
+            ]);
+        }
+
         $berkas = $request->file('foto_profile');
         $nama = $berkas->getClientOriginalName();
 
-        $data = Murid::create([
-            'nis' => $request->nis,
-            'nama_panggilan'=>$request->nama_panggilan,
-            'nama_siswa' => $request->nama_siswa,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'foto_profile' => $berkas->storeAs('gambar_profile_siswa',$nama),
-            'kelas_id' => $request->kelas_id
-        ]);
-
-        $wali_murid = Ortu::create([
-            'nama'=>$request->nama,
-            'email'=>$request->email_wali,
-            'password'=>Hash::make($request->password_wali),
-            'siswa_id'=>Murid::latest()->first()->id
-        ]);
-
-        return response()->json([
-            'message' => 'Data Siswa dan Wali Murid baru berhasil dibuat',
-            'siswa' => $data,
-            'wali_murid' => $wali_murid
-        ]);
+        try {
+            $data = Murid::create([
+                'nis' => $request->nis,
+                'nama_panggilan'=>$request->nama_panggilan,
+                'nama_siswa' => $request->nama_siswa,
+                'email' => $request->email,
+                'password' => Hash::make($request->password),
+                'foto_profile' => $berkas->storeAs('gambar_profile_siswa',$nama),
+                'kelas_id' => $request->kelas_id
+            ]);
+    
+            $wali_murid = Ortu::create([
+                'nama'=>$request->nama,
+                'email'=>$request->email_wali,
+                'password'=>Hash::make($request->password_wali),
+                'siswa_id'=>Murid::latest()->first()->id
+            ]);
+    
+            return response()->json([
+                'message' => 'Data Siswa dan Wali Murid baru berhasil dibuat',
+                'siswa' => $data,
+                'wali_murid' => $wali_murid
+            ]);
+        } catch (\Throwable $th) {
+            //throw $th;
+            return response()->json([
+                'message' => 'failed',
+                'errors' => $th->getMessage(),
+            ]);
+        }
     }
 
     public function edit_murid(Request $request, $id)
@@ -131,7 +147,7 @@ class AdminMuridController extends Controller
             'nama_siswa'=> 'required',
             'email'=> 'required',
             'password'=> 'required',
-            'foto_profile'=> 'mimes:jpeg,png,jpg',
+            'foto_profile'=> 'mimes:jpeg,png,jpg|file|size:2048',
             'kelas_id'=> 'required',
 
              // validasi input wali murid

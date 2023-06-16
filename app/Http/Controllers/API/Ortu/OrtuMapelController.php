@@ -35,10 +35,12 @@ class OrtuMapelController extends Controller
         ->value('kelas_id');
 
         $mapel = Mapel::join('kodes', 'kodes.id', '=', 'mapels.kode_id')
+        ->join('assets', 'assets.id', '=', 'mapels.asset_id')
         ->join('gurus', 'gurus.id', '=', 'kodes.guru_id')
         ->where('mapels.id', $id)
         ->where('kelas_id', $kelas_murid)
-        ->select(['mapels.id', 'kodes.nama_mapel', 'gurus.nama_guru'])->get();
+        ->select(['mapels.id', 'kodes.nama_mapel', 'gurus.foto_profile', 'gurus.nama_guru', 'assets.color', 'assets.file_vector'])
+        ->get();
 
         return response()->json([
             "success" => true,

@@ -14,6 +14,8 @@ return new class extends Migration
         Schema::create('assets', function (Blueprint $table) {
             $table->id();
             $table->string('file_asset');
+            $table->string('file_vector');
+            $table->string('color');
             $table->timestamps();
         });
     }
