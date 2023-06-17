@@ -16,17 +16,18 @@ class AdminMuridController extends Controller
     public function index()
     {
         $jurusan = request('jurusan', null);
-        $jurusan_id = Kelas::join('jurusans', 'jurusans.id', '=', 'kelas.jurusan_id')
-        ->when($jurusan, function ($query) use ($jurusan){
-                return $query->whereHas('jurusan', function ($query) use ($jurusan) {
-                    $query->where('id', $jurusan);
-                });
-            })->select(['jurusans.id'])->first();
+        // $jurusan_id = Kelas::join('jurusans', function ($query) use ($jurusan){
+        //     $query->on('jurusans.id', '=', 'kelas.jurusan_id')
+        //           ->where('jurusans.id', $jurusan);
+        // })->value('jurusans.id');
 
         $data = Murid::join('kelas', 'kelas.id', '=', 'murids.kelas_id')
         ->join('tingkatans', 'tingkatans.id', '=', 'kelas.tingkatan_id')
         ->join('jurusans', 'jurusans.id', '=', 'kelas.jurusan_id')
-        ->where('jurusans.id', $jurusan_id->id)
+        ->when($jurusan, function ($query) use ($jurusan){
+            $query->where('jurusans.id', $jurusan);
+        })
+        ->orderBy('murids.id', 'ASC')
         ->select(['murids.id', 'murids.nis', 'murids.foto_profile', 'murids.nama_siswa', 'murids.email', 'jurusans.nama_jurusan'])->get();
 
         $jumlah_murid = count(Murid::all());
@@ -48,6 +49,7 @@ class AdminMuridController extends Controller
         ->select([
             'murids.id',
             'murids.nis',
+            'murids.nama_panggilan',
             'murids.nama_siswa',
             'murids.email',
             // 'alamat',
@@ -62,6 +64,7 @@ class AdminMuridController extends Controller
 
         $data = [
             'id'=>$siswa->id,
+            'nama_panggilan'=>$siswa->nama_panggilan,
             'nama_siswa'=>$siswa->nama_siswa,
             'email'=>$siswa->email,
             'tingkat_ke'=>$siswa->tingkat_ke,
@@ -223,7 +226,7 @@ class AdminMuridController extends Controller
         $murid->delete();
         return response()->json([
             'success' => true,
-            'message' => 'materi berhasil di hapus',
+            'message' => 'Data murid berhasil di hapus',
         ]);
     }
 }
