@@ -35,5 +35,19 @@ class OrtuSeeder extends Seeder
             'password'=>bcrypt('didit123'),
             'siswa_id'=>3
         ]);
+
+        Ortu::create([
+            'nama'=>'Nugroho Santosos',
+            'email'=>'nugroho@gmail.com',
+            'password'=>bcrypt('nugroho123'),
+            'siswa_id'=>4
+        ]);
+
+        Ortu::create([
+            'nama'=>'Firmansyah',
+            'email'=>'firman@gmail.com',
+            'password'=>bcrypt('firman123'),
+            'siswa_id'=>5
+        ]);
     }
 }
