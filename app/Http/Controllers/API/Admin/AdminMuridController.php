@@ -52,7 +52,7 @@ class AdminMuridController extends Controller
             'murids.nama_panggilan',
             'murids.nama_siswa',
             'murids.email',
-            // 'alamat',
+            'murids.alamat',
             'jurusans.nama_jurusan',
             'kelas.nama_kelas',
             'tingkatans.tingkat_ke',
@@ -67,6 +67,7 @@ class AdminMuridController extends Controller
             'nama_panggilan'=>$siswa->nama_panggilan,
             'nama_siswa'=>$siswa->nama_siswa,
             'email'=>$siswa->email,
+            'alamat'=>$siswa->alamat,
             'tingkat_ke'=>$siswa->tingkat_ke,
             'jurusan'=>$siswa->nama_jurusan,
             'kelas'=>$siswa->nama_kelas,
@@ -89,6 +90,7 @@ class AdminMuridController extends Controller
             'nama_siswa'=> 'required',
             'email'=> 'required',
             'password'=> 'required',
+            'alamat'=>'required',
             'foto_profile'=> 'required|mimes:jpeg,png,jpg|file|max:2048',
             'kelas_id'=> 'required',
 
@@ -117,6 +119,7 @@ class AdminMuridController extends Controller
                 'nama_siswa' => $request->nama_siswa,
                 'email' => $request->email,
                 'password' => Hash::make($request->password),
+                'alamat'=> $request->alamat,
                 'foto_profile' => $berkas->storeAs('gambar_profile_siswa',$nama),
                 'kelas_id' => $request->kelas_id
             ]);
@@ -151,6 +154,7 @@ class AdminMuridController extends Controller
             'email'=> 'required',
             'password'=> 'required',
             'foto_profile'=> 'mimes:jpeg,png,jpg|file|max:2048',
+            'alamat'=> 'required',
             'kelas_id'=> 'required',
 
              // validasi input wali murid
@@ -188,6 +192,7 @@ class AdminMuridController extends Controller
                 'nama_siswa' => $request->nama_siswa,
                 'email' => $request->email,
                 'password' => Hash::make($request->password),
+                'alamat' => $request->alamat,
                 'foto_profile' => $berkas->storeAs('gambar_profile_siswa', $nama),
                 'kelas_id' => $request->kelas_id
             ]);
