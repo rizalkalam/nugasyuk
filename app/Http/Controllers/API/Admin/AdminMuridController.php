@@ -48,6 +48,7 @@ class AdminMuridController extends Controller
         ->where('murids.id', $id)
         ->select([
             'murids.id',
+            'murids.foto_profile',
             'murids.nis',
             'murids.nama_panggilan',
             'murids.nama_siswa',
