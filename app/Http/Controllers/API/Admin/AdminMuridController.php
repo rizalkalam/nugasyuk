@@ -65,6 +65,7 @@ class AdminMuridController extends Controller
 
         $data = [
             'id'=>$siswa->id,
+            'foto_profile'=>$siswa->foto_profile,
             'nama_panggilan'=>$siswa->nama_panggilan,
             'nama_siswa'=>$siswa->nama_siswa,
             'email'=>$siswa->email,
