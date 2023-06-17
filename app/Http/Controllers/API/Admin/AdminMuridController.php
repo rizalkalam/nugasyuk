@@ -100,7 +100,6 @@ class AdminMuridController extends Controller
             'nama'=>'required',
             'email'=>'required',
             'password'=>'required',
-            'siswa_id'=>'required'
         ]);
 
         if ($validator->fails()) {
