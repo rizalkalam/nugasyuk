@@ -81,10 +81,18 @@ class AdminKelasController extends Controller
     {
         $validator = Validator::make($request->all(),[
             'nama_kelas'=> 'required',
-            'guru_id'=> 'required',
-            'jurusan_id'=> 'required',
-            'tingkatan_id'=> 'required',
+            'wali_kelas'=> 'required',
+            'jurusan'=> 'required',
+            'tingkatan'=> 'required',
         ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => $validator->errors(),
+                'data' => [],
+            ]);
+        }
 
         $data = Kelas::create([
             'nama_kelas' => $request->nama_kelas,
@@ -103,9 +111,9 @@ class AdminKelasController extends Controller
     {
         $validator = Validator::make($request->all(),[
             'nama_kelas' => 'required',
-            'guru_id' => 'required',
-            'jurusan_id' => 'required',
-            'tingkatan_id' => 'required',
+            'wali_kelas' => 'required',
+            'jurusan' => 'required',
+            'tingkatan' => 'required',
         ]);
 
         if ($validator->fails()) {
@@ -123,7 +131,7 @@ class AdminKelasController extends Controller
                 'nama_kelas' => $request->nama_kelas,
                 'guru_id' => $request->wali_kelas,
                 'jurusan_id' => $request->jurusan,
-                'tingkatan_id' => $request->tingkatan
+                'tingkatan_id' => $request->tingkatan,
             ]);
 
             return response()->json([
