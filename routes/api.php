@@ -77,6 +77,7 @@ Route::middleware('auth:admin')->group(function(){
 
         // Route kelas admin
         Route::get('/kelas', [AdminKelasController::class, 'index']);
+        Route::get('/kelas/{id}', [AdminKelasController::class, 'detail_kelas']);
         Route::post('/kelas', [AdminKelasController::class, 'buat_kelas']);
         Route::post('/kelas/{id}', [AdminKelasController::class, 'edit_kelas']);
         Route::delete('/kelas/{id}', [AdminKelasController::class, 'hapus_kelas']);
