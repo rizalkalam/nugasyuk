@@ -112,7 +112,7 @@ class AdminMuridController extends Controller
         }
 
         $berkas = $request->file('foto_profile');
-        $nama = $berkas->getClientOriginalName();
+        $nama = time().'-'.$berkas->getClientOriginalName();
 
         try {
             $data = Murid::create([
@@ -176,13 +176,13 @@ class AdminMuridController extends Controller
 
         $file_path = Murid::where('id', $id)->value('foto_profile');
 
-        if (Storage::exists($file_path)) {
+        if ($request->hasFile('foto_profile')) {
             Storage::delete($file_path);
             $berkas = $request->file('foto_profile');
-            $nama = $berkas->getClientOriginalName();
+            $nama = time().'-'.$berkas->getClientOriginalName();
+            $edit = $berkas->storeAs('gambar_profile_siswa', $nama);
         } else {
-            $berkas = $request->file('foto_profile');
-            $nama = $berkas->getClientOriginalName();
+            $edit = $file_path;
         }
 
         try {
@@ -195,7 +195,7 @@ class AdminMuridController extends Controller
                 'email' => $request->email,
                 'password' => Hash::make($request->password),
                 'alamat' => $request->alamat,
-                'foto_profile' => $berkas->storeAs('gambar_profile_siswa', $nama),
+                'foto_profile' => $edit,
                 'kelas_id' => $request->kelas_id
             ]);
 
