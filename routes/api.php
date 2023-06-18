@@ -84,6 +84,7 @@ Route::middleware('auth:admin')->group(function(){
 
         // Route mapel admin
         Route::get('/mapel', [AdminMapelController::class, 'index']);
+        Route::get('/mapel/{id}', [AdminMapelController::class, 'detail_mapel']);
         Route::post('/mapel', [AdminMapelController::class, 'buat_mapel']);
         Route::post('/mapel/{id}', [AdminMapelController::class, 'edit_mapel']);
         Route::delete('/mapel/{id}', [AdminMapelController::class, 'hapus_mapel']);

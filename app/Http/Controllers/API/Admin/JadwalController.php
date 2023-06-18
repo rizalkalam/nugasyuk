@@ -84,6 +84,14 @@ class JadwalController extends Controller
             'mapel_id' => 'required'
         ]);
 
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => $validator->errors(),
+                'data' => [],
+            ]);
+        }   
+
         $data = Jadwal::create([
             'hari_id' => $request->hari_id,
             'jam_id' => $request->jam_id,
