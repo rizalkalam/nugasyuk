@@ -19,7 +19,8 @@ class AdminKelasController extends Controller
                 $query->where('id', $jurusan);
             });   
         })
-        ->orderBy('kelas.id', 'ASC')
+        ->orderBy('tingkatans.tingkat_ke', 'ASC')
+        ->orderBy('jurusans.id')
         ->select(['kelas.id', 'tingkatans.tingkat_ke', 'jurusans.nama_jurusan', 'kelas.nama_kelas'])->get();
 
         $jumlah_kelas = count(Kelas::all());
@@ -99,9 +100,9 @@ class AdminKelasController extends Controller
 
             $kelas->update([
                 'nama_kelas' => $request->nama_kelas,
-                'guru_id' => $request->guru_id,
-                'jurusan_id' => $request->jurusan_id,
-                'tingkatan_id' => $request->tingkatan_id
+                'guru_id' => $request->wali_kelas,
+                'jurusan_id' => $request->jurusan,
+                'tingkatan_id' => $request->tingkatan
             ]);
 
             return response()->json([
