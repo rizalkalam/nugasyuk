@@ -60,11 +60,16 @@ class AdminMuridController extends Controller
             // 'ortus.email'
         ])->first();
 
+        $kelas_id =  Murid::join('kelas', 'kelas.id', '=', 'murids.kelas_id')
+        ->where('murids.id', $id)
+        ->value('kelas.id');
+
         $data_ortu = Ortu::join('murids', 'murids.id', '=', 'ortus.siswa_id')
         ->where('siswa_id', $id)->select(['ortus.nama','ortus.email'])->first();
 
         $data = [
             'id'=>$siswa->id,
+            'nis'=>$siswa->nis,
             'foto_profile'=>$siswa->foto_profile,
             'nama_panggilan'=>$siswa->nama_panggilan,
             'nama_siswa'=>$siswa->nama_siswa,
@@ -73,7 +78,7 @@ class AdminMuridController extends Controller
             'tingkat_ke'=>$siswa->tingkat_ke,
             'jurusan'=>$siswa->nama_jurusan,
             'kelas'=>$siswa->nama_kelas,
-            'nis'=>$siswa->nis,
+            'kelas_id'=>$kelas_id,
             'nama_wali_murid'=>$data_ortu->nama,
             'email_wali_murid'=>$data_ortu->email
         ];

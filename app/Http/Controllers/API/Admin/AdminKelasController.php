@@ -39,14 +39,35 @@ class AdminKelasController extends Controller
         ->join('jurusans', 'jurusans.id', '=', 'kelas.jurusan_id')
         ->join('gurus', 'gurus.id', '=', 'kelas.guru_id')
         ->where('kelas.id', $id)
-        ->select(['kelas.id', 'tingkatans.tingkat_ke', 'jurusans.nama_jurusan', 'kelas.nama_kelas', 'gurus.nama_guru'])->first();
+        ->select([
+            'kelas.id',
+            'tingkatans.tingkat_ke',
+            'jurusans.nama_jurusan',
+            'kelas.nama_kelas',
+            'gurus.nama_guru',
+            ])->first();
+        
+        $tinkgatan_id = Kelas::join('tingkatans', 'tingkatans.id', '=', 'kelas.tingkatan_id')
+        ->where('kelas.id', $id)
+        ->value('tingkatans.id');
+
+        $jurusan_id =  Kelas::join('jurusans', 'jurusans.id', '=', 'kelas.jurusan_id')
+        ->where('kelas.id', $id)
+        ->value('jurusans.id');
+
+        $guru_id = Kelas::join('gurus', 'gurus.id', '=', 'kelas.guru_id')
+        ->where('kelas.id', $id)
+        ->value('gurus.id');
 
         $data = [
             'id'=>$kelas->id,
             'tingkat_ke'=>$kelas->tingkat_ke,
             'nama_jurusan'=>$kelas->nama_jurusan,
             'nama_kelas'=>$kelas->nama_kelas,
-            'wali_kelas'=>$kelas->nama_guru
+            'wali_kelas'=>$kelas->nama_guru,
+            'tingkatan_id'=>$tinkgatan_id,
+            'jurusan_id'=>$jurusan_id,
+            'guru_id'=>$guru_id
         ];
 
         return response()->json([
