@@ -112,7 +112,7 @@ class KelasSeeder extends Seeder
             ],
 
             [
-                'nama_kelas'=>'1',
+                'nama_kelas'=>'2',
                 // 'jumlah_siswa'=>'30',
                 'tingkatan_id'=>2,
                 'jurusan_id'=>1,
