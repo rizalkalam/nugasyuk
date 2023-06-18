@@ -216,7 +216,7 @@ class AdminGuruController extends Controller
         $file_path = Guru::where('id', $id)->value('foto_profile');
         Storage::delete($file_path);
         
-        $kode = Kode::where('guru_id', $id);
+        $kode = Kode::where('guru_id', $id)->first();
         $kode->delete();
         
         $guru = Guru::where('id', $id)->first();

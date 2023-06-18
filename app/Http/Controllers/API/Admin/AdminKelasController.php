@@ -17,8 +17,10 @@ class AdminKelasController extends Controller
         ->when($jurusan, function ($query) use ($jurusan){
             return $query->whereHas('jurusan', function ($query) use ($jurusan) {
                 $query->where('id', $jurusan);
-            });
-        })->select(['kelas.id', 'kelas.nama_kelas', 'tingkatans.tingkat_ke', 'jurusans.nama_jurusan'])->get();
+            });   
+        })
+        ->orderBy('kelas.id', 'ASC')
+        ->select(['kelas.id', 'kelas.nama_kelas', 'tingkatans.tingkat_ke', 'jurusans.nama_jurusan'])->get();
 
         $jumlah_kelas = count(Kelas::all());
 
