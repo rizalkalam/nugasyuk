@@ -60,8 +60,8 @@ class AdminMuridController extends Controller
             // 'ortus.email'
         ])->first();
 
-        $email_ortu = Ortu::join('murids', 'murids.id', '=', 'ortus.siswa_id')
-        ->where('siswa_id', $id)->value('ortus.email');
+        $data_ortu = Ortu::join('murids', 'murids.id', '=', 'ortus.siswa_id')
+        ->where('siswa_id', $id)->select(['ortus.nama','ortus.email'])->first();
 
         $data = [
             'id'=>$siswa->id,
@@ -74,7 +74,8 @@ class AdminMuridController extends Controller
             'jurusan'=>$siswa->nama_jurusan,
             'kelas'=>$siswa->nama_kelas,
             'nis'=>$siswa->nis,
-            'email_wali_murid'=>$email_ortu
+            'nama_wali_murid'=>$data_ortu->nama,
+            'email_wali_murid'=>$data_ortu->email
         ];
 
         return response()->json([

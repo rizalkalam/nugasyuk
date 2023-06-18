@@ -104,11 +104,19 @@ class KelasSeeder extends Seeder
             ],
 
             [
-                'nama_kelas'=>'9E',
+                'nama_kelas'=>'1',
                 // 'jumlah_siswa'=>'30',
                 'tingkatan_id'=>2,
                 'jurusan_id'=>1,
                 'guru_id'=>7
+            ],
+
+            [
+                'nama_kelas'=>'1',
+                // 'jumlah_siswa'=>'30',
+                'tingkatan_id'=>2,
+                'jurusan_id'=>1,
+                'guru_id'=>8
             ],
 
         ])->each(function ($kelas){
