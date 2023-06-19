@@ -24,6 +24,7 @@ class AdminGuruController extends Controller
         ->when($nama_guru, function ($query) use ($nama_guru){
             $query->where('gurus.nama_guru', 'LIKE', '%' . $nama_guru . '%');
         })
+        ->orderBy('gurus.niy', 'ASC')
         ->select(['gurus.id', 'gurus.niy', 'gurus.foto_profile', 'gurus.nama_guru', 'gurus.email', 'kodes.status_mapel'])->get();
 
         $jumlah_guru = count(Guru::all());
@@ -243,10 +244,10 @@ class AdminGuruController extends Controller
             'guru_id'=> $id,
         ]);
 
-        $guru = Guru::where('id', $id)->first();
-        $guru->update([
-            'kode_id' => $data->id
-        ]);
+        // $guru = Guru::where('id', $id)->first();
+        // $guru->update([
+        //     'kode_id' => $data->id
+        // ]);
 
         return response()->json([
             'message' => 'Data kode guru baru berhasil dibuat',
