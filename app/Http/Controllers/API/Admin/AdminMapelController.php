@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API\Admin;
 
+use App\Models\Kode;
 use App\Models\Kelas;
 use App\Models\Mapel;
 use Illuminate\Http\Request;
@@ -168,6 +169,17 @@ class AdminMapelController extends Controller
         return response()->json([
             "success" => true,
             "message" => "Detail Mata Pelajaran",
+            "data" => $data,
+        ], 200);
+    }
+
+    public function kode_guru()
+    {
+        $data = Kode::all();
+
+        return response()->json([
+            "success" => true,
+            "message" => "List Kode Guru",
             "data" => $data,
         ], 200);
     }

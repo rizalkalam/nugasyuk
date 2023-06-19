@@ -88,6 +88,7 @@ Route::middleware('auth:admin')->group(function(){
         Route::post('/mapel', [AdminMapelController::class, 'buat_mapel']);
         Route::post('/mapel/{id}', [AdminMapelController::class, 'edit_mapel']);
         Route::delete('/mapel/{id}', [AdminMapelController::class, 'hapus_mapel']);
+        Route::get('/kode', [AdminMapelController::class, 'kode_guru']);
     
         // Route jadwal admin
         Route::get('/jadwal', [JadwalController::class, 'index']);
@@ -171,6 +172,7 @@ Route::middleware('auth:murid')->group(function(){
         Route::get('/matapelajaran/{id}', [MuridMapelController::class, 'detail_mapel']);
         Route::get('/matapelajaran/materi/{id}', [MuridMapelController::class, 'materi']);
         Route::get('/matapelajaran/tugas/{id}', [MuridMapelController::class, 'tugas']);
+        Route::get('/materi/{id}', [MuridMapelController::class, 'detail_materi']);
 
         // Route Jadwal Murid
         Route::get('/jadwal', [MuridJadwalController::class, 'index']);
@@ -209,6 +211,7 @@ Route::middleware('auth:ortu')->group(function(){
         Route::get('/matapelajaran/{id}', [OrtuMapelController::class, 'detail_mapel']);
         Route::get('/matapelajaran/materi/{id}', [OrtuMapelController::class, 'materi']);
         Route::get('/matapelajaran/tugas/{id}', [OrtuMapelController::class, 'tugas']);
+        Route::get('/materi/{id}', [OrtuMapelController::class, 'detail_materi']);
     });
 });
 
