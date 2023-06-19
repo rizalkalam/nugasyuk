@@ -29,12 +29,12 @@ class OrtuTugasController extends Controller
             $query->where('status', $status);
         })
         ->when($status_mapel, function ($query) use ($status_mapel){
-            $query->where('mapels.status_mapel', $status_mapel);
+            $query->where('kodes.status_mapel', $status_mapel);
         })
         ->when($soal, function ($query) use ($soal){
             $query->where('tugas.soal', 'LIKE', '%' . $soal . '%');
         })
-        ->select(['status', 'tugas.id', 'gurus.nama_guru', 'nama_tugas', 'tugas.soal', 'tugas.date', 'tugas.deadline'])->get();
+        ->select(['status', 'tugas.id', 'gurus.nama_guru', 'nama_tugas', 'tugas.soal', 'tugas.date', 'tugas.deadline', 'kodes.status_mapel'])->get();
 
         return response()->json([
             "success" => true,
