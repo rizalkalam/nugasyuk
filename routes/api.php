@@ -88,7 +88,6 @@ Route::middleware('auth:admin')->group(function(){
         Route::post('/mapel', [AdminMapelController::class, 'buat_mapel']);
         Route::post('/mapel/{id}', [AdminMapelController::class, 'edit_mapel']);
         Route::delete('/mapel/{id}', [AdminMapelController::class, 'hapus_mapel']);
-        Route::get('/kode', [AdminMapelController::class, 'kode_guru']);
     
         // Route jadwal admin
         Route::get('/jadwal', [JadwalController::class, 'index']);

@@ -172,15 +172,4 @@ class AdminMapelController extends Controller
             "data" => $data,
         ], 200);
     }
-
-    public function kode_guru()
-    {
-        $data = Kode::all();
-
-        return response()->json([
-            "success" => true,
-            "message" => "List Kode Guru",
-            "data" => $data,
-        ], 200);
-    }
 }

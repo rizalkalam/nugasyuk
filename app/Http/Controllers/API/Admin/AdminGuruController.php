@@ -10,6 +10,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
+use App\Http\Resources\AdminListGuruResource;
 
 class AdminGuruController extends Controller
 {
@@ -17,7 +18,7 @@ class AdminGuruController extends Controller
     {
         $nama_guru = request('nama_guru', null);
         $status_mapel = request('status_mapel', null);
-        $data = Guru::leftjoin('kodes', 'kodes.id', '=', 'gurus.kode_id')
+        $guru = Guru::leftjoin('kodes', 'kodes.id', '=', 'gurus.kode_id')
         ->when($status_mapel, function ($query) use ($status_mapel){
             $query->where('kodes.status_mapel', $status_mapel);
         })
@@ -26,6 +27,8 @@ class AdminGuruController extends Controller
         })
         ->orderBy('gurus.niy', 'ASC')
         ->select(['gurus.id', 'gurus.niy', 'gurus.foto_profile', 'gurus.nama_guru', 'gurus.email', 'kodes.status_mapel'])->get();
+
+        $data = AdminListGuruResource::collection($guru);
 
         $jumlah_guru = count(Guru::all());
 
