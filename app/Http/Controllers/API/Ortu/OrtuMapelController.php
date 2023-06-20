@@ -79,7 +79,7 @@ class OrtuMapelController extends Controller
         ->join('gurus', 'gurus.id', '=', 'kodes.guru_id')
         ->where('mapels.id', $id)
         ->where('mapels.kelas_id', $kelas_murid)
-        ->select(['materis.nama_materi', 'gurus.nama_guru', 'materis.tanggal_dibuat'])->get();
+        ->select(['materis.id', 'materis.nama_materi', 'gurus.nama_guru', 'materis.tanggal_dibuat'])->get();
 
         return response()->json([
             "success" => true,
@@ -98,7 +98,7 @@ class OrtuMapelController extends Controller
         ->join('gurus', 'gurus.id', '=', 'kodes.guru_id')
         ->where('materis.id', $id)
         ->where('mapels.kelas_id', $kelas_murid)
-        ->select(['materis.nama_materi', 'gurus.nama_guru', 'materis.tanggal_dibuat', 'materis.isi', 'materis.link', 'materis.file'])->get();
+        ->select(['kodes.nama_mapel', 'materis.nama_materi', 'gurus.nama_guru', 'materis.tanggal_dibuat', 'materis.isi', 'materis.link', 'materis.file'])->get();
 
         return response()->json([
             "success" => true,
