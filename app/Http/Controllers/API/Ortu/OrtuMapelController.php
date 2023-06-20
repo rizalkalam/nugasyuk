@@ -29,6 +29,26 @@ class OrtuMapelController extends Controller
         ], 200);
     }
 
+    public function tugas($id)
+    {
+        $id_siswa = Murid::where('id', auth()->user()->siswa_id)
+        ->value('id');
+
+        $tugas = Pengumpulan::join('tugas', 'tugas.id', '=', 'pengumpulans.tugas_id')
+        ->join('mapels', 'mapels.id', '=', 'tugas.mapel_id')
+        ->join('kodes', 'kodes.id', '=', 'mapels.kode_id')
+        ->join('gurus', 'gurus.id', '=', 'kodes.guru_id')
+        ->where('mapels.id', $id)
+        ->where('pengumpulans.murid_id', $id_siswa)
+        ->select(['tugas.id', 'pengumpulans.status', 'tugas.nama_tugas', 'tugas.soal', 'gurus.nama_guru', 'tugas.date', 'tugas.deadline'])->get();
+
+        return response()->json([
+            "success" => true,
+            "message" => "List Tugas",
+            "data" => $tugas,
+        ], 200);
+    }
+
     public function detail_mapel($id)
     {
         $kelas_murid = Murid::where('id', auth()->user()->siswa_id)
