@@ -35,13 +35,10 @@ class BerandaController extends Controller
         ->where('kodes.guru_id', auth()->user()->id)->select('materis.id')->get()->count();
 
 
-        // $tugas = Tugas::join('materis', 'materis.id', '=', 'tugas.materi_id')
-        // ->join('mapels', 'mapels.id', '=', 'materis.mapel_id')
-        // ->join('kodes', 'kodes.id', '=', 'mapels.kode_id')
-        // ->where('kodes.guru_id', '=', auth()->user()->id)
-        // ->get('tugas.id');
-
-        // $jumlah_tugas = count($tugas);
+        $jumlah_tugass = Tugas::join('mapels', 'mapels.id', '=', 'tugas.mapel_id')
+        ->join('kodes', 'kodes.id', '=', 'mapels.kode_id')
+        ->where('kodes.guru_id', '=', auth()->user()->id)
+        ->get('tugas.id')->count();
 
         $jumlah_menunggu = Pengumpulan::join('tugas', 'tugas.id', '=', 'pengumpulans.tugas_id')
         ->join('mapels', 'mapels.id', '=', 'tugas.mapel_id')
@@ -63,6 +60,7 @@ class BerandaController extends Controller
             "nama_guru" => $guru,
             "jumlah_kelas" => $kelas,
             "jumlah_materi" => $materi,
+            "jumlah_tugas" => $jumlah_tugass,
             "menunggu" => $jumlah_menunggu,
             "selesai" => $jumlah_selesai
         ];
