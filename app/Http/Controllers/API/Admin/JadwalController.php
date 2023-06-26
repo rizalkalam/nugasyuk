@@ -55,6 +55,9 @@ class JadwalController extends Controller
             'jams.waktu_selesai'
         ]);
 
+        $hari = Hari::where('id', $id)
+        ->select(['id', 'hari'])->value('hari');
+
         if (count($jadwal) == 0) {
             return response()->json([
                 'success' => false,
@@ -65,6 +68,7 @@ class JadwalController extends Controller
             return response()->json([
                 "success" => true,
                 "message" => "List Jadwal",
+                "hari" => $hari,
                 "tugas" => $jadwal,
             ], 200);
         }

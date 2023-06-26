@@ -65,7 +65,7 @@ class MuridMapelController extends Controller
         ->join('gurus', 'gurus.id', '=', 'kodes.guru_id')
         ->where('materis.id', $id)
         ->where('mapels.kelas_id', auth()->user()->kelas_id)
-        ->select(['kodes.nama_mapels', 'materis.id', 'kodes.nama_mapel', 'materis.nama_materi', 'gurus.nama_guru', 'materis.tanggal_dibuat', 'materis.isi', 'materis.link', 'materis.file'])->get();
+        ->select(['kodes.nama_mapel', 'materis.id', 'kodes.nama_mapel', 'materis.nama_materi', 'gurus.nama_guru', 'materis.tanggal_dibuat', 'materis.isi', 'materis.link', 'materis.file'])->get();
 
         return response()->json([
             "success" => true,
