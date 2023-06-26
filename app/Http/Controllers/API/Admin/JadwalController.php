@@ -7,27 +7,21 @@ use App\Models\Jadwal;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
+use App\Http\Resources\AdminJadwalResource;
 
 class JadwalController extends Controller
 {
     public function index()
     {
-        // $data = Hari::select(['id', 'hari'])->get();
+        $hari = Hari::orderBy('id', 'ASC')
+        ->select(['id', 'hari'])->get();
 
-        $kelas = request ('kelas', null);
-        $data = Jadwal::join('haris', 'haris.id', '=', 'jadwals.hari_id')
-        ->join('mapels', 'mapels.id', '=', 'jadwals.mapel_id')
-        ->when($kelas, function ($query) use ($kelas){
-            return $query->whereHas('mapel', function ($query) use ($kelas){
-                $query->where('kelas_id', $kelas);
-            });
-        })
-        ->orderBy('hari_id', 'ASC')
-        ->select(['haris.id', 'haris.hari'])->get();
+        $data = AdminJadwalResource::collection($hari);
 
         return response()->json([
             "success" => true,
             "message" => "Jadwal Mapel Murid",
+            // "nama_kelas" =>
             "data" => $data,
         ], 200);
     }

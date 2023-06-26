@@ -23,7 +23,8 @@ class MuridProfileController extends Controller
             'murids.nama_panggilan',
             'murids.nama_siswa', 
             'jurusans.nama_jurusan',
-            'tingkatans.tingkat_ke'
+            'tingkatans.tingkat_ke',
+            'murids.nis'
             ])->get();
 
             return response()->json([

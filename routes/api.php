@@ -170,7 +170,6 @@ Route::middleware('auth:murid')->group(function(){
         Route::get('/matapelajaran', [MuridMapelController::class, 'index']);
         Route::get('/matapelajaran/{id}', [MuridMapelController::class, 'detail_mapel']);
         Route::get('/matapelajaran/materi/{id}', [MuridMapelController::class, 'materi']);
-        Route::get('/matapelajaran/tugas/{id}', [MuridMapelController::class, 'tugas']);
         Route::get('/materi/{id}', [MuridMapelController::class, 'detail_materi']);
 
         // Route Jadwal Murid

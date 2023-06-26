@@ -51,18 +51,18 @@ class TugasController extends Controller
 
     public function detail($id)
     {
-        $data = Pengumpulan::join('tugas', 'tugas.id', '=', 'pengumpulans.tugas_id')
-            ->join('mapels', 'mapels.id', '=', 'tugas.mapel_id')
-            ->join('kodes', 'kodes.id', '=', 'mapels.kode_id')
-            ->join('gurus', 'gurus.id', '=', 'kodes.guru_id')
-            ->where('tugas.id', $id)
-            ->where('pengumpulans.murid_id', auth()->user()->id)
-        ->get(['tugas.id', 'kodes.nama_mapel', 'nama_tugas', 'soal', 'pengumpulans.status', 'tugas.date', 'tugas.deadline']);
+        $tugas = Pengumpulan::join('tugas', 'tugas.id', '=', 'pengumpulans.tugas_id')
+        ->join('mapels', 'mapels.id', '=', 'tugas.mapel_id')
+        ->join('kodes', 'kodes.id', '=', 'mapels.kode_id')
+        ->join('gurus', 'gurus.id', '=', 'kodes.guru_id')
+        ->where('mapels.id', $id)
+        ->where('pengumpulans.murid_id', auth()->user()->id)
+        ->select(['kodes.nama_mapel', 'tugas.id', 'pengumpulans.status', 'tugas.nama_tugas', 'tugas.soal', 'gurus.nama_guru', 'tugas.date', 'tugas.deadline'])->get();
 
         return response()->json([
             "success" => true,
             "message" => "List Tugas",
-            "data" => $data,
+            "data" => $tugas,
         ], 200);
     }
 
