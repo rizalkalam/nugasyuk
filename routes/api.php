@@ -30,6 +30,7 @@ use App\Http\Controllers\API\Murid\MuridProfileController;
 use App\Http\Controllers\API\Guru\GuruNotificationController;
 use App\Http\Controllers\API\Ortu\OrtuNotificationController;
 use App\Http\Controllers\API\Murid\MuridNotificationController;
+use App\Http\Controllers\API\Konseling\KonselingJanjiController;
 use App\Http\Controllers\API\Konseling\KonselingBerandaController;
 
 /*
@@ -215,4 +216,5 @@ Route::middleware('auth:ortu')->group(function(){
 
 Route::group(["middleware" => ['GuruKonseling', 'role:guru_bk'], "prefix" => "konseling"], function(){
     Route::get('/datakonseling', [KonselingBerandaController::class, 'index']);
+    Route::get('/halo', [KonselingJanjiController::class, 'index']);
 });
