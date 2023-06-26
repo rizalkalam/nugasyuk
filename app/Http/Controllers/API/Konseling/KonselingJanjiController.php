@@ -12,7 +12,7 @@ class KonselingJanjiController extends Controller
         return response()->json([
             "success" => true,
             "message" => "Data muncul",
-            "data" => "Halo Guys"
+            "data" => "tes"
         ], 200);
     }
 }
