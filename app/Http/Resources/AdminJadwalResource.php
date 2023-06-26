@@ -2,11 +2,12 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Kelas;
 use App\Models\Jadwal;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class JadwalResource extends JsonResource
+class AdminJadwalResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -17,19 +18,26 @@ class JadwalResource extends JsonResource
     {
         // return parent::toArray($request);
 
+        $kelas = request ('kelas', null);
+
         $foto = Jadwal::join('mapels', 'mapels.id', '=', 'jadwals.mapel_id')
         ->join('kodes', 'kodes.id', '=', 'mapels.kode_id')
         ->join('gurus', 'gurus.id', '=', 'kodes.guru_id')
         ->join('haris', 'haris.id', '=', 'jadwals.hari_id')
-        ->where('mapels.kelas_id', auth()->user()->kelas_id)
+        ->when($kelas, function ($query) use ($kelas){
+            return $query->whereHas('mapel', function ($query) use ($kelas){
+                $query->where('kelas_id', $kelas);
+            });
+        })
         ->where('haris.id', $this->id)
-        ->select(['gurus.foto_profile'])->get();
+        ->select([
+            'gurus.foto_profile',
+        ])->get();
 
         return [
             'id'=>$this->id,
             'hari' => $this->hari,
             'detail' => $foto
         ];
-
     }
 }
