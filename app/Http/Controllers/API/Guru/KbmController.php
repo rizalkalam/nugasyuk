@@ -18,30 +18,33 @@ class KbmController extends Controller
 {
     public function kbm()
     {
-        $kelas = request ('kelas', null);
-        $data = Mapel::join('kodes', 'kodes.id', '=', 'mapels.kode_id')
+        $jurusan = request ('jurusan', null);
+        $data_kelas = Mapel::join('kodes', 'kodes.id', '=', 'mapels.kode_id')
                         ->join('gurus', 'gurus.id', '=', 'kodes.guru_id')
                         ->join('kelas', 'kelas.id', '=', 'mapels.kelas_id')
                         ->join('jurusans', 'jurusans.id', '=', 'kelas.jurusan_id')
                         ->join('tingkatans', 'tingkatans.id', '=', 'kelas.tingkatan_id')
                         ->where('gurus.id', '=', auth()->user()->id)
-                        ->when($kelas, function ($query) use ($kelas){
-                            return $query->whereHas('kelas', function ($query) use ($kelas) {
-                                $query->where('id', $kelas);
+                        ->when($jurusan, function ($query) use ($jurusan){
+                            return $query->whereHas('kelas', function ($query) use ($jurusan) {
+                                $query->where('jurusan_id', $jurusan);
                                 });
                         })
-                        ->select(['kelas.id', 'tingkatans.tingkat_ke', 'jurusans.nama_jurusan', 'kelas.nama_kelas'])->get();
+                        ->select(['kelas.id', 'tingkatans.tingkat_ke', 'jurusans.nama_jurusan', 'kelas.nama_kelas'])
+                        ->distinct()->get();
+
+
 
         return response()->json([
             "success" => true,
             "message" => "KBM",
-            "kelas" => $data,
+            "kelas" => $data_kelas,
         ], 200);
     }
 
     public function materi($kelas_id)
     {
-        $mapel = request ('mapel', null);
+        $mapel = request ('mapel', 2);
         $materi = Materi::join('mapels', 'mapels.id', '=', 'materis.mapel_id')
                             ->join('kodes', 'kodes.id', '=', 'mapels.kode_id')
                             ->join('gurus', 'gurus.id', '=', 'kodes.guru_id')

@@ -80,10 +80,6 @@ class AdminGuruController extends Controller
         ])
         ->first();
 
-        $detail = [
-
-        ];
-
         $data = [
             'id'=>$guru->id,
             'niy'=>$guru->niy,

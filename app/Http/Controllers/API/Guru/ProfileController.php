@@ -21,10 +21,10 @@ class ProfileController extends Controller
         //     'mapel_guru'=>auth()->user()->mapel->kode->nama_mapel
         // ];
 
-        $profile = Guru::join('mapels', 'mapels.id', '=', 'gurus.mapel_id')
-        ->join('kodes', 'kodes.id', '=', 'mapels.kode_id')
+        $profile = Mapel::join('kodes', 'kodes.id', '=', 'mapels.kode_id')
+        ->join('gurus', 'gurus.id', '=', 'kodes.guru_id')
         ->where('gurus.id', auth()->user()->id)
-        ->select(['email', 'nama_guru'])->first();
+        ->select(['foto_profile', 'email', 'nama_guru'])->first();
 
         $mapel = Mapel::join('kodes', 'kodes.id', '=', 'mapels.kode_id')
         ->join('gurus', 'gurus.id', '=', 'kodes.guru_id')
@@ -32,6 +32,7 @@ class ProfileController extends Controller
         ->select(['kodes.nama_mapel'])->get();
 
         $data = [
+            "foto_profile" => $profile->foto_profile,
             "email" => $profile->email,
             "nama_guru" => $profile->nama_guru,
             "mapel" => $mapel
