@@ -54,6 +54,19 @@ class TugasSeeder extends Seeder
             'mapel_id'=>7
         ]);
 
+        Tugas::create([
+            'id'=>'4',
+            'nama_tugas'=>"Buat Aplikasi Kasir",
+            'soal'=>'Desain boleh dikembangkan lagi sendiri',
+            'date'=>Carbon::now()->format('Y-m-d'),
+            'deadline'=>'2023-07-10',
+            'description'=>'Dikumpulkan hari ini',
+            // 'status'=>1,
+            'link'=>null,
+            'file'=>null,
+            'mapel_id'=>3
+        ]);
+
         // Tugas::create([
         //     'id'=>'2',
         //     'soal'=>'Penerapan Aljawir',
