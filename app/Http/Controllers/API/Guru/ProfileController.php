@@ -13,14 +13,6 @@ class ProfileController extends Controller
 {
     public function index()
     {
-        // $profile = array();
-        // $profile[]=[
-        //     'foto_profile'=>auth()->user()->foto_profile,
-        //     'email'=>auth()->user()->email,
-        //     'nama_guru'=>auth()->user()->nama_guru,
-        //     'mapel_guru'=>auth()->user()->mapel->kode->nama_mapel
-        // ];
-
         $profile = Mapel::join('kodes', 'kodes.id', '=', 'mapels.kode_id')
         ->join('gurus', 'gurus.id', '=', 'kodes.guru_id')
         ->where('gurus.id', auth()->user()->id)
