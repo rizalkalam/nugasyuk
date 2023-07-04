@@ -17,7 +17,6 @@ return new class extends Migration
             $table->string('soal');
             $table->date('date');
             $table->date('deadline');
-            $table->text('description');
             $table->string('link')->nullable();
             $table->string('file')->nullable();
             $table->foreignId('mapel_id');

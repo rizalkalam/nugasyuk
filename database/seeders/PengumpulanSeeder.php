@@ -34,7 +34,7 @@ class PengumpulanSeeder extends Seeder
         Pengumpulan::create([
             'id'=>3,
             'tugas_id'=>1,
-            'status'=>'selesai',
+            'status'=>'belum_selesai',
             // 'kelas_id'=>1,
             'murid_id'=>2,
             'tanggal'=>'2023-04-04'
@@ -43,7 +43,7 @@ class PengumpulanSeeder extends Seeder
         Pengumpulan::create([
             'id'=>4,
             'tugas_id'=>1,
-            'status'=>'belum_selesai',
+            'status'=>'menunggu',
             // 'kelas_id'=>2,
             'murid_id'=>3,
             'tanggal'=>'2023-04-04'
@@ -73,6 +73,33 @@ class PengumpulanSeeder extends Seeder
             'status'=>'selesai',
             // 'kelas_id'=>1,
             'murid_id'=>2,
+            'tanggal'=>'2023-04-04'
+        ]);
+
+        Pengumpulan::create([
+            'id'=>8,
+            'tugas_id'=>5,
+            'status'=>'selesai',
+            // 'kelas_id'=>1,
+            'murid_id'=>1,
+            'tanggal'=>'2023-04-04'
+        ]);
+
+        Pengumpulan::create([
+            'id'=>9,
+            'tugas_id'=>5,
+            'status'=>'selesai',
+            // 'kelas_id'=>1,
+            'murid_id'=>2,
+            'tanggal'=>'2023-04-04'
+        ]);
+
+        Pengumpulan::create([
+            'id'=>10,
+            'tugas_id'=>5,
+            'status'=>'selesai',
+            // 'kelas_id'=>1,
+            'murid_id'=>3,
             'tanggal'=>'2023-04-04'
         ]);
 
