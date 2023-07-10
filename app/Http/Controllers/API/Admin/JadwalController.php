@@ -67,6 +67,33 @@ class JadwalController extends Controller
         }
     }
 
+    public function data_jadwal($id){
+        $jadwal = Jadwal::join('mapels', 'mapels.id', '=', 'jadwals.mapel_id')
+        ->join('kodes', 'kodes.id', '=', 'mapels.kode_id')
+        ->join('haris', 'haris.id', '=', 'jadwals.hari_id')
+        ->join('jams', 'jams.id', '=', 'jadwals.jam_id')
+        ->join('gurus', 'gurus.id', '=', 'kodes.guru_id')
+        ->where('jadwals.id', $id)
+        ->get([
+            'jadwals.id',
+            'gurus.foto_profile',
+            'gurus.nama_guru',
+            'kodes.nama_mapel',
+            'jams.waktu_mulai',
+            'jams.waktu_selesai'
+        ]);
+
+        // $hari = Hari::where('id', $id)
+        // ->select(['id', 'hari'])->value('hari');
+
+        return response()->json([
+            "success" => true,
+            "message" => "List Jadwal",
+            // "hari" => $hari,
+            "data" => $jadwal,
+        ], 200);
+    }
+
     public function buat_jadwal(Request $request)
     {
         $validator = Validator::make($request->all(),[
