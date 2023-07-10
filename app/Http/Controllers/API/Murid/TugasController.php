@@ -55,7 +55,7 @@ class TugasController extends Controller
         ->join('mapels', 'mapels.id', '=', 'tugas.mapel_id')
         ->join('kodes', 'kodes.id', '=', 'mapels.kode_id')
         ->join('gurus', 'gurus.id', '=', 'kodes.guru_id')
-        ->where('mapels.id', $id)
+        ->where('tugas.id', $id)
         ->where('pengumpulans.murid_id', auth()->user()->id)
         ->select(['kodes.nama_mapel', 'tugas.id', 'pengumpulans.status', 'tugas.nama_tugas', 'tugas.soal', 'gurus.nama_guru', 'tugas.date', 'tugas.deadline'])->get();
 

@@ -21,7 +21,6 @@ class JadwalController extends Controller
         return response()->json([
             "success" => true,
             "message" => "Jadwal Mapel Murid",
-            // "nama_kelas" =>
             "data" => $data,
         ], 200);
     }
@@ -63,7 +62,7 @@ class JadwalController extends Controller
                 "success" => true,
                 "message" => "List Jadwal",
                 "hari" => $hari,
-                "tugas" => $jadwal,
+                "data" => $jadwal,
             ], 200);
         }
     }

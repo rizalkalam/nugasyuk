@@ -59,6 +59,10 @@ class OrtuBerandaController extends Controller
         ->whereDate('pengumpulans.tanggal', '>=', $deadline)
         ->select('pengumpulans.id')->get()->count();
 
+        $jumlah_tugas = Tugas::join('mapels', 'mapels.id', '=', 'tugas.mapel_id')
+        ->where('mapels.kelas_id', $kelas_siswa)
+        ->select('tugas.id')->get()->count();
+
         $data = [
             "nama" => $ortu,
             "jumlah_siswa" => $jumlah_murid,
@@ -68,6 +72,7 @@ class OrtuBerandaController extends Controller
             "selesai_dalamdeadline" => $selesai_dalamdeadline,
             "belum_lebihdeadline" => $belum_lebihdeadline,
             "selesai_lebihdeadline" => $selesai_lebihdeadline,
+            "jumlah_tugas" => $jumlah_tugas
         ];
 
         return response()->json([
