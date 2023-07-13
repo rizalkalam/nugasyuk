@@ -5,7 +5,7 @@ Deploy:
   stage: deploy
   variables:
     VAR_DIREKTORI: "/home/nugasyuk/www"
-    VAR_GIT_URL_TANPA_HTTP: "gitlab.com/rizalkhoiru6/nugasyuk.git"
+    VAR_GIT_URL_TANPA_HTTP: "gitlab.com/rizalkhoiru6/nugasyuk"
     VAR_CLONE_KEY: "glpat-44VhuUszu95ba2PcbDCj"
     VAR_USER: "deployer"
     VAR_IP: "103.193.176.129"
