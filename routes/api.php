@@ -179,7 +179,11 @@ Route::middleware('auth:murid')->group(function(){
         Route::get('/matapelajaran/{id}', [MuridMapelController::class, 'detail_mapel']);
         Route::get('/matapelajaran/materi/{id}', [MuridMapelController::class, 'materi']);
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
         Route::get('/materi/{id}', [MuridMapelController::class, 'detail_materi']);
+=======
+        Route::get('/matapelajaran/tugas/{id}', [MuridMapelController::class, 'tugas']);
+>>>>>>> Stashed changes
 =======
         Route::get('/matapelajaran/tugas/{id}', [MuridMapelController::class, 'tugas']);
 >>>>>>> Stashed changes

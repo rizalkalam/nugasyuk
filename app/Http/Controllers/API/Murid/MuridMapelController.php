@@ -59,6 +59,7 @@ class MuridMapelController extends Controller
     }
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     public function detail_materi($id)
     {
         $materi = Materi::join('mapels', 'mapels.id', '=', 'materis.mapel_id')
@@ -72,6 +73,22 @@ class MuridMapelController extends Controller
             "success" => true,
             "message" => "Detail Materi",
             "data" => $materi,
+=======
+    public function tugas($id)
+    {
+        $tugas = Pengumpulan::join('tugas', 'tugas.id', '=', 'pengumpulans.tugas_id')
+        ->join('mapels', 'mapels.id', '=', 'tugas.mapel_id')
+        ->join('kodes', 'kodes.id', '=', 'mapels.kode_id')
+        ->join('gurus', 'gurus.id', '=', 'kodes.guru_id')
+        ->where('mapels.id', $id)
+        ->where('pengumpulans.murid_id', auth()->user()->id)
+        ->select(['tugas.id', 'pengumpulans.status', 'tugas.soal', 'gurus.nama_guru', 'tugas.deadline'])->get();
+
+        return response()->json([
+            "success" => true,
+            "message" => "List Tugas",
+            "data" => $tugas,
+>>>>>>> Stashed changes
 =======
     public function tugas($id)
     {
