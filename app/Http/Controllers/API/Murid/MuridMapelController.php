@@ -71,8 +71,6 @@ class MuridMapelController extends Controller
             "success" => true,
             "message" => "Detail Materi",
             "data" => $materi,
-<<<<<<< HEAD
-=======
         ], 200);
     }
     
@@ -90,7 +88,6 @@ class MuridMapelController extends Controller
             "success" => true,
             "message" => "List Tugas",
             "data" => $tugas,
->>>>>>> 77ba381 (fix: data list tugas in mapel(murid))
         ], 200);
     }
 }

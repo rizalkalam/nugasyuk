@@ -178,12 +178,8 @@ Route::middleware('auth:murid')->group(function(){
         Route::get('/matapelajaran', [MuridMapelController::class, 'index']);
         Route::get('/matapelajaran/{id}', [MuridMapelController::class, 'detail_mapel']);
         Route::get('/matapelajaran/materi/{id}', [MuridMapelController::class, 'materi']);
-<<<<<<< HEAD
         Route::get('/materi/{id}', [MuridMapelController::class, 'detail_materi']);
-=======
         Route::get('/matapelajaran/tugas/{id}', [MuridMapelController::class, 'tugas']);
-
->>>>>>> 77ba381 (fix: data list tugas in mapel(murid))
 
         // Route Jadwal Murid
         Route::get('/jadwal', [MuridJadwalController::class, 'index']);
