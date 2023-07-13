@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('foto_profile');
             $table->string('alamat');
             $table->string('nomor_tlp');
-            $table->foreignId('kode_id')->nullable()->default(null);
+            $table->foreignId('kode_id')->nullable()->default(null)->unique();
             $table->timestamps();
         });
     }

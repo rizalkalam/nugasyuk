@@ -26,10 +26,15 @@ class Jadwal extends Model
         return $this->belongsTo(Hari::class);
     }
 
-    public function kode()
-    {
-        return $this->belongsTo(Kode::class);
-    }
+    // public function kode()
+    // {
+    //     return $this->belongsTo(Kode::class);
+    // }
+
+    // public function kelas()
+    // {
+    //     return $this->belongsTo(Kelas::class);
+    // }
 
     public function mapel()
     {

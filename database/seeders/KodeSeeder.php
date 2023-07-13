@@ -88,10 +88,10 @@ class KodeSeeder extends Seeder
 
         Kode::create([
             'id'=>'10',
-           'kode_guru'=>'AN2',
-           'nama_mapel'=>"Bahasa Jawa",
-           'status_mapel'=>'normadaf',
-           'guru_id'=>8,
+           'kode_guru'=>'AS1',
+           'nama_mapel'=>"Bimbingan Konseling",
+           'status_mapel'=>'bk',
+           'guru_id'=>9,
         ]);
     }
 }
