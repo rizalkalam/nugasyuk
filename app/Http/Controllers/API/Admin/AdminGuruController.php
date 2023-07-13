@@ -5,7 +5,10 @@ namespace App\Http\Controllers\API\Admin;
 use App\Models\Guru;
 use App\Models\Kode;
 use App\Models\Mapel;
+use App\Models\Murid;
+use App\Models\Percakapan;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
@@ -139,10 +142,27 @@ class AdminGuruController extends Controller
             ]);
     
             $data->assignRole($request->role);
+
+            if ($request->role == 2) {
+                $murid = Murid::get();
+
+                $percakapan = [];
+                foreach ($murid as $id) {
+                    $percakapan[] = [
+                        'user_one' => $data->id,
+                        'user_two' => $id->id,
+                        'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
+                        'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
+                    ];
+                }
+
+                $new_percakapan = Percakapan::insert($percakapan);
+            }
     
             return response()->json([
                 'message' => 'Data Guru baru berhasil dibuat',
                 'data' => $data,
+                // 'percakapan' => $percakapan
             ]);   
         } catch (\Throwable $th) {
             //throw $th;
@@ -242,11 +262,6 @@ class AdminGuruController extends Controller
             'status_mapel'=> $request->status_mapel,
             'guru_id'=> $id,
         ]);
-
-        // $guru = Guru::where('id', $id)->first();
-        // $guru->update([
-        //     'kode_id' => $data->id
-        // ]);
 
         return response()->json([
             'message' => 'Data kode guru baru berhasil dibuat',

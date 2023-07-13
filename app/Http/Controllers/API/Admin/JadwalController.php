@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\API\Admin;
 
+use App\Models\Jam;
 use App\Models\Hari;
 use App\Models\Jadwal;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Resources\AdminJadwalResource;
@@ -99,7 +101,8 @@ class JadwalController extends Controller
         $validator = Validator::make($request->all(),[
             'hari_id' => 'required',
             'jam_id' => 'required',
-            'mapel_id' => 'required'
+            'mapel_id' => 'required',
+            // 'jumlah_jam' => 'required'
         ]);
 
         if ($validator->fails()) {
@@ -108,16 +111,28 @@ class JadwalController extends Controller
                 'message' => $validator->errors(),
                 'data' => [],
             ]);
-        }   
+        }
+        
+        $jumlah_jam = Jam::where('id', '>=', $request->jam_id)
+        ->limit($request->jumlah_jam)->get('id');
 
-        $data = Jadwal::create([
-            'hari_id' => $request->hari_id,
-            'jam_id' => $request->jam_id,
-            'mapel_id' => $request->mapel_id
-        ]);
+        
+        $data = [];
+            foreach ($jumlah_jam as $jam_id) {
+                $data[] = [
+                    'hari_id' => $request->hari_id,
+                    'jam_id' => $jam_id->id,
+                    'mapel_id' => $request->mapel_id,
+                    'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
+                    'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
+                ];
+            }
+
+        $jadwal = Jadwal::insert($data);
+
 
         return response()->json([
-            'message' => 'Data Kelas baru berhasil dibuat',
+            'message' => 'Data Jadwal baru berhasil dibuat',
             'data' => $data,
         ]);
     }
@@ -162,13 +177,23 @@ class JadwalController extends Controller
 
     public function hapus_jadwal($id)
     {
-        $jadwal = Jadwal::where('id', $id)->first();
+        try {
+            $jadwal = Jadwal::where('id', $id)->first();
+            $jadwal->delete();
 
-        $jadwal->delete();
+            return response()->json([
+                'success' => true,
+                'message' => 'Data jadwal berhasil di hapus',
+            ]);
+        } catch (\Throwable $th) {
+            //throw $th;
+            return response()->json([
+                'message' => 'failed',
+                'errors' => $th->getMessage(),
+            ]);
+        }
+       
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Data jadwal berhasil di hapus',
-        ]);
+      
     }
 }

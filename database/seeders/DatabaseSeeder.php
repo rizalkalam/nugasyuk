@@ -20,6 +20,7 @@ use Database\Seeders\MateriSeeder;
 use Database\Seeders\StatusSeeder;
 use Database\Seeders\JurusanSeeder;
 use Database\Seeders\TingkatanSeeder;
+use Database\Seeders\PercakapanSeeder;
 use Database\Seeders\PengumpulanSeeder;
 
 class DatabaseSeeder extends Seeder
@@ -53,6 +54,7 @@ class DatabaseSeeder extends Seeder
             JamSeeder::class,
             HariSeeder::class,
             JadwalSeeder::class,
+            PercakapanSeeder::class,
             // SoalSeeder::class
             // StatusSeeder::class
          ]);

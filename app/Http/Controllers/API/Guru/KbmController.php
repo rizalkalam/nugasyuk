@@ -434,6 +434,7 @@ class KbmController extends Controller
                     'tanggal' => Carbon::now()->format('Y-m-d')
                 ];
             }
+            
             $pengumpulan = Pengumpulan::insert($data);
     
             return response()->json([

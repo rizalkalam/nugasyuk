@@ -32,6 +32,7 @@ class AdminMapelController extends Controller
         ->orderBy('mapels.id', 'asc')
         ->select([
             'mapels.id',
+            'mapels.kelas_id',
             'kodes.nama_mapel',
             'gurus.nama_guru',
             'tingkatans.tingkat_ke',

@@ -13,6 +13,7 @@ use App\Http\Controllers\API\Ortu\OrtuMapelController;
 use App\Http\Controllers\API\Ortu\OrtuTugasController;
 use App\Http\Controllers\API\Admin\AdminGuruController;
 use App\Http\Controllers\API\Guru\GuruJadwalController;
+use App\Http\Controllers\API\Murid\KonselingController;
 use App\Http\Controllers\API\Ortu\OrtuJadwalController;
 use App\Http\Controllers\API\Admin\AdminAssetController;
 use App\Http\Controllers\API\Admin\AdminKelasController;
@@ -29,6 +30,7 @@ use App\Http\Controllers\API\Murid\MuridBerandaController;
 use App\Http\Controllers\API\Murid\MuridProfileController;
 use App\Http\Controllers\API\Guru\GuruNotificationController;
 use App\Http\Controllers\API\Ortu\OrtuNotificationController;
+use App\Http\Controllers\API\Konseling\KonselingChatController;
 use App\Http\Controllers\API\Murid\MuridNotificationController;
 use App\Http\Controllers\API\Konseling\KonselingJanjiController;
 use App\Http\Controllers\API\Konseling\KonselingBerandaController;
@@ -182,6 +184,10 @@ Route::middleware('auth:murid')->group(function(){
         Route::get('/jadwal', [MuridJadwalController::class, 'index']);
         Route::get('/jadwal/{id}', [MuridJadwalController::class, 'detail']);
 
+        // Route Konseling Murid
+        Route::get('percakapan/{user_one}', [KonselingController::class, 'show'])->name('percakapan.show');
+        Route::post('percakapan/{percakapan}/pesan', [KonselingController::class, 'store'])->name('percakapan.store');
+
         // logout murid
         Route::get('/logout', [LoginController::class, 'logout']);    
     });
@@ -221,5 +227,8 @@ Route::middleware('auth:ortu')->group(function(){
 
 Route::group(["middleware" => ['GuruKonseling', 'role:guru_bk'], "prefix" => "konseling"], function(){
     Route::get('/datakonseling', [KonselingBerandaController::class, 'index']);
-    Route::get('/halo', [KonselingJanjiController::class, 'index']);
+
+    // CHAT KONSELING
+    Route::get('percakapan/{user_two}', [KonselingChatController::class, 'show'])->name('percakapan.show');
+    Route::post('percakapan/{percakapan}/pesan', [KonselingChatController::class, 'store'])->name('percakapan.store');
 });

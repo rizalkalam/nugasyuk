@@ -77,26 +77,6 @@ class MapelSeeder extends Seeder
         ]);
 
         Mapel::create([
-            'id'=>'11',
-            'kode_id'=>9,
-            'kelas_id'=>1,
-            'asset_id'=>5,
-            // 'status_mapel'=>'normadaf'
-            // 'nama_mapel'=>'Math',
-            // 'asset_id'=>2,
-        ]);
-        
-        Mapel::create([
-            'id'=>'10',
-            'kode_id'=>8,
-            'kelas_id'=>1,
-            'asset_id'=>1,
-            // 'status_mapel'=>'normadaf'
-            // 'nama_mapel'=>'Math',
-            // 'asset_id'=>2,
-        ]);
-
-        Mapel::create([
             'id'=>'8',
             'kode_id'=>6,
             'kelas_id'=>2,
@@ -113,6 +93,37 @@ class MapelSeeder extends Seeder
             // 'nama_mapel'=>'Math',
             // 'asset_id'=>2,
         ]);
+        
+        Mapel::create([
+            'id'=>'10',
+            'kode_id'=>8,
+            'kelas_id'=>1,
+            'asset_id'=>1,
+            // 'status_mapel'=>'normadaf'
+            // 'nama_mapel'=>'Math',
+            // 'asset_id'=>2,
+        ]);
+        
+        Mapel::create([
+            'id'=>'11',
+            'kode_id'=>9,
+            'kelas_id'=>2,
+            'asset_id'=>1,
+            // 'status_mapel'=>'normadaf'
+            // 'nama_mapel'=>'Math',
+            // 'asset_id'=>2,
+        ]);
+
+        Mapel::create([
+            'id'=>'12',
+            'kode_id'=>9,
+            'kelas_id'=>3,
+            'asset_id'=>1,
+            // 'status_mapel'=>'normadaf'
+            // 'nama_mapel'=>'Math',
+            // 'asset_id'=>2,
+        ]);
+        
 
 
     }
