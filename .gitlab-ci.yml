@@ -39,5 +39,5 @@ Deploy:
     - ssh $VAR_USER@$VAR_IP "docker exec webserver php artisan key:generate"
     - ssh $VAR_USER@$VAR_IP "docker exec webserver php artisan cache:clear"
     # - ssh $VAR_USER@$VAR_IP "docker exec webserver php artisan storage:link"
-    - echo "UPDATE SUCCESS!"
+    - echo "ADD PUSHER SUCCESS!"
 
