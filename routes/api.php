@@ -234,5 +234,4 @@ Route::group(["middleware" => ['GuruKonseling', 'role:guru_bk'], "prefix" => "ko
     Route::post('percakapan/{percakapan}/pesan', [KonselingChatController::class, 'store'])->name('percakapan.store');
 
     // Route Buat Janji Konseling
-    fwefwoiehfwiefh;
 });
