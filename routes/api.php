@@ -178,17 +178,8 @@ Route::middleware('auth:murid')->group(function(){
         Route::get('/matapelajaran', [MuridMapelController::class, 'index']);
         Route::get('/matapelajaran/{id}', [MuridMapelController::class, 'detail_mapel']);
         Route::get('/matapelajaran/materi/{id}', [MuridMapelController::class, 'materi']);
-<<<<<<< HEAD
-<<<<<<< HEAD
         Route::get('/materi/{id}', [MuridMapelController::class, 'detail_materi']);
-=======
         Route::get('/matapelajaran/tugas/{id}', [MuridMapelController::class, 'tugas']);
-
->>>>>>> 77ba381 (fix: data list tugas in mapel(murid))
-=======
-        Route::get('/matapelajaran/tugas/{id}', [MuridMapelController::class, 'tugas']);
-
->>>>>>> 85f1429ca68d16cf486213ce291fc0fb48d683c0
 
         // Route Jadwal Murid
         Route::get('/jadwal', [MuridJadwalController::class, 'index']);
@@ -241,4 +232,6 @@ Route::group(["middleware" => ['GuruKonseling', 'role:guru_bk'], "prefix" => "ko
     // CHAT KONSELING
     Route::get('percakapan/{user_two}', [KonselingChatController::class, 'show'])->name('percakapan.show');
     Route::post('percakapan/{percakapan}/pesan', [KonselingChatController::class, 'store'])->name('percakapan.store');
+
+    // Route Buat Janji Konseling
 });
