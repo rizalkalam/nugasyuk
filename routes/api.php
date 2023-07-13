@@ -227,8 +227,4 @@ Route::middleware('auth:ortu')->group(function(){
 
 Route::group(["middleware" => ['GuruKonseling', 'role:guru_bk'], "prefix" => "konseling"], function(){
     Route::get('/datakonseling', [KonselingBerandaController::class, 'index']);
-
-    // CHAT KONSELING
-    // Route::get('percakapan/{user_two}', [KonselingChatController::class, 'show'])->name('percakapan.show');
-    // Route::post('percakapan/{percakapan}/pesan', [KonselingChatController::class, 'store'])->name('percakapan.store');
 });
