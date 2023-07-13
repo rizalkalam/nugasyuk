@@ -33,7 +33,7 @@ class MessageCreated implements ShouldBroadcast
     public function broadcastOn(): array
     {
         return [
-            'pesan.' . $this->pesan->percakapan_id,
+            new PrivateChannel('pesan.' . $this->pesan->percakapan_id),
         ];
     }
 }
