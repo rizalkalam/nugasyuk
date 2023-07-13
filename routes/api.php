@@ -30,6 +30,7 @@ use App\Http\Controllers\API\Murid\MuridBerandaController;
 use App\Http\Controllers\API\Murid\MuridProfileController;
 use App\Http\Controllers\API\Guru\GuruNotificationController;
 use App\Http\Controllers\API\Ortu\OrtuNotificationController;
+use App\Http\Controllers\API\Konseling\KonselingChatController;
 use App\Http\Controllers\API\Murid\MuridNotificationController;
 use App\Http\Controllers\API\Konseling\KonselingJanjiController;
 use App\Http\Controllers\API\Konseling\KonselingBerandaController;
@@ -229,8 +230,8 @@ Route::group(["middleware" => ['GuruKonseling', 'role:guru_bk'], "prefix" => "ko
     Route::get('/datakonseling', [KonselingBerandaController::class, 'index']);
 
     // CHAT KONSELING
-    // Route::get('percakapan/{user_two}', [KonselingChatController::class, 'show'])->name('percakapan.show');
-    // Route::post('percakapan/{percakapan}/pesan', [KonselingChatController::class, 'store'])->name('percakapan.store');
+    Route::get('percakapan/{user_two}', [KonselingChatController::class, 'show'])->name('percakapan.show');
+    Route::post('percakapan/{percakapan}/pesan', [KonselingChatController::class, 'store'])->name('percakapan.store');
 
     // Route Buat Janji Konseling
 
