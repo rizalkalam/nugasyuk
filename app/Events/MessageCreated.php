@@ -14,6 +14,8 @@ class MessageCreated implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
+    public $pesan;
+
     /**
      * Create a new event instance.
      */
