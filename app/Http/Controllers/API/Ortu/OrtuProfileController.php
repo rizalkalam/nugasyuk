@@ -30,7 +30,6 @@ class OrtuProfileController extends Controller
             $validateData = Validator::make($request->all(),[
                 'password'=>'required|min:5|max:255',
                 'konfirmasi'=>'required|min:5|max:255|same:password',
-                // 'updated_at' => now()
             ]);
 
             if ($validateData->fails()) {

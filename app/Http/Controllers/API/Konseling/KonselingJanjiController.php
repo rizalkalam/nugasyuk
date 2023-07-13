@@ -9,10 +9,6 @@ class KonselingJanjiController extends Controller
 {
     public function index()
     {
-        return response()->json([
-            "success" => true,
-            "message" => "Data muncul",
-            "data" => "tes"
-        ], 200);
+        
     }
 }
