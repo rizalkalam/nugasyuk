@@ -39,12 +39,5 @@ Deploy:
     - ssh $VAR_USER@$VAR_IP "docker exec webserver php artisan key:generate"
     - ssh $VAR_USER@$VAR_IP "docker exec webserver php artisan cache:clear"
     # - ssh $VAR_USER@$VAR_IP "docker exec webserver php artisan storage:link"
-<<<<<<< HEAD
-<<<<<<< HEAD
     - echo "UPDATE SUCCESS!"
-=======
-    - echo "UPDATE SUCCESS!"
->>>>>>> 14834cf (fix: data list tugas in mapel(murid))
-=======
-    - echo "UPDATE SUCCESS!"
->>>>>>> 85f1429ca68d16cf486213ce291fc0fb48d683c0
+
