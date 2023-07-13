@@ -13,19 +13,8 @@ class OrtuJadwalController extends Controller
 {
     public function index()
     {
-        // *ADA REVISI!!!* //
-
-        // $data = Hari::select(['id', 'hari'])->get();
-
         $hari = Hari::orderBy('id', 'ASC')
         ->select(['id', 'hari'])->get();
-
-        // $foto = Jadwal::join('mapels', 'mapels.id', '=', 'jadwals.mapel_id')
-        // ->join('kodes', 'kodes.id', '=', 'mapels.kode_id')
-        // ->join('gurus', 'gurus.id', '=', 'kodes.guru_id')
-        // ->join('haris', 'haris.id', '=', 'jadwals.hari_id')
-        // ->orderBy('haris.id', 'ASC')
-        // ->select(['gurus.foto_profile'])->get();
 
         $data = JadwalResourceWali::collection($hari);
 
