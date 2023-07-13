@@ -4,8 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-
-    "content-hash": "89eaa94da372630cd0b5cfd2fec6f5d9",
+    "content-hash": "96ae9ddc48f80c56a77029eebece09e1",
     "packages": [
         {
             "name": "brick/math",
@@ -2402,6 +2401,9 @@
         },
         {
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 85f1429 (fix: composer.lock)
             "name": "paragonie/random_compat",
             "version": "v9.99.100",
             "source": {
@@ -2714,8 +2716,11 @@
             "time": "2021-11-05T16:47:00+00:00"
         },
         {
+<<<<<<< HEAD
 =======
 >>>>>>> 944bcf1 (fix: composer.lock)
+=======
+>>>>>>> 85f1429 (fix: composer.lock)
             "name": "psr/event-dispatcher",
             "version": "1.0.0",
             "source": {
