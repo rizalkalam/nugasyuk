@@ -19,3 +19,9 @@ use App\Http\Controllers\API\Admin\AdminMuridController;
 // });
 
 // Route::get('/', [AdminMuridController::class, 'test']);
+
+Route::get('/broadcast', function() {
+    event(new \Factum\Events\TestEvent('Sent from my Laravel application'));
+
+    return 'ok';
+});
