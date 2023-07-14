@@ -33,7 +33,7 @@ class KonselingController extends Controller
             'guru_id' => $percakapan->user_one
         ]);
 
-        broadcast(new MessageCreated($pesan));
+        broadcast(MessageCreated::dispatch($pesan))->toOthers();
 
         return response()->json([
             'data' => $pesan,

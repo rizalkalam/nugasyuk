@@ -31,8 +31,8 @@ class KonselingChatController extends Controller
             'guru_id' => auth()->user()->id,
         ]);
 
-        broadcast(new MessageCreated($pesan));
-
+        broadcast(MessageCreated::dispatch($pesan))->toOthers();
+        
         return response()->json([
             'data' => $pesan,
             'status' => 'Success'
