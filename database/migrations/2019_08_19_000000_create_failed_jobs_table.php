@@ -11,14 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::drop('failed_jobs');
-    }
-
-    /**
-     * Reverse the migrations.
-     */
-    public function down(): void
-    {
         Schema::dropIfExists('failed_jobs');
+        $table->increments('id');
     }
 };
