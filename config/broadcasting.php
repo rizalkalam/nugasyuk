@@ -36,8 +36,8 @@ return [
             'secret' => '07029e5a95b7518294bf',
             'app_id' => '1633643',
             'options' => [
-                'cluster' => env('PUSHER_APP_CLUSTER'),
-                'host' => env('PUSHER_HOST'),
+                'cluster' => 'ap1',
+                'host' => 'nugasyuk.my.id',
                 'port' => 6001,
                 'scheme' => env('PUSHER_SCHEME'),
                 'encrypted' => true,
