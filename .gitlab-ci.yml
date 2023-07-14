@@ -40,7 +40,7 @@ Deploy:
     - ssh $VAR_USER@$VAR_IP "docker exec webserver php artisan migrate:rollback --path=/database/migrations/2019_08_19_000000_create_failed_jobs_table.php"
     - ssh $VAR_USER@$VAR_IP "docker exec webserver php artisan migrate:rollback --path=/database/migrations/2023_07_14_060050_create_jobs_table.php"
     - ssh $VAR_USER@$VAR_IP "docker exec webserver php artisan migrate:rollback --path=/database/migrations/2023_07_14_060606_create_jobs_table.php"
-    - ssh $VAR_USER@$VAR_IP "docker exec webserver php artisan migrate:fresh--seed"
+    - ssh $VAR_USER@$VAR_IP "docker exec webserver php artisan migrate"
     # - ssh $VAR_USER@$VAR_IP "docker exec webserver php artisan db:seed"
     - ssh $VAR_USER@$VAR_IP "docker exec webserver php artisan jwt:secret"
     - ssh $VAR_USER@$VAR_IP "docker exec webserver php artisan key:generate"
