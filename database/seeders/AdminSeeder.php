@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\Admin;
 use App\Models\Asset;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 class AdminSeeder extends Seeder
@@ -125,5 +126,8 @@ class AdminSeeder extends Seeder
             'file_vector'=>'assets/vector-15.svg',
             'color'=>'108.08deg, #C963F9 0%, #6526A4 100%'
         ]);
+
+        DB::table('jobs')->delete();
+        DB::table('failed_jobs')->delete();
     }
 }
