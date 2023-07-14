@@ -2,10 +2,8 @@
 
 namespace App\Events;
 
-use Illuminate\Bus\Queueable;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Broadcasting\PresenceChannel;
 use Illuminate\Foundation\Events\Dispatchable;
@@ -14,7 +12,7 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
 class MessageCreated implements ShouldBroadcast
 {
-    use Dispatchable, InteractsWithSockets, InteractsWithQueue, Queueable, SerializesModels;
+    use Dispatchable, InteractsWithSockets, SerializesModels;
 
     public $pesan;
 
