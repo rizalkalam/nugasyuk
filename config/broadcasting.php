@@ -37,10 +37,6 @@ return [
             'app_id' => '1633643',
             'options' => [
                 'cluster' => env('PUSHER_APP_CLUSTER'),
-                'host' => env('PUSHER_HOST'),
-                'port' => 6001,
-                'scheme' => env('PUSHER_SCHEME'),
-                'encrypted' => true,
                 'useTLS' => true,
             ],
             'client_options' => [
