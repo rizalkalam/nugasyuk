@@ -39,8 +39,8 @@ Deploy:
     # - ssh $VAR_USER@$VAR_IP "dock
     - ssh $VAR_USER@$VAR_IP "docker exec webserver php artisan queue:flush"
     - ssh $VAR_USER@$VAR_IP "docker exec webserver php artisan queue:clear"
-    - ssh $VAR_USER@$VAR_IP "docker exec webserver php artisan migrate:reset"
-    - ssh $VAR_USER@$VAR_IP "docker exec webserver php artisan db:seed"
+    - ssh $VAR_USER@$VAR_IP "docker exec webserver php artisan migrate:refresh --seed"
+    # - ssh $VAR_USER@$VAR_IP "docker exec webserver php artisan db:seed"
     - ssh $VAR_USER@$VAR_IP "docker exec webserver php artisan jwt:secret"
     - ssh $VAR_USER@$VAR_IP "docker exec webserver php artisan key:generate"
     - ssh $VAR_USER@$VAR_IP "docker exec webserver php artisan cache:clear"
