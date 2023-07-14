@@ -36,4 +36,9 @@ class MessageCreated implements ShouldBroadcast
             new PrivateChannel('pesan.' . $this->pesan->percakapan_id),
         ];
     }
+
+    public function broadcastAs()
+    {
+        return new PrivateChannel('pesan.' . $this->pesan->percakapan_id);
+    }
 }
