@@ -32,7 +32,7 @@ class KonselingChatController extends Controller
         ]);
 
         MessageCreated::dispatch($pesan);
-
+        
         return response()->json([
             'data' => $pesan,
             'status' => 'Success'
