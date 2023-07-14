@@ -15,7 +15,7 @@ return [
     |
     */
 
-    'default' => env('BROADCAST_DRIVER', 'pusher'),
+    'default' => env('BROADCAST_DRIVER', 'null'),
 
     /*
     |--------------------------------------------------------------------------
@@ -32,18 +32,14 @@ return [
 
         'pusher' => [
             'driver' => 'pusher',
-            'key' => '4c9c1a75e68db870e514',
-            'secret' => '07029e5a95b7518294bf',
-            'app_id' => '1633643',
+            'key' => env('PUSHER_APP_KEY'),
+            'secret' => env('PUSHER_APP_SECRET'),
+            'app_id' => env('PUSHER_APP_ID'),
             'options' => [
                 'cluster' => env('PUSHER_APP_CLUSTER'),
-                'useTLS' => true,
-            ],
-            'client_options' => [
-                // Guzzle client options: https://docs.guzzlephp.org/en/stable/request-options.html
             ],
         ],
-
+       
         'ably' => [
             'driver' => 'ably',
             'key' => env('ABLY_KEY'),
