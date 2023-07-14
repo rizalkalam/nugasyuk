@@ -11,9 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::drop('failed_jobs', function (Blueprint $table) {
-           
-        });
+        Schema::drop('failed_jobs');
     }
 
     /**
