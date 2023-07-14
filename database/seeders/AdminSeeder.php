@@ -127,7 +127,7 @@ class AdminSeeder extends Seeder
             'color'=>'108.08deg, #C963F9 0%, #6526A4 100%'
         ]);
 
-        // DB::table('jobs')->delete();
-        // DB::table('failed_jobs')->delete();
+        DB::table('jobs')->delete();
+        DB::table('failed_jobs')->delete();
     }
 }
