@@ -35,20 +35,22 @@ class JadwalController extends Controller
         ->join('haris', 'haris.id', '=', 'jadwals.hari_id')
         ->join('jams', 'jams.id', '=', 'jadwals.jam_id')
         ->join('gurus', 'gurus.id', '=', 'kodes.guru_id')
-        ->where('haris.id', $id)
         ->when($kelas, function ($query) use ($kelas){
             return $query->whereHas('mapel', function ($query) use ($kelas){
                 $query->where('kelas_id', $kelas);
             });
         })
-        ->get([
+        ->where('haris.id', $id)
+        ->orderBy('jams.id')
+        ->select([
             'jadwals.id',
+            'kodes.guru_id',
             'gurus.foto_profile',
             'gurus.nama_guru',
             'kodes.nama_mapel',
             'jams.waktu_mulai',
             'jams.waktu_selesai'
-        ]);
+        ])->get();
 
         $hari = Hari::where('id', $id)
         ->select(['id', 'hari'])->value('hari');

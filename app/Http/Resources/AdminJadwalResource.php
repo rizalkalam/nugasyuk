@@ -30,9 +30,12 @@ class AdminJadwalResource extends JsonResource
             });
         })
         ->where('haris.id', $this->id)
+        ->groupBy('gurus.id')
         ->select([
+            'gurus.id',
             'gurus.foto_profile',
-        ])->get();
+        ])
+        ->get();
 
         return [
             'id'=>$this->id,
