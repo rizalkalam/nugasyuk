@@ -137,12 +137,12 @@ class JadwalController extends Controller
         ]);
     }
 
-    public function edit_jadwal(Request $request, $id)
+    public function edit_jadwal(Request $request, $mapel_id)
     {
         $validator = Validator::make($request->all(),[
             'hari_id' => 'required',
             'jam_id' => 'required',
-            'mapel_id' => 'required'
+            // 'mapel_id' => 'required'
         ]);
 
         if ($validator->fails()) {
@@ -154,17 +154,37 @@ class JadwalController extends Controller
         }
 
         try {
-            $jadwal = Jadwal::where('id', $id)->first();
+            $jadwal_old = Jadwal::join('mapels', 'mapels.id', '=', 'jadwals.mapel_id')
+            ->where('jadwals.mapel_id', $mapel_id)->delete();
 
-            $jadwal->update([
-                'hari_id' => $request->hari_id,
-                'jam_id' => $request->jam_id,
-                'mapel_id' => $request->mapel_id
-            ]);
+            $jumlah_jam = Jam::where('id', '>=', $request->jam_id)
+            ->limit($request->jumlah_jam)->get('id');
+
+            $data = [];
+            foreach ($jumlah_jam as $jam_id) {
+                $data[] = [
+                    'hari_id' => $request->hari_id,
+                    'jam_id' => $jam_id->id,
+                    'mapel_id' => $mapel_id,
+                    'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
+                    'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
+                ];
+            }
+
+            $jadwal = Jadwal::insert($data);
+            
+
+            // $jadwal->update($data);
+
+            // $jadwal->update([
+            //     'hari_id' => $request->hari_id,
+            //     'jam_id' => $request->jam_id,
+            //     'mapel_id' => $request->mapel_id
+            // ]);
 
             return response()->json([
                 'message' => 'Data jadwal berhasil di ubah',
-                'data' => $jadwal,
+                'data' => $data,
             ]);
         } catch (\Throwable $th) {
             //throw $th;
@@ -175,11 +195,11 @@ class JadwalController extends Controller
         }
     }
 
-    public function hapus_jadwal($id)
+    public function hapus_jadwal($mapel_id)
     {
         try {
-            $jadwal = Jadwal::where('id', $id)->first();
-            $jadwal->delete();
+            $jadwal = Jadwal::join('mapels', 'mapels.id', '=', 'jadwals.mapel_id')
+            ->where('jadwals.mapel_id', $mapel_id)->delete();
 
             return response()->json([
                 'success' => true,
