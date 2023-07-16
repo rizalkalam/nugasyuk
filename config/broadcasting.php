@@ -40,7 +40,7 @@ return [
                 'useTLS' => true,
                 'host' => 'www.nugasyuk.my.id',
                 'port' => 6001,
-                'scheme' => 'http'
+                'scheme' => 'https'
             ],
         ],
        
