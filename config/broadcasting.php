@@ -38,6 +38,9 @@ return [
             'options' => [
                 'cluster' => env('PUSHER_APP_CLUSTER'),
                 'useTLS' => true,
+                'host' => 'https://www.nugasyuk.my.id',
+                'port' => 6001,
+                'scheme' => 'https'
             ],
         ],
        
