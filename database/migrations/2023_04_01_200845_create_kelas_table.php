@@ -17,7 +17,7 @@ return new class extends Migration
             // $table->integer('jumlah_siswa');
             $table->foreignId('tingkatan_id');
             $table->foreignId('jurusan_id');
-            $table->foreignId('guru_id');
+            $table->foreignId('guru_id')->nullable();
             $table->timestamps();
         });
     }

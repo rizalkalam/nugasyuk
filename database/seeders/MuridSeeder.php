@@ -75,7 +75,7 @@ class MuridSeeder extends Seeder
             'password'=>bcrypt('wahyu123'),
             'alamat'=>'Bae, Kudus',
             'foto_profile'=>'gambar_profile_siswa/wahyu.png',
-            'kelas_id'=>3,
+            'kelas_id'=>2,
             // 'tugas_id'=>1,
         ]);
     }

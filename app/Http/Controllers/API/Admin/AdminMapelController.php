@@ -71,12 +71,12 @@ class AdminMapelController extends Controller
         $data = Mapel::create([
             'kode_id' => $request->kode_id,
             'kelas_id' => $request->kelas_id,
-            'asset_id' => $request->asset_id
+            'asset_id' => $request->asset_id,
         ]);
 
         $mapel = Mapel::latest()->first();
 
-        $guru = Guru::where('kode_id', $mapel->kode_id)->first();
+        $guru = Kode::where('id', $mapel->kode_id)->first();
 
         if ($mapel->kode->status_mapel == 'bk') {
             $murid = Murid::where('kelas_id', $mapel->kelas_id)
@@ -85,7 +85,7 @@ class AdminMapelController extends Controller
             $percakapan = [];
             foreach ($murid as $id) {
                 $percakapan[] = [
-                    'user_one' => $guru->id,
+                    'user_one' => $guru->guru_id,
                     'user_two' => $id->id,
                     'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
                     'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
@@ -119,13 +119,38 @@ class AdminMapelController extends Controller
         }
 
         try {
-            $mapel = Mapel::where('id', $id)->first();
+            $data = Mapel::where('id', $id)->first();
 
-            $mapel->update([
+            $data->update([
                 'kode_id' => $request->kode_id,
                 'kelas_id' => $request->kelas_id,
-                'asset_id' => $request->asset_id
+                'asset_id' => $request->asset_id,
             ]);
+
+            $mapel = Mapel::latest()->first();
+
+            $guru = Kode::where('id', $mapel->kode_id)->first();
+
+            if ($mapel->kode->status_mapel == 'bk') {
+
+                $old_percakapan = Percakapan::whereIn('user_one', '=', $guru)->delete();
+
+                $murid = Murid::where('kelas_id', $mapel->kelas_id)
+                ->get();
+
+    
+                $percakapan = [];
+                foreach ($murid as $id) {
+                    $percakapan[] = [
+                        'user_one' => $guru,
+                        'user_two' => $id->id,
+                        'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
+                        'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
+                    ];
+                }
+    
+                Percakapan::insert($percakapan);
+            }
 
             return response()->json([
                 'message' => 'Data Mata Pelajaran berhasil di ubah',
