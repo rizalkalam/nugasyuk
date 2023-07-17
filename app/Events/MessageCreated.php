@@ -2,6 +2,7 @@
 
 namespace App\Events;
 
+use App\Models\Pesan;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Broadcasting\PrivateChannel;
@@ -9,6 +10,7 @@ use Illuminate\Broadcasting\PresenceChannel;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
 
 class MessageCreated implements ShouldBroadcast
 {
@@ -19,7 +21,7 @@ class MessageCreated implements ShouldBroadcast
     /**
      * Create a new event instance.
      */
-    public function __construct($pesan)
+    public function __construct(Pesan $pesan)
     {
         $this->pesan = $pesan;
         $this->dontBroadcastToCurrentUser();
@@ -37,8 +39,8 @@ class MessageCreated implements ShouldBroadcast
         ];
     }
 
-    public function broadcastAs()
-    {
-        return new PrivateChannel('pesan.' . $this->pesan->percakapan_id);
-    }
+    // public function broadcastAs()
+    // {
+    //     return new PrivateChannel('pesan.' . $this->pesan->percakapan_id);
+    // }
 }

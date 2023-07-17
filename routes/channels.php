@@ -24,4 +24,5 @@ Broadcast::channel('pesan.{percakapanId}', function ($guru, $percakapanId) {
 
     return in_array($percakapanId, $canAccess);
     // return (int) $user->id === (int) $id;
+    // tes
 });
