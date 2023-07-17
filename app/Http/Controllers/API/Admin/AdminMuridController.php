@@ -4,8 +4,11 @@ namespace App\Http\Controllers\API\Admin;
 
 use App\Models\Ortu;
 use App\Models\Kelas;
+use App\Models\Mapel;
 use App\Models\Murid;
+use App\Models\Percakapan;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
@@ -42,9 +45,9 @@ class AdminMuridController extends Controller
 
     public function detail($id)
     {
-        $siswa = Murid::join('kelas', 'kelas.id', '=', 'murids.kelas_id')
-        ->join('tingkatans', 'tingkatans.id', '=', 'kelas.tingkatan_id')
-        ->join('jurusans', 'jurusans.id', '=', 'kelas.jurusan_id')
+        $siswa = Murid::leftjoin('kelas', 'kelas.id', '=', 'murids.kelas_id')
+        ->leftjoin('tingkatans', 'tingkatans.id', '=', 'kelas.tingkatan_id')
+        ->leftjoin('jurusans', 'jurusans.id', '=', 'kelas.jurusan_id')
         ->where('murids.id', $id)
         ->select([
             'murids.id',
@@ -136,6 +139,19 @@ class AdminMuridController extends Controller
                 'email'=>$request->email_wali,
                 'password'=>Hash::make($request->password_wali),
                 'siswa_id'=>Murid::latest()->first()->id
+            ]);
+
+            $guru_id = Mapel::join('kodes', 'kodes.id', '=', 'mapels.kode_id')
+            ->join('gurus', 'gurus.id', '=', 'kodes.guru_id')
+            ->where('mapels.kelas_id', Murid::latest()->first()->kelas_id)
+            ->where('kodes.status_mapel', 'bk')
+            ->first();
+
+            $percakapan = Percakapan::insert([
+                'user_one' => $guru_id->id,
+                'user_two' => Murid::latest()->first()->id,
+                'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
+                'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
             ]);
     
             return response()->json([

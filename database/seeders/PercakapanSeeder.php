@@ -31,13 +31,13 @@ class PercakapanSeeder extends Seeder
             1 => ['user_one' => 8, 'user_two' => 1],
             2 => ['user_one' => 8, 'user_two' => 2],
             3 => ['user_one' => 8, 'user_two' => 3],
-            4 => ['user_one' => 8, 'user_two' => 4],
-            5 => ['user_one' => 8, 'user_two' => 5],
-            6 => ['user_one' => 9, 'user_two' => 1],
-            7 => ['user_one' => 9, 'user_two' => 2],
-            8 => ['user_one' => 9, 'user_two' => 3],
-            9 => ['user_one' => 9, 'user_two' => 4],
-            10 => ['user_one' => 9, 'user_two' => 5],
+            4 => ['user_one' => 9, 'user_two' => 4],
+            5 => ['user_one' => 9, 'user_two' => 5],
+            // 6 => ['user_one' => 9, 'user_two' => 1],
+            // 7 => ['user_one' => 9, 'user_two' => 2],
+            // 8 => ['user_one' => 9, 'user_two' => 3],
+            // 9 => ['user_one' => 9, 'user_two' => 4],
+            // 10 => ['user_one' => 9, 'user_two' => 5],
         ];
 
         foreach ($users as $user) {

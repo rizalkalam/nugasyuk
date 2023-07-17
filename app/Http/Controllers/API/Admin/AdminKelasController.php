@@ -37,7 +37,7 @@ class AdminKelasController extends Controller
     {
         $kelas = Kelas::join('tingkatans', 'tingkatans.id', '=', 'kelas.tingkatan_id')
         ->join('jurusans', 'jurusans.id', '=', 'kelas.jurusan_id')
-        ->join('gurus', 'gurus.id', '=', 'kelas.guru_id')
+        ->leftjoin('gurus', 'gurus.id', '=', 'kelas.guru_id')
         ->where('kelas.id', $id)
         ->select([
             'kelas.id',

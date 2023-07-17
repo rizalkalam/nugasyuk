@@ -14,6 +14,8 @@ return new class extends Migration
         Schema::create('pengumpulans', function (Blueprint $table) {
             $table->id();
             $table->foreignId('tugas_id');
+            $table->string('link')->nullable();
+            $table->string('file')->nullable();
             $table->enum('status', ['menunggu', 'selesai', 'belum_selesai'])->default('belum_selesai');
             $table->date('tanggal')->nullable();
             // $table->foreignId('kelas_id');

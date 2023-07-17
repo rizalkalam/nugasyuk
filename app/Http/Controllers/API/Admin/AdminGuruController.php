@@ -21,7 +21,7 @@ class AdminGuruController extends Controller
     {
         $nama_guru = request('nama_guru', null);
         $status_mapel = request('status_mapel', null);
-        $guru = Guru::leftjoin('kodes', 'kodes.id', '=', 'gurus.kode_id')
+        $guru = Kode::join('gurus', 'gurus.id', '=', 'kodes.guru_id')
         ->when($status_mapel, function ($query) use ($status_mapel){
             $query->where('kodes.status_mapel', $status_mapel);
         })
@@ -58,9 +58,9 @@ class AdminGuruController extends Controller
         ])->get();
 
         $kelas = Mapel::leftjoin('kodes', 'kodes.id', '=', 'mapels.kode_id')
-        ->join('kelas', 'kelas.id', '=', 'mapels.kelas_id')
-        ->join('jurusans', 'jurusans.id', '=', 'kelas.jurusan_id')
-        ->join('tingkatans', 'tingkatans.id', '=', 'kelas.tingkatan_id')
+        ->leftjoin('kelas', 'kelas.id', '=', 'mapels.kelas_id')
+        ->leftjoin('jurusans', 'jurusans.id', '=', 'kelas.jurusan_id')
+        ->leftjoin('tingkatans', 'tingkatans.id', '=', 'kelas.tingkatan_id')
         ->where('kodes.guru_id', '=', $id)
         ->select([
             // 'kodes.kode_guru',

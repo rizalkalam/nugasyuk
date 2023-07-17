@@ -70,29 +70,48 @@ class TugasController extends Controller
     {
         $validator = Validator::make($request->all(),[
             // 'link'=> 'required',
-            'file'=> 'file',
-            'murid_id'=> 'required'
+            'file'=> 'mimes:pdf,docx,xlsx|max:10000',
         ]);
 
         // $jawaban = Tugas::where('id', $id)
         // ->first('id');
 
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => $validator->errors(),
+                'data' => [],
+            ]);
+        }
+
+        try {
+
+        $berkas = $request->file('file');
+        $nama = $berkas->getClientOriginalName();
+
         $jawaban = Pengumpulan::where('tugas_id', $id)
-        ->where('status', '=', 'belum selesai')
-        ->where('murid_id', '=', auth()->user()->id)
-        ->first('id');
+        ->where('murid_id', auth()->user()->id)
+        ->first();
         
             $jawaban->update([
                 'link'=> $request->link,
-                'file'=> $request->file,
+                'file'=> $berkas->storeAs('file', $nama),
                 'status'=> 'selesai',
-                'murid_id'=> auth()->user()->id
             ]);
 
             return response()->json([
                 'message' => 'Jawaban berhasil terkirim',
                 'data' => $jawaban,
             ]);
+        } catch (\Throwable $th) {
+            //throw $th;
+            return response()->json([
+                'message' => 'failed',
+                'errors' => $th->getMessage(),
+            ]);
+        }
+
+        
     }
 
     public function pengumpulan()
