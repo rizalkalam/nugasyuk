@@ -14,10 +14,10 @@ return new class extends Migration
         Schema::create('percakapans', function (Blueprint $table) {
             $table->id();
 
-            $table->unsignedBigInteger('user_one');
+            $table->unsignedBigInteger('user_one')->nullable();
             $table->foreign('user_one')->references('id')->on('gurus');
 
-            $table->unsignedBigInteger('user_two');
+            $table->unsignedBigInteger('user_two')->nullable();
             $table->foreign('user_two')->references('id')->on('murids');
 
             $table->timestamps();
