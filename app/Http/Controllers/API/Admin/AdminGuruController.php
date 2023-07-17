@@ -142,22 +142,6 @@ class AdminGuruController extends Controller
             ]);
     
             $data->assignRole($request->role);
-
-            if ($request->role == 2) {
-                $murid = Murid::get();
-
-                $percakapan = [];
-                foreach ($murid as $id) {
-                    $percakapan[] = [
-                        'user_one' => $data->id,
-                        'user_two' => $id->id,
-                        'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
-                        'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
-                    ];
-                }
-
-                $new_percakapan = Percakapan::insert($percakapan);
-            }
     
             return response()->json([
                 'message' => 'Data Guru baru berhasil dibuat',
@@ -218,7 +202,7 @@ class AdminGuruController extends Controller
             ]);
 
             return response()->json([
-                'message' => 'Data Kelas berhasil di ubah',
+                'message' => 'Data Guru berhasil di ubah',
                 'data' => $guru,
             ]);
         } catch (\Throwable $th) {
@@ -239,11 +223,21 @@ class AdminGuruController extends Controller
         $kode = Kode::where('guru_id', $id)->first();
         $kode->delete();
         
-        $guru = Guru::where('id', $id)->first();
-        $guru->delete();
+        // $guru = Guru::where('id', $id)->first();
+        // $guru->delete();
+        
+        $percakapan = Percakapan::where('user_one', $id)->get();
+
+        if (!empty($percakapan)) {
+            Percakapan::where('user_one', $id)->delete();
+            Guru::where('id', $id)->delete();
+        }
+
+
         return response()->json([
             'success' => true,
             'message' => 'Data guru berhasil di hapus',
+            // 'data' => $percakapan
         ]);
     }
 

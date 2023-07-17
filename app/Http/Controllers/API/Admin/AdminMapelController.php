@@ -2,10 +2,14 @@
 
 namespace App\Http\Controllers\API\Admin;
 
+use App\Models\Guru;
 use App\Models\Kode;
 use App\Models\Kelas;
 use App\Models\Mapel;
+use App\Models\Murid;
+use App\Models\Percakapan;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 
@@ -70,9 +74,31 @@ class AdminMapelController extends Controller
             'asset_id' => $request->asset_id
         ]);
 
+        $mapel = Mapel::latest()->first();
+
+        $guru = Guru::where('kode_id', $mapel->kode_id)->first();
+
+        if ($mapel->kode->status_mapel == 'bk') {
+            $murid = Murid::where('kelas_id', $mapel->kelas_id)
+            ->get();
+
+            $percakapan = [];
+            foreach ($murid as $id) {
+                $percakapan[] = [
+                    'user_one' => $guru->id,
+                    'user_two' => $id->id,
+                    'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
+                    'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
+                ];
+            }
+
+            $new_percakapan = Percakapan::insert($percakapan);
+        }
+
         return response()->json([
             'message' => 'Data Mata Pelajaran baru berhasil dibuat',
             'data' => $data,
+            // 'mapel' => $mapel
         ]);
     }
 
