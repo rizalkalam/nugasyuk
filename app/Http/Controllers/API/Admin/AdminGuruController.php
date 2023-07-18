@@ -48,6 +48,7 @@ class AdminGuruController extends Controller
     {
         $kode = Kode::where('guru_id', '=', $id)
         ->select([
+            'kodes.id',
             'kodes.kode_guru',
             // 'kodes.nama_mapel',
         ])->get();
@@ -112,7 +113,7 @@ class AdminGuruController extends Controller
             'nama_guru' => 'required',
             'email' => 'required',
             'password' => 'required',
-            'niy' => 'required',
+            'niy' => 'required|unique:gurus',
             'foto_profile' => 'required|file|max:2048|mimes:jpeg,png,jpg',
             'nomor_tlp' => 'required',
             'alamat' => 'required'
@@ -124,7 +125,7 @@ class AdminGuruController extends Controller
                 'success' => false,
                 'message' => $validator->errors(),
                 'data' => [],
-            ]);
+            ], 400);
         }
 
         $berkas = $request->file('foto_profile');
@@ -154,7 +155,7 @@ class AdminGuruController extends Controller
             return response()->json([
                 'message' => 'failed',
                 'errors' => $th->getMessage(),
-            ]);
+            ], 400);
         }
     }
 
@@ -165,7 +166,7 @@ class AdminGuruController extends Controller
             'foto_profile' => 'mimes:jpeg,png,jpg|file|max:2048',
             'nama_guru' => 'required',
             'password' => 'required',
-            'niy' => 'required',
+            'niy' => 'required|unique:gurus',
             // 'kode_id' => 'required'
         ]);
 
@@ -174,7 +175,7 @@ class AdminGuruController extends Controller
                 'success' => false,
                 'message' => $validator->errors(),
                 'data' => [],
-            ]);
+            ], 400);
         }
 
         $file_path = Guru::where('id', $id)->value('foto_profile');
@@ -211,7 +212,7 @@ class AdminGuruController extends Controller
             return response()->json([
                 'message' => 'failed',
                 'errors' => $th->getMessage(),
-            ]);
+            ], 400);
         }
     }
 
@@ -249,11 +250,19 @@ class AdminGuruController extends Controller
     public function tambah_kode(Request $request, $id)
     {
         $validator = Validator::make($request->all(),[
-            'kode_guru'=> 'required',
+            'kode_guru'=> 'required|unique:kodes',
             'nama_mapel'=> 'required',
             'status_mapel'=> 'required',
             'guru_id'=> 'required',
         ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => $validator->errors(),
+                'data' => [],
+            ], 400);
+        }
 
         try {
             $data = Kode::create([
@@ -279,7 +288,7 @@ class AdminGuruController extends Controller
             return response()->json([
                 'message' => 'failed',
                 'errors' => $th->getMessage(),
-            ]);
+            ], 400);
         }
 
         
