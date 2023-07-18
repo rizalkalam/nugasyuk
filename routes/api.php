@@ -102,6 +102,7 @@ Route::middleware('auth:admin')->group(function(){
 
         // Route asset admin
         Route::get('/asset', [AdminAssetController::class, 'index']);
+        Route::get('/asset/{id}', [AdminAssetController::class, 'detail_asset']);
         Route::post('/asset', [AdminAssetController::class, 'buat_asset']);
         Route::delete('/asset/{id}', [AdminAssetController::class, 'hapus_asset']);
 
