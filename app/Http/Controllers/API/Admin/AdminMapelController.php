@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
+use App\Http\Resources\AdminListMapelResource;
 
 class AdminMapelController extends Controller
 {
@@ -19,9 +20,9 @@ class AdminMapelController extends Controller
     {
         $nama_mapel = request('nama_mapel', null);
         $jurusan = request('jurusan', null);
-        $data = Mapel::join('kodes', 'kodes.id', '=', 'mapels.kode_id')
+        $mapel = Mapel::leftjoin('kodes', 'kodes.id', '=', 'mapels.kode_id')
         ->join('assets', 'assets.id', '=', 'mapels.asset_id')
-        ->join('gurus', 'gurus.id', '=', 'kodes.guru_id')
+        ->leftjoin('gurus', 'gurus.id', '=', 'kodes.guru_id')
         ->join('kelas', 'kelas.id', '=', 'mapels.kelas_id')
         ->join('tingkatans', 'tingkatans.id', '=', 'kelas.tingkatan_id')
         ->join('jurusans', 'jurusans.id', '=', 'kelas.jurusan_id')
@@ -44,6 +45,8 @@ class AdminMapelController extends Controller
             'kelas.nama_kelas',
             'assets.file_asset'
         ])->get();
+
+        $data = AdminListMapelResource::collection($mapel);
 
         return response()->json([
             "success" => true,
@@ -187,9 +190,9 @@ class AdminMapelController extends Controller
 
     public function detail_mapel($id)
     {
-        $data = Mapel::join('kodes', 'kodes.id', '=', 'mapels.kode_id')
+        $data = Mapel::leftjoin('kodes', 'kodes.id', '=', 'mapels.kode_id')
         ->join('assets', 'assets.id', '=', 'mapels.asset_id')
-        ->join('gurus', 'gurus.id', '=', 'kodes.guru_id')
+        ->leftjoin('gurus', 'gurus.id', '=', 'kodes.guru_id')
         ->join('kelas', 'kelas.id', '=', 'mapels.kelas_id')
         ->join('tingkatans', 'tingkatans.id', '=', 'kelas.tingkatan_id')
         ->join('jurusans', 'jurusans.id', '=', 'kelas.jurusan_id')
@@ -215,13 +218,13 @@ class AdminMapelController extends Controller
 
         $data = [
             "id"=>$data->id,
-            "nama_mapel"=>$data->nama_mapel,
-            "nama_guru"=>$data->nama_guru,
+            "nama_mapel"=>$data->nama_mapel !== null ? $data->nama_mapel : 0,
+            "nama_guru"=>$data->nama_guru !== null ? $data->nama_guru : 0,
             "tingkat_ke"=>$data->tingkat_ke,
             "nama_jurusan"=>$data->nama_jurusan,
             "nama_kelas"=>$data->nama_kelas,
             "file_asset"=>$data->file_asset,
-            "kode_id"=>$kode_id,
+            "kode_id"=>$kode_id !== null ? $kode_id : 0,
             "kelas_id"=>$kelas_id,
             "asset_id"=>$asset_id
         ];

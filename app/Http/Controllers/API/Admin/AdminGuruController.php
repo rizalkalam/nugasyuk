@@ -54,7 +54,6 @@ class AdminGuruController extends Controller
 
         $mapel = Kode::where('guru_id', '=', $id)
         ->select([
-            // 'kodes.kode_guru',
             'kodes.nama_mapel',
         ])->get();
 
@@ -63,6 +62,7 @@ class AdminGuruController extends Controller
         ->leftjoin('jurusans', 'jurusans.id', '=', 'kelas.jurusan_id')
         ->leftjoin('tingkatans', 'tingkatans.id', '=', 'kelas.tingkatan_id')
         ->where('kodes.guru_id', '=', $id)
+        ->whereNotNull('kelas.nama_kelas')
         ->select([
             // 'kodes.kode_guru',
             // 'kodes.nama_mapel',
@@ -94,7 +94,7 @@ class AdminGuruController extends Controller
             'alamat'=>$guru->alamat,
             'mengajar'=>$mapel,
             'kode'=>$kode,
-            'mengajar_kelas'=>$kelas,
+            'mengajar_kelas'=>!empty($kelas->first()) ? $kelas : []
             // 'profile' => $guru,
             // 'detail' => $mapel
         ];

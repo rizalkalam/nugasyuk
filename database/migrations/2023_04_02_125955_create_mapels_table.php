@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('mapels', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('kode_id');
+            $table->foreignId('kode_id')->nullable();
             $table->foreignId('kelas_id');
             $table->foreignId('asset_id');
             // $table->string('nama_mapel');

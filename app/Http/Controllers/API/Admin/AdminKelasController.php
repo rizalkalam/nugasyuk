@@ -64,10 +64,10 @@ class AdminKelasController extends Controller
             'tingkat_ke'=>$kelas->tingkat_ke,
             'nama_jurusan'=>$kelas->nama_jurusan,
             'nama_kelas'=>$kelas->nama_kelas,
-            'wali_kelas'=>$kelas->nama_guru,
+            'wali_kelas'=>$kelas->nama_guru !== null ? $kelas->nama_guru : 0,
             'tingkatan_id'=>$tinkgatan_id,
             'jurusan_id'=>$jurusan_id,
-            'guru_id'=>$guru_id
+            'guru_id'=>$guru_id !== null ? $guru_id : 0
         ];
 
         return response()->json([

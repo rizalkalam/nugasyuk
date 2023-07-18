@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('password');
             $table->text('alamat');
             $table->string('foto_profile');
-            $table->foreignId('kelas_id');
+            $table->foreignId('kelas_id')->nullable();
             $table->timestamps();
         });
     }
