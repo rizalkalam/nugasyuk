@@ -103,7 +103,7 @@ class AdminMuridController extends Controller
     public function buat_murid(Request $request)
     {
         $validator = Validator::make($request->all(),[
-            'nis'=>'required',
+            'nis'=>'required|unique:murids',
             'nama_panggilan'=>'required',
             'nama_siswa'=> 'required',
             'email'=> 'required',
@@ -123,7 +123,7 @@ class AdminMuridController extends Controller
                 'success' => false,
                 'message' => $validator->errors(),
                 'data' => [],
-            ]);
+            ], 400);
         }
 
         $berkas = $request->file('foto_profile');
@@ -178,7 +178,7 @@ class AdminMuridController extends Controller
     public function edit_murid(Request $request, $id)
     {
         $validator = Validator::make($request->all(),[
-            'nis'=>'required',
+            'nis'=>'required|unique:murids',
             'nama_panggilan'=>'required',
             'nama_siswa'=> 'required',
             'email'=> 'required',
@@ -199,7 +199,7 @@ class AdminMuridController extends Controller
                 'success' => false,
                 'message' => $validator->errors(),
                 'data' => [],
-            ]);
+            ], 400);
         }
 
         $file_path = Murid::where('id', $id)->value('foto_profile');
