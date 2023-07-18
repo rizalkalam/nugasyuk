@@ -13,25 +13,32 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
+use App\Http\Resources\AdminListMuridResource;
 
 class AdminMuridController extends Controller
 {
     public function index()
     {
         $jurusan = request('jurusan', null);
-        // $jurusan_id = Kelas::join('jurusans', function ($query) use ($jurusan){
-        //     $query->on('jurusans.id', '=', 'kelas.jurusan_id')
-        //           ->where('jurusans.id', $jurusan);
-        // })->value('jurusans.id');
-
-        $data = Murid::join('kelas', 'kelas.id', '=', 'murids.kelas_id')
-        ->join('tingkatans', 'tingkatans.id', '=', 'kelas.tingkatan_id')
-        ->join('jurusans', 'jurusans.id', '=', 'kelas.jurusan_id')
+        $murid = Murid::leftjoin('kelas', 'kelas.id', '=', 'murids.kelas_id')
+        ->leftjoin('tingkatans', 'tingkatans.id', '=', 'kelas.tingkatan_id')
+        ->leftjoin('jurusans', 'jurusans.id', '=', 'kelas.jurusan_id')
         ->when($jurusan, function ($query) use ($jurusan){
             $query->where('jurusans.id', $jurusan);
         })
+        // ->whereNull('jurusans.nama_jurusan')
         ->orderBy('murids.id', 'ASC')
-        ->select(['murids.id', 'murids.nis', 'murids.foto_profile', 'murids.nama_siswa', 'murids.email', 'jurusans.nama_jurusan'])->get();
+        ->select([
+            'murids.id',
+            'murids.nis',
+            'murids.foto_profile',
+            'murids.nama_siswa',
+            'murids.email',
+            'jurusans.nama_jurusan'
+        ])
+        ->get();
+
+        $data = AdminListMuridResource::collection($murid);
 
         $jumlah_murid = count(Murid::all());
 
@@ -39,7 +46,7 @@ class AdminMuridController extends Controller
             "success" => true,
             "message" => "List Siswa",
             "jumlah_siswa" => $jumlah_murid,
-            "data" => $data,
+            "data" => $data
         ], 200);
     }
 
@@ -78,10 +85,10 @@ class AdminMuridController extends Controller
             'nama_siswa'=>$siswa->nama_siswa,
             'email'=>$siswa->email,
             'alamat'=>$siswa->alamat,
-            'tingkat_ke'=>$siswa->tingkat_ke,
-            'jurusan'=>$siswa->nama_jurusan,
-            'kelas'=>$siswa->nama_kelas,
-            'kelas_id'=>$kelas_id,
+            'tingkat_ke'=>$siswa->tingkat_ke !== null ? $siswa->tingkat_ke : 0,
+            'jurusan'=>$siswa->nama_jurusan !== null ? $siswa->nama_jurusan : 0,
+            'kelas'=>$siswa->nama_kelas !== null ? $siswa->nama_kelas : 0,
+            'kelas_id'=>$kelas_id !== null ? $kelas_id : 0,
             'nama_wali_murid'=>$data_ortu->nama,
             'email_wali_murid'=>$data_ortu->email
         ];

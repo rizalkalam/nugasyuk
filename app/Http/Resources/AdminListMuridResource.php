@@ -2,11 +2,10 @@
 
 namespace App\Http\Resources;
 
-use App\Models\Kode;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class AdminListGuruResource extends JsonResource
+class AdminListMuridResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -17,20 +16,15 @@ class AdminListGuruResource extends JsonResource
     {
         // return parent::toArray($request);
 
-        $kode = Kode::join('gurus', 'gurus.id', '=', 'kodes.guru_id')
-        ->where('gurus.id', $this->id)
-        ->select(['kodes.id', 'kodes.kode_guru'])->get();
-        
-        $status_mapel = $this->status_mapel;
+        $nama_jurusan = $this->nama_jurusan;
 
         return [
             'id'=>$this->id,
-            'niy'=>$this->niy,
+            'nis'=>$this->nis,
             'foto_profile'=>$this->foto_profile,
-            'nama_guru'=>$this->nama_guru,
+            'nama_siswa'=>$this->nama_siswa,
             'email'=>$this->email,
-            'status_mapel'=>$status_mapel !== null ? $status_mapel : 0,
-            'kode_guru'=>$kode
+            'nama_jurusan'=>$nama_jurusan !== null ? $nama_jurusan : 0,
         ];
     }
 }
