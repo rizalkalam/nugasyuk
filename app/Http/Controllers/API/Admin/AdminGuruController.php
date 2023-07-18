@@ -21,7 +21,8 @@ class AdminGuruController extends Controller
     {
         $nama_guru = request('nama_guru', null);
         $status_mapel = request('status_mapel', null);
-        $guru = Kode::join('gurus', 'gurus.id', '=', 'kodes.guru_id')
+
+        $guru = Guru::leftjoin('kodes', 'kodes.id', '=', 'gurus.kode_id')
         ->when($status_mapel, function ($query) use ($status_mapel){
             $query->where('kodes.status_mapel', $status_mapel);
         })
@@ -220,11 +221,15 @@ class AdminGuruController extends Controller
         $file_path = Guru::where('id', $id)->value('foto_profile');
         Storage::delete($file_path);
         
+        $guru = Guru::where('id', $id)->first();
         $kode = Kode::where('guru_id', $id)->first();
-        $kode->delete();
+
+        if (!empty($kode)) {
+            $kode->delete();
+        } else {
+            $guru->delete();
+        }
         
-        // $guru = Guru::where('id', $id)->first();
-        // $guru->delete();
         
         $percakapan = Percakapan::where('user_one', $id)->get();
 
@@ -250,17 +255,34 @@ class AdminGuruController extends Controller
             'guru_id'=> 'required',
         ]);
 
-        $data = Kode::create([
-            'kode_guru'=> $request->kode_guru,
-            'nama_mapel'=> $request->nama_mapel,
-            'status_mapel'=> $request->status_mapel,
-            'guru_id'=> $id,
-        ]);
+        try {
+            $data = Kode::create([
+                'kode_guru'=> $request->kode_guru,
+                'nama_mapel'=> $request->nama_mapel,
+                'status_mapel'=> $request->status_mapel,
+                'guru_id'=> $id,
+            ]);
+    
+            $kode_id = Kode::latest()->first();
+            $id_guru = Guru::where('id', $id)->first();
 
-        return response()->json([
-            'message' => 'Data kode guru baru berhasil dibuat',
-            'data' => $data,
-        ]);
+            $id_guru->update([
+                'kode_id' => $kode_id->id
+            ]);
+    
+            return response()->json([
+                'message' => 'Data kode guru baru berhasil dibuat',
+                'data' => $data,
+            ]);
+        } catch (\Throwable $th) {
+            //throw $th;
+            return response()->json([
+                'message' => 'failed',
+                'errors' => $th->getMessage(),
+            ]);
+        }
+
+        
     }
 
     public function hapus_kode($id)

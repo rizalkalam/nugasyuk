@@ -228,6 +228,32 @@ class AdminMuridController extends Controller
                 // 'siswa_id'=>Murid::latest()->first()->id
             ]);
 
+            $guru_id = Mapel::join('kodes', 'kodes.id', '=', 'mapels.kode_id')
+            ->join('gurus', 'gurus.id', '=', 'kodes.guru_id')
+            ->where('kodes.status_mapel', 'bk')
+            ->where('mapels.kelas_id', $request->kelas_id)
+            ->first();
+
+            $data_percakapan = Percakapan::whereIn('user_two', array($id))
+            ->update([
+                'user_one' => $guru_id->id,
+                'user_two' => $id,
+                'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
+                'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
+            ]);
+
+            // $percakapan = [];
+            // foreach ($murid as $id) {
+            //     $percakapan[] = [
+            //         'user_one' => $guru,
+            //         'user_two' => $id->id,
+            //         'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
+            //         'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
+            //     ];
+            // }
+
+            // Percakapan::insert($percakapan);
+
             return response()->json([
                 'message' => 'Data Siswa dan Wali Murid berhasil di ubah',
                 'siswa' => $murid,
@@ -249,6 +275,8 @@ class AdminMuridController extends Controller
         $murid = Murid::where('id', $id)->first();
 
         $ortu = Ortu::where('siswa_id', $id)->first();
+
+        $data_percakapan = Percakapan::whereIn('user_two', array($id))->delete();
 
         $ortu->delete();
         $murid->delete();

@@ -20,6 +20,8 @@ class AdminListGuruResource extends JsonResource
         $kode = Kode::join('gurus', 'gurus.id', '=', 'kodes.guru_id')
         ->where('gurus.id', $this->id)
         ->select(['kodes.id', 'kodes.kode_guru'])->get();
+        
+        // $data_guru = Guru::
 
         return [
             'id'=>$this->id,

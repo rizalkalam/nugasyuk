@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API\Admin;
 
 use App\Models\Asset;
+use App\Models\Mapel;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
@@ -17,6 +18,23 @@ class AdminAssetController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'List data asset',
+            'data' => $data,
+        ]);
+    }
+
+    public function detail_asset($id)
+    {
+        $data = Mapel::join('assets', 'assets.id', '=', 'mapels.asset_id')
+        ->join('kodes', 'kodes.id', '=', 'mapels.kode_id')
+        ->where('assets.id', $id)
+        ->select([
+            'mapels.id',
+            'kodes.nama_mapel'
+        ])->get();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Detail asset',
             'data' => $data,
         ]);
     }

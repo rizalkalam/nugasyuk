@@ -125,24 +125,26 @@ class AdminMapelController extends Controller
                 'kode_id' => $request->kode_id,
                 'kelas_id' => $request->kelas_id,
                 'asset_id' => $request->asset_id,
+                'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
+                'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
             ]);
 
-            $mapel = Mapel::latest()->first();
+            $mapel = Mapel::orderBy('updated_at','DESC')->first();
 
             $guru = Kode::where('id', $mapel->kode_id)->first();
 
             if ($mapel->kode->status_mapel == 'bk') {
 
-                $old_percakapan = Percakapan::whereIn('user_one', '=', $guru)->delete();
+                $data_percakapan = Percakapan::whereIn('user_one', array($guru->guru_id))->delete();
 
-                $murid = Murid::where('kelas_id', $mapel->kelas_id)
+                $murid = Murid::where('kelas_id', $request->kelas_id)
                 ->get();
 
     
                 $percakapan = [];
                 foreach ($murid as $id) {
                     $percakapan[] = [
-                        'user_one' => $guru,
+                        'user_one' => $guru->guru_id,
                         'user_two' => $id->id,
                         'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
                         'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
@@ -154,7 +156,7 @@ class AdminMapelController extends Controller
 
             return response()->json([
                 'message' => 'Data Mata Pelajaran berhasil di ubah',
-                'data' => $mapel,
+                // 'data' => $mapel,
             ]);
         } catch (\Throwable $th) {
             //throw $th;
@@ -168,8 +170,14 @@ class AdminMapelController extends Controller
     public function hapus_mapel($id)
     {
         $mapel = Mapel::where('id', $id)->first();
+        $guru = Kode::where('id', $mapel->kode_id)->first();
 
         $mapel->delete();
+
+        if ($mapel->kode->status_mapel == 'bk') {
+            $data_percakapan = Percakapan::whereIn('user_one', array($guru->guru_id))->delete();
+            $mapel->delete();
+        }
 
         return response()->json([
             'success' => true,
