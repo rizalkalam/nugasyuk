@@ -20,9 +20,9 @@ class AdminMapelController extends Controller
     {
         $nama_mapel = request('nama_mapel', null);
         $jurusan = request('jurusan', null);
-        $mapel = Mapel::leftjoin('kodes', 'kodes.id', '=', 'mapels.kode_id')
-        ->join('assets', 'assets.id', '=', 'mapels.asset_id')
-        ->leftjoin('gurus', 'gurus.id', '=', 'kodes.guru_id')
+        $mapel = Mapel::join('kodes', 'kodes.id', '=', 'mapels.kode_id')
+        ->leftjoin('assets', 'assets.id', '=', 'mapels.asset_id')
+        ->join('gurus', 'gurus.id', '=', 'kodes.guru_id')
         ->join('kelas', 'kelas.id', '=', 'mapels.kelas_id')
         ->join('tingkatans', 'tingkatans.id', '=', 'kelas.tingkatan_id')
         ->join('jurusans', 'jurusans.id', '=', 'kelas.jurusan_id')

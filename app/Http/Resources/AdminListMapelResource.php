@@ -16,18 +16,17 @@ class AdminListMapelResource extends JsonResource
     {
         // return parent::toArray($request);
 
-        $nama_mapel = $this->nama_mapel;
-        $nama_guru = $this->nama_guru;
+        $file_asset = $this->file_asset;
 
         return [
             'id'=>$this->id,
             'kelas_id'=>$this->kelas_id,
-            'nama_mapel'=>$nama_mapel !== null ? $nama_mapel : 0,
-            'nama_guru'=>$nama_guru !== null ? $nama_guru : 0,
+            'nama_mapel'=>$this->nama_mapel,
+            'nama_guru'=>$this->nama_guru,
             'tingkat_ke'=>$this->tingkat_ke,
             'nama_jurusan'=>$this->nama_jurusan,
             'nama_kelas'=>$this->nama_kelas,
-            'file_asset'=>$this->file_asset
+            'file_asset'=>$this->file_asset !== null ? $file_asset : 0
         ];
 
     }
