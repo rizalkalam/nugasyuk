@@ -224,21 +224,17 @@ class AdminGuruController extends Controller
         
         $guru = Guru::where('id', $id)->first();
         $kode = Kode::where('guru_id', $id)->first();
+        $percakapan = Percakapan::whereIn('user_one', array($id))->get();
 
-        if (!empty($kode)) {
+        if (empty($kode)) {
+            $guru->delete();
+        }elseif ($kode->status_mapel == 'bk'){
+            Percakapan::whereIn('user_one', array($guru->id))->delete();
             $kode->delete();
+            $guru->delete();
         } else {
             $guru->delete();
         }
-        
-        
-        $percakapan = Percakapan::where('user_one', $id)->get();
-
-        if (!empty($percakapan)) {
-            Percakapan::where('user_one', $id)->delete();
-            Guru::where('id', $id)->delete();
-        }
-
 
         return response()->json([
             'success' => true,
@@ -253,7 +249,7 @@ class AdminGuruController extends Controller
             'kode_guru'=> 'required|unique:kodes',
             'nama_mapel'=> 'required',
             'status_mapel'=> 'required',
-            'guru_id'=> 'required',
+            // 'guru_id'=> 'required',
         ]);
 
         if ($validator->fails()) {
@@ -297,8 +293,17 @@ class AdminGuruController extends Controller
     public function hapus_kode($id)
     {
         //  **MASIH ADA REVISI**
-        $kode = Kode::where('id', $id);
-        $kode->delete();
+        $mapel = Mapel::where('kode_id', $id)->first();
+        $kode = Kode::where('id', $id)->first();
+
+        if ($kode->status_mapel == 'bk') {
+            Percakapan::whereIn('user_one', array($kode->guru_id))->delete();
+            $kode->delete();
+            $mapel->delete();
+        } else {
+            $kode->delete();
+            $mapel->delete();
+        }
 
         return response()->json([
             'success' => true,
