@@ -4,11 +4,13 @@ namespace App\Http\Controllers\API\Admin;
 
 use App\Models\Guru;
 use App\Models\Kode;
+use App\Models\Kelas;
 use App\Models\Mapel;
 use App\Models\Murid;
 use App\Models\Percakapan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use App\Http\Requests\EditDataGuru;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
@@ -85,6 +87,16 @@ class AdminGuruController extends Controller
         ])
         ->first();
 
+        $wali_kelas = Kelas::join('tingkatans', 'tingkatans.id', '=', 'kelas.tingkatan_id')
+        ->join('jurusans', 'jurusans.id', '=', 'kelas.jurusan_id')
+        ->where('guru_id', $id)
+        ->select([
+            'tingkatans.tingkat_ke',
+            'jurusans.nama_jurusan',
+            'kelas.nama_kelas'
+        ])
+        ->first();
+
         $data = [
             'id'=>$guru->id,
             'niy'=>$guru->niy,
@@ -95,7 +107,8 @@ class AdminGuruController extends Controller
             'alamat'=>$guru->alamat,
             'mengajar'=>$mapel,
             'kode'=>$kode,
-            'mengajar_kelas'=>!empty($kelas->first()) ? $kelas : []
+            'mengajar_kelas'=>!empty($kelas->first()) ? $kelas : [],
+            'wali_kelas'=>!empty($wali_kelas) ? $wali_kelas : []
             // 'profile' => $guru,
             // 'detail' => $mapel
         ];
@@ -111,7 +124,7 @@ class AdminGuruController extends Controller
     {
         $validator = Validator::make($request->all(),[
             'nama_guru' => 'required',
-            'email' => 'required',
+            'email' => 'required|email|unique:gurus',
             'password' => 'required',
             'niy' => 'required|unique:gurus',
             'foto_profile' => 'required|file|max:2048|mimes:jpeg,png,jpg',
@@ -162,11 +175,11 @@ class AdminGuruController extends Controller
     public function edit_guru(Request $request, $id)
     {
         $validator = Validator::make($request->all(),[
-            'email' => 'email',
+            'email' => 'required|email|unique:gurus,email,' . $id,
             'foto_profile' => 'mimes:jpeg,png,jpg|file|max:2048',
             'nama_guru' => 'required',
             'password' => 'required',
-            'niy' => 'required|unique:gurus',
+            'niy' => 'required|unique:gurus,niy,' . $id,
             // 'kode_id' => 'required'
         ]);
 
@@ -247,7 +260,7 @@ class AdminGuruController extends Controller
     {
         $validator = Validator::make($request->all(),[
             'kode_guru'=> 'required|unique:kodes',
-            'nama_mapel'=> 'required',
+            'nama_mapel'=> 'required|unique:kodes',
             'status_mapel'=> 'required',
             // 'guru_id'=> 'required',
         ]);

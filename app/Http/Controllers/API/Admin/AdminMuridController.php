@@ -106,7 +106,7 @@ class AdminMuridController extends Controller
             'nis'=>'required|unique:murids',
             'nama_panggilan'=>'required',
             'nama_siswa'=> 'required',
-            'email'=> 'required',
+            'email'=> 'required|email|unique:murids',
             'password'=> 'required',
             'alamat'=>'required',
             'foto_profile'=> 'required|mimes:jpeg,png,jpg|file|max:2048',
@@ -178,10 +178,10 @@ class AdminMuridController extends Controller
     public function edit_murid(Request $request, $id)
     {
         $validator = Validator::make($request->all(),[
-            'nis'=>'required|unique:murids',
+            'nis'=>'required|unique:murids,nis,' . $id,
             'nama_panggilan'=>'required',
             'nama_siswa'=> 'required',
-            'email'=> 'required',
+            'email'=> 'required|email|unique:murids,email,' . $id,
             'password'=> 'required',
             'foto_profile'=> 'mimes:jpeg,png,jpg|file|max:2048',
             'alamat'=> 'required',
@@ -271,7 +271,7 @@ class AdminMuridController extends Controller
             return response()->json([
                 'message' => 'failed',
                 'errors' => $th->getMessage(),
-            ]);
+            ], 400);
         }
     }
 
