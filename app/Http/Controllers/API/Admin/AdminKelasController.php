@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\API\Admin;
 
 use App\Models\Kelas;
+use App\Models\Jurusan;
+use App\Models\Tingkatan;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
@@ -109,6 +111,7 @@ class AdminKelasController extends Controller
             'gurus.nama_guru',
         ])->first();
 
+
         if (empty($kelas_lama)) {
 
             $data = Kelas::create([
@@ -136,7 +139,7 @@ class AdminKelasController extends Controller
     {
         $validator = Validator::make($request->all(),[
             'nama_kelas' => 'required',
-            'wali_kelas' => 'required|unique:kelas,guru_id',
+            'wali_kelas' => 'required|unique:kelas,guru_id,' . $id,
             'jurusan' => 'required',
             'tingkatan' => 'required',
         ]);
@@ -146,23 +149,71 @@ class AdminKelasController extends Controller
                 'success' => false,
                 'message' => $validator->errors(),
                 'data' => [],
-            ]);
+            ],400);
         }
 
         try {
-            $kelas = Kelas::where('id', $id)->first();
 
-            $kelas->update([
-                'nama_kelas' => $request->nama_kelas,
-                'guru_id' => $request->wali_kelas,
-                'jurusan_id' => $request->jurusan,
-                'tingkatan_id' => $request->tingkatan,
-            ]);
+            $kelas_lama = Kelas::join('tingkatans', 'tingkatans.id', '=', 'kelas.tingkatan_id')
+            ->join('jurusans', 'jurusans.id', '=', 'kelas.jurusan_id')
+            ->leftjoin('gurus', 'gurus.id', '=', 'kelas.guru_id')
+            ->where('kelas.id', $id)
+            ->select([
+                'kelas.id',
+                'tingkatans.tingkat_ke',
+                'jurusans.nama_jurusan',
+                'kelas.nama_kelas',
+                'gurus.nama_guru',
+            ])->first();
+
+            $kelas_baru = Kelas::join('tingkatans', 'tingkatans.id', '=', 'kelas.tingkatan_id')
+            ->join('jurusans', 'jurusans.id', '=', 'kelas.jurusan_id')
+            ->leftjoin('gurus', 'gurus.id', '=', 'kelas.guru_id')
+            ->where('tingkatans.id', $request->tingkatan)
+            ->where('jurusans.id', $request->jurusan)
+            ->where('kelas.nama_kelas',  $request->nama_kelas)
+            ->select([
+                'kelas.id',
+                'tingkatans.tingkat_ke',
+                'jurusans.nama_jurusan',
+                'kelas.nama_kelas',
+                'gurus.nama_guru',
+            ])->first();
+
+            $tingkatan_lama = Kelas::join('tingkatans', 'tingkatans.id', '=', 'kelas.tingkatan_id')
+            ->where('kelas.id', $id)->value('tingkat_ke');
+            $jurusan_lama = Kelas::join('jurusans', 'jurusans.id', '=', 'kelas.jurusan_id')
+            ->where('kelas.id', $id)->value('nama_jurusan');
+            $nama_kelas_lama = Kelas::where('id', $id)->value('nama_kelas');
+            $data_kelas_lama = $tingkatan_lama . ' ' . $jurusan_lama . ' ' . $nama_kelas_lama;
+
+            $tingkatan = Tingkatan::where('id', $request->tingkatan)->value('tingkat_ke');
+            $jurusan = Jurusan::where('id', $request->jurusan)->value('nama_jurusan');
+            $nama_kelas = Kelas::where('nama_kelas', $request->nama_kelas)->value('nama_kelas');
+            $data_kelas_baru = $tingkatan . ' ' . $jurusan . ' ' . $nama_kelas;
+
+            if ($kelas_baru == $kelas_lama) {
+
+                $kelas = Kelas::where('id', $id)->first();
+    
+                $kelas->update([
+                    'nama_kelas' => $request->nama_kelas,
+                    'guru_id' => $request->wali_kelas,
+                    'jurusan_id' => $request->jurusan,
+                    'tingkatan_id' => $request->tingkatan,
+                ]);
+
+                return response()->json([
+                    'message' => 'Data Kelas berhasil di ubah',
+                    'kelas_lama' => $data_kelas_lama,
+                    'kelas_baru' => $kelas
+                ]);
+            }
 
             return response()->json([
-                'message' => 'Data Kelas berhasil di ubah',
-                'data' => $kelas,
-            ]);
+               'message' => 'Data Kelas gagal di ubah'
+            ], 400);
+
         } catch (\Throwable $th) {
             //throw $th;
             return response()->json([
