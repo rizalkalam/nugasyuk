@@ -19,22 +19,22 @@ class JurusanSeeder extends Seeder
         ]);
 
         Jurusan::create([
-            // 'id'=>'1',
+            // 'id'=>'2',
            'nama_jurusan'=>'Animasi'
         ]);
 
         Jurusan::create([
-            // 'id'=>'1',
+            // 'id'=>'3',
            'nama_jurusan'=>'DKV'
         ]);
 
         Jurusan::create([
-            // 'id'=>'1',
+            // 'id'=>'4',
            'nama_jurusan'=>'DG'
         ]);
 
         Jurusan::create([
-            // 'id'=>'1',
+            // 'id'=>'5',
            'nama_jurusan'=>'Teknik Grafika'
         ]);
     }
