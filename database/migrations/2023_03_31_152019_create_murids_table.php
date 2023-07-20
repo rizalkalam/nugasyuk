@@ -14,10 +14,10 @@ return new class extends Migration
         Schema::create('murids', function (Blueprint $table) {
             // $table->string('id')->unique();
             $table->id();
-            $table->string('nis')->unique();
+            $table->string('nis');
             $table->string('nama_panggilan');
             $table->string('nama_siswa');
-            $table->string('email')->unique();
+            $table->string('email');
             $table->string('password');
             $table->text('alamat');
             $table->string('foto_profile');

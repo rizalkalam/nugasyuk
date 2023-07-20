@@ -21,6 +21,7 @@ class AdminKelasController extends Controller
         })
         ->orderBy('tingkatans.tingkat_ke', 'ASC')
         ->orderBy('jurusans.id')
+        ->orderBy('kelas.nama_kelas', 'ASC')
         ->select(['kelas.id', 'tingkatans.tingkat_ke', 'jurusans.nama_jurusan', 'kelas.nama_kelas'])->get();
 
         $jumlah_kelas = count(Kelas::all());
@@ -81,7 +82,7 @@ class AdminKelasController extends Controller
     {
         $validator = Validator::make($request->all(),[
             'nama_kelas'=> 'required',
-            'wali_kelas'=> 'required',
+            'wali_kelas'=> 'required|unique:kelas,guru_id',
             'jurusan'=> 'required',
             'tingkatan'=> 'required',
         ]);
@@ -94,24 +95,48 @@ class AdminKelasController extends Controller
             ]);
         }
 
-        $data = Kelas::create([
-            'nama_kelas' => $request->nama_kelas,
-            'guru_id' => $request->wali_kelas,
-            'jurusan_id' => $request->jurusan,
-            'tingkatan_id' => $request->tingkatan,
-        ]);
+        $kelas_lama = Kelas::join('tingkatans', 'tingkatans.id', '=', 'kelas.tingkatan_id')
+        ->join('jurusans', 'jurusans.id', '=', 'kelas.jurusan_id')
+        ->leftjoin('gurus', 'gurus.id', '=', 'kelas.guru_id')
+        ->where('tingkatans.id', $request->tingkatan)
+        ->where('jurusans.id', $request->jurusan)
+        ->where('kelas.nama_kelas',  $request->nama_kelas)
+        ->select([
+            'kelas.id',
+            'tingkatans.tingkat_ke',
+            'jurusans.nama_jurusan',
+            'kelas.nama_kelas',
+            'gurus.nama_guru',
+        ])->first();
 
-        return response()->json([
-            'message' => 'Data Kelas baru berhasil dibuat',
-            'data' => $data,
-        ]);
+        if (empty($kelas_lama)) {
+
+            $data = Kelas::create([
+                'nama_kelas' => $request->nama_kelas,
+                'guru_id' => $request->wali_kelas,
+                'jurusan_id' => $request->jurusan,
+                'tingkatan_id' => $request->tingkatan,
+            ]);
+    
+            return response()->json([
+                'message' => 'Data Kelas baru berhasil dibuat',
+                'data' => $data,
+            ]);
+            
+        } else {
+            return response()->json([
+                'message' => 'Data Kelas sudah ada',
+                'data' => $kelas_lama,
+            ]);
+        }
+        
     }
 
     public function edit_kelas(Request $request, $id)
     {
         $validator = Validator::make($request->all(),[
             'nama_kelas' => 'required',
-            'wali_kelas' => 'required',
+            'wali_kelas' => 'required|unique:kelas,guru_id',
             'jurusan' => 'required',
             'tingkatan' => 'required',
         ]);
