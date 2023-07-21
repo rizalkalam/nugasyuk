@@ -81,7 +81,7 @@ class TugasController extends Controller
                 'success' => false,
                 'message' => $validator->errors(),
                 'data' => [],
-            ]);
+            ], 400);
         }
 
         try {
@@ -108,7 +108,7 @@ class TugasController extends Controller
             return response()->json([
                 'message' => 'failed',
                 'errors' => $th->getMessage(),
-            ]);
+            ], 400);
         }
 
         

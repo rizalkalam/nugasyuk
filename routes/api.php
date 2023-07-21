@@ -126,12 +126,17 @@ Route::group(["middleware" => ['GuruBiasa', 'role:guru_biasa'], "prefix"=>"guru"
     // notifikasi
     Route::get('/notifikasi', [GuruNotificationController::class, 'index']);
 
+    // page kbm
     Route::get('/kbm', [KbmController::class, 'kbm']);
-    
+    Route::get('/materi/kelas/{kelas_id}', [KbmController::class, 'materi']);
+    Route::get('/tugas/kelas/{kelas_id}', [KbmController::class, 'tugas']);
+
+
     Route::get('/cek/pengumpulan/{tugas_id}', [KbmController::class, 'cek_pengumpulan']);
+
     Route::get('/pengumpulan', [PengumpulanController::class, 'pengumpulan']);
     Route::get('/pengumpulan/{id}', [PengumpulanController::class, 'detail_pengumpulan']);
-    Route::get('/pengumpulan/detail/{nama}/{status}', [PengumpulanController::class, 'status_pengumpulan']);
+    Route::get('/pengumpulan/detail/{id}', [PengumpulanController::class, 'status_pengumpulan']);
     Route::get('/pengumpulan/konfirmasi/{murid_id}/{pengumpulan_id}', [PengumpulanController::class, 'konfirmasi']);
 
     // Route Jadwal
@@ -139,14 +144,14 @@ Route::group(["middleware" => ['GuruBiasa', 'role:guru_biasa'], "prefix"=>"guru"
     Route::get('/jadwal/{id}', [JadwalController::class, 'index']);
 
     // crud route materi
-    Route::get('/materi/kelas/{kelas_id}', [KbmController::class, 'materi']);
+    
     Route::get('/materi/{materi_id}', [KbmController::class, 'detail_materi']);
     Route::post('/materi/kelas/{kelas_id}/mapel/{mapel_id}', [KbmController::class, 'buat_materi']);
     Route::post('/materi/kelas/{kelas_id}/mapel/{mapel_id}/materi/{id}', [KbmController::class, 'edit_materi']);
     Route::delete('/materi/kelas/{kelas_id}/mapel/{mapel_id}/materi/{id}', [KbmController::class, 'hapus_materi']);
 
     // crud route tugas
-    Route::get('/tugas/kelas/{kelas_id}', [KbmController::class, 'tugas']);
+    
     Route::get('/tugas/{tugas_id}', [KbmController::class, 'detail_tugas']);
     Route::post('/tugas/kelas/{kelas_id}/mapel/{mapel_id}', [KbmController::class, 'buat_tugas']);
     Route::post('/tugas/kelas/{kelas_id}/tugas/{tugas_id}', [KbmController::class, 'edit_tugas']);

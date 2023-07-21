@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\API\Admin;
 
 use App\Models\Kelas;
+use App\Models\Mapel;
+use App\Models\Jadwal;
 use App\Models\Jurusan;
 use App\Models\Tingkatan;
 use Illuminate\Http\Request;
@@ -224,10 +226,14 @@ class AdminKelasController extends Controller
     }
 
     public function hapus_kelas($id)
-    {
-        $kelas = Kelas::where('id', $id)->first();
+    {   
+        Jadwal::join('mapels', 'mapels.id', '=', 'jadwals.mapel_id')
+        ->where('mapels.kelas_id', $id)->delete();
 
-        $kelas->delete();
+        Mapel::where('kelas_id', $id)->delete();
+
+        Kelas::where('id', $id)->delete();
+
 
         return response()->json([
             'success' => true,
