@@ -86,7 +86,7 @@ class AdminKelasController extends Controller
     {
         $validator = Validator::make($request->all(),[
             'nama_kelas'=> 'required',
-            'wali_kelas'=> 'required|unique:kelas,guru_id',
+            'wali_kelas'=> 'required',
             'jurusan'=> 'required',
             'tingkatan'=> 'required',
         ]);
@@ -126,13 +126,13 @@ class AdminKelasController extends Controller
             return response()->json([
                 'message' => 'Data Kelas baru berhasil dibuat',
                 'data' => $data,
-            ]);
+            ], 200);
             
         } else {
             return response()->json([
                 'message' => 'Data Kelas sudah ada',
                 'data' => $kelas_lama,
-            ]);
+            ], 400);
         }
         
     }
@@ -141,7 +141,7 @@ class AdminKelasController extends Controller
     {
         $validator = Validator::make($request->all(),[
             'nama_kelas' => 'required',
-            'wali_kelas' => 'required|unique:kelas,guru_id,' . $id,
+            'wali_kelas' => 'required',
             'jurusan' => 'required',
             'tingkatan' => 'required',
         ]);
@@ -209,7 +209,7 @@ class AdminKelasController extends Controller
                     'message' => 'Data Kelas berhasil di ubah',
                     'kelas_lama' => $data_kelas_lama,
                     'kelas_baru' => $kelas
-                ]);
+                ], 200);
             }
 
             return response()->json([
