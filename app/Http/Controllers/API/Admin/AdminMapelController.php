@@ -191,7 +191,7 @@ class AdminMapelController extends Controller
     public function detail_mapel($id)
     {
         $data = Mapel::leftjoin('kodes', 'kodes.id', '=', 'mapels.kode_id')
-        ->join('assets', 'assets.id', '=', 'mapels.asset_id')
+        ->leftjoin('assets', 'assets.id', '=', 'mapels.asset_id')
         ->leftjoin('gurus', 'gurus.id', '=', 'kodes.guru_id')
         ->join('kelas', 'kelas.id', '=', 'mapels.kelas_id')
         ->join('tingkatans', 'tingkatans.id', '=', 'kelas.tingkatan_id')
@@ -223,10 +223,10 @@ class AdminMapelController extends Controller
             "tingkat_ke"=>$data->tingkat_ke,
             "nama_jurusan"=>$data->nama_jurusan,
             "nama_kelas"=>$data->nama_kelas,
-            "file_asset"=>$data->file_asset,
+            "file_asset"=>$data->file_asset !== null ? $data->file_asset : 0,
             "kode_id"=>$kode_id !== null ? $kode_id : 0,
             "kelas_id"=>$kelas_id,
-            "asset_id"=>$asset_id
+            "asset_id"=>$asset_id !== null ? $asset_id : 0
         ];
 
         return response()->json([

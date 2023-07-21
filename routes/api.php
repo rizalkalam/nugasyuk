@@ -130,9 +130,13 @@ Route::group(["middleware" => ['GuruBiasa', 'role:guru_biasa'], "prefix"=>"guru"
     Route::get('/kbm', [KbmController::class, 'kbm']);
     Route::get('/materi/kelas/{kelas_id}', [KbmController::class, 'materi']);
     Route::get('/tugas/kelas/{kelas_id}', [KbmController::class, 'tugas']);
+    Route::get('/materi/{materi_id}', [KbmController::class, 'detail_materi']);
+    Route::get('/tugas/{tugas_id}', [KbmController::class, 'detail_tugas']);
+    Route::get('/detail/pengumpulan/{tugas_id}', [KbmController::class, 'cek_pengumpulan']);
+    Route::get('/cek/pengumpulan/menunggu/{id}', [KbmController::class, 'pengumpulan_menunggu']);
+    Route::get('/cek/pengumpulan/selesai/{id}', [KbmController::class, 'pengumpulan_selesai']);
 
 
-    Route::get('/cek/pengumpulan/{tugas_id}', [KbmController::class, 'cek_pengumpulan']);
 
     Route::get('/pengumpulan', [PengumpulanController::class, 'pengumpulan']);
     Route::get('/pengumpulan/{id}', [PengumpulanController::class, 'detail_pengumpulan']);
@@ -145,21 +149,18 @@ Route::group(["middleware" => ['GuruBiasa', 'role:guru_biasa'], "prefix"=>"guru"
 
     // crud route materi
     
-    Route::get('/materi/{materi_id}', [KbmController::class, 'detail_materi']);
     Route::post('/materi/kelas/{kelas_id}/mapel/{mapel_id}', [KbmController::class, 'buat_materi']);
     Route::post('/materi/kelas/{kelas_id}/mapel/{mapel_id}/materi/{id}', [KbmController::class, 'edit_materi']);
     Route::delete('/materi/kelas/{kelas_id}/mapel/{mapel_id}/materi/{id}', [KbmController::class, 'hapus_materi']);
 
     // crud route tugas
     
-    Route::get('/tugas/{tugas_id}', [KbmController::class, 'detail_tugas']);
     Route::post('/tugas/kelas/{kelas_id}/mapel/{mapel_id}', [KbmController::class, 'buat_tugas']);
     Route::post('/tugas/kelas/{kelas_id}/tugas/{tugas_id}', [KbmController::class, 'edit_tugas']);
     Route::delete('/tugas/kelas/{kelas_id}/tugas/{tugas_id}', [KbmController::class, 'hapus_tugas']);
 
     // cek pengumpulan
-    Route::get('/cek/pengumpulan/menunggu/{id}', [KbmController::class, 'pengumpulan_menunggu']);
-    Route::get('/cek/pengumpulan/selesai/{id}', [KbmController::class, 'pengumpulan_selesai']);
+    
 });
 
 Route::middleware('auth:murid')->group(function(){

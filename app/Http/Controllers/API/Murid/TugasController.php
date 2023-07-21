@@ -96,7 +96,7 @@ class TugasController extends Controller
             $jawaban->update([
                 'link'=> $request->link,
                 'file'=> $berkas->storeAs('file', $nama),
-                'status'=> 'selesai',
+                'status'=> 'menunggu',
             ]);
 
             return response()->json([

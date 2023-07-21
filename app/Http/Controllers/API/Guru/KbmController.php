@@ -44,7 +44,8 @@ class KbmController extends Controller
 
     public function materi($kelas_id)
     {
-        // $mapel = request ('mapel', null);
+        // ada request query untuk guru yang memiliki 2 mapel
+        $mapel = request ('mapel', null);
         $materi = Materi::join('mapels', 'mapels.id', '=', 'materis.mapel_id')
                             ->join('kodes', 'kodes.id', '=', 'mapels.kode_id')
                             ->join('gurus', 'gurus.id', '=', 'kodes.guru_id')
@@ -81,6 +82,7 @@ class KbmController extends Controller
 
     public function tugas($kelas_id)
     {
+        // ada request query untuk guru yang memiliki 2 mapel
         $mapel = request ('mapel', null);
         $tugas = Tugas::join('mapels', 'mapels.id', '=', 'tugas.mapel_id')
                         ->join('kodes', 'kodes.id', '=', 'mapels.kode_id')
@@ -155,10 +157,10 @@ class KbmController extends Controller
                         ->where('tugas.id', '=', $tugas_id)
                         ->select([
                             'tugas.id',
-                            'tugas.soal',
                             'gurus.nama_guru',
+                            'tugas.nama_tugas',
+                            'tugas.soal',
                             'tugas.date',
-                            'tugas.description'
                         ])->get();
 
         if (count($tugas) == 0) {
