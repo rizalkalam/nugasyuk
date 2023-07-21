@@ -44,7 +44,7 @@ class KbmController extends Controller
 
     public function materi($kelas_id)
     {
-        $mapel = request ('mapel', 2);
+        // $mapel = request ('mapel', null);
         $materi = Materi::join('mapels', 'mapels.id', '=', 'materis.mapel_id')
                             ->join('kodes', 'kodes.id', '=', 'mapels.kode_id')
                             ->join('gurus', 'gurus.id', '=', 'kodes.guru_id')
