@@ -237,15 +237,20 @@ class AdminGuruController extends Controller
         
         $guru = Guru::where('id', $id)->first();
         $kode = Kode::where('guru_id', $id)->first();
+        $mapel = Mapel::join('kodes', 'kodes.id', '=', 'mapels.kode_id')
+        ->where('guru_id', $id)->first();
         $percakapan = Percakapan::whereIn('user_one', array($id))->get();
 
         if (empty($kode)) {
             $guru->delete();
         }elseif ($kode->status_mapel == 'bk'){
             Percakapan::whereIn('user_one', array($guru->id))->delete();
+            $mapel->delete();
             $kode->delete();
             $guru->delete();
         } else {
+            $mapel->delete();
+            $kode->delete();
             $guru->delete();
         }
 
