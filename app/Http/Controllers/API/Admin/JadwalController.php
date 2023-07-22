@@ -112,14 +112,19 @@ class JadwalController extends Controller
                 'success' => false,
                 'message' => $validator->errors(),
                 'data' => [],
-            ]);
+            ], 400);
         }
         
         $jumlah_jam = Jam::where('id', '>=', $request->jam_id)
         ->limit($request->jumlah_jam)->get('id');
 
-        
-        $data = [];
+        $data_jam = Jadwal::join('jams', 'jams.id', '=', 'jadwals.jam_id')
+        ->where('jams.id', $request->jam_id)
+        ->first();
+
+        if (empty($data_jam)) {
+
+            $data = [];
             foreach ($jumlah_jam as $jam_id) {
                 $data[] = [
                     'hari_id' => $request->hari_id,
@@ -130,13 +135,22 @@ class JadwalController extends Controller
                 ];
             }
 
-        $jadwal = Jadwal::insert($data);
+            $jadwal = Jadwal::insert($data);
 
+
+            return response()->json([
+                'message' => 'Data Jadwal baru berhasil dibuat',
+                'data' => $data,
+            ]);
+
+        }
 
         return response()->json([
-            'message' => 'Data Jadwal baru berhasil dibuat',
-            'data' => $data,
-        ]);
+            'message' => 'Jam sudah terisi jadwal',
+            // 'data' => $data,
+        ], 400);
+        
+        
     }
 
     public function edit_jadwal(Request $request, $mapel_id)
@@ -188,6 +202,7 @@ class JadwalController extends Controller
                 'message' => 'Data jadwal berhasil di ubah',
                 'data' => $data,
             ]);
+
         } catch (\Throwable $th) {
             //throw $th;
             return response()->json([
@@ -201,11 +216,12 @@ class JadwalController extends Controller
     {
         try {
             $jadwal = Jadwal::join('mapels', 'mapels.id', '=', 'jadwals.mapel_id')
-            ->where('jadwals.mapel_id', $mapel_id)->delete();
+            ->where('mapels.id', $mapel_id)->first();
 
             return response()->json([
                 'success' => true,
                 'message' => 'Data jadwal berhasil di hapus',
+                'data' => $jadwal
             ]);
         } catch (\Throwable $th) {
             //throw $th;
@@ -214,8 +230,5 @@ class JadwalController extends Controller
                 'errors' => $th->getMessage(),
             ]);
         }
-       
-
-      
     }
 }
