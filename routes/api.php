@@ -96,8 +96,8 @@ Route::middleware('auth:admin')->group(function(){
         Route::get('/jadwal', [JadwalController::class, 'index']);
         Route::get('/jadwal/{id}', [JadwalController::class, 'detail']);
         Route::post('/jadwal', [JadwalController::class, 'buat_jadwal']);
-        Route::post('/jadwal/{mapel_id}', [JadwalController::class, 'edit_jadwal']);
-        Route::delete('/jadwal/{mapel_id}', [JadwalController::class, 'hapus_jadwal']);
+        Route::post('/jadwal/{id}', [JadwalController::class, 'edit_jadwal']);
+        Route::delete('/jadwal/{id}', [JadwalController::class, 'hapus_jadwal']);
         Route::get('/jadwal/data/{id}', [JadwalController::class, 'data_jadwal']);
 
         // Route asset admin
