@@ -64,6 +64,7 @@ class KelasSeeder extends Seeder
 
         collect([
             [
+                // 1
                 'nama_kelas'=>'1',
                 // 'jumlah_siswa'=>'30',
                 'tingkatan_id'=>1,
@@ -72,6 +73,7 @@ class KelasSeeder extends Seeder
             ],
 
             [
+                // 2
                 'nama_kelas'=>'2',
                 // 'jumlah_siswa'=>'30',
                 'tingkatan_id'=>1,
@@ -80,6 +82,7 @@ class KelasSeeder extends Seeder
             ],
 
             [
+                // 3
                 'nama_kelas'=>'1',
                 // 'jumlah_siswa'=>'30',
                 'tingkatan_id'=>1,
@@ -88,6 +91,7 @@ class KelasSeeder extends Seeder
             ],
 
             [
+                // 4
                 'nama_kelas'=>'2',
                 // 'jumlah_siswa'=>'30',
                 'tingkatan_id'=>1,
@@ -96,6 +100,7 @@ class KelasSeeder extends Seeder
             ],
 
             [
+                // 5
                 'nama_kelas'=>'1',
                 // 'jumlah_siswa'=>'30',
                 'tingkatan_id'=>1,
@@ -104,6 +109,7 @@ class KelasSeeder extends Seeder
             ],
 
             [
+                // 6
                 'nama_kelas'=>'1',
                 // 'jumlah_siswa'=>'30',
                 'tingkatan_id'=>2,
@@ -112,6 +118,7 @@ class KelasSeeder extends Seeder
             ],
 
             [
+                // 7
                 'nama_kelas'=>'2',
                 // 'jumlah_siswa'=>'30',
                 'tingkatan_id'=>2,

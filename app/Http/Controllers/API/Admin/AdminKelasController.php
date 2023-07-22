@@ -99,7 +99,7 @@ class AdminKelasController extends Controller
             ]);
         }
 
-        $kelas_lama = Kelas::join('tingkatans', 'tingkatans.id', '=', 'kelas.tingkatan_id')
+        $data_kelas = Kelas::join('tingkatans', 'tingkatans.id', '=', 'kelas.tingkatan_id')
         ->join('jurusans', 'jurusans.id', '=', 'kelas.jurusan_id')
         ->leftjoin('gurus', 'gurus.id', '=', 'kelas.guru_id')
         ->where('tingkatans.id', $request->tingkatan)
@@ -114,7 +114,7 @@ class AdminKelasController extends Controller
         ])->first();
 
 
-        if (empty($kelas_lama)) {
+        if (empty($data_kelas)) {
 
             $data = Kelas::create([
                 'nama_kelas' => $request->nama_kelas,

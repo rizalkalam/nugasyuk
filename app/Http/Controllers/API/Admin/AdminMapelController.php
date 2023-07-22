@@ -71,38 +71,56 @@ class AdminMapelController extends Controller
             ]);
         }
 
-        $data = Mapel::create([
-            'kode_id' => $request->kode_id,
-            'kelas_id' => $request->kelas_id,
-            'asset_id' => $request->asset_id,
-        ]);
+        $data_mapel = Mapel::join('kodes', 'kodes.id', '=', 'mapels.kode_id')
+        ->join('kelas', 'kelas.id', '=', 'mapels.kelas_id')
+        ->where('kodes.id', $request->kode_id)
+        ->select([
+            'kodes.nama_mapel',
+            'kelas.nama_kelas'
+        ])
+        ->first();
 
-        $mapel = Mapel::latest()->first();
-
-        $guru = Kode::where('id', $mapel->kode_id)->first();
-
-        if ($mapel->kode->status_mapel == 'bk') {
-            $murid = Murid::where('kelas_id', $mapel->kelas_id)
-            ->get();
-
-            $percakapan = [];
-            foreach ($murid as $id) {
-                $percakapan[] = [
-                    'user_one' => $guru->guru_id,
-                    'user_two' => $id->id,
-                    'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
-                    'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
-                ];
+        if (empty($data_mapel)) {
+         
+            $data = Mapel::create([
+                'kode_id' => $request->kode_id,
+                'kelas_id' => $request->kelas_id,
+                'asset_id' => $request->asset_id,
+            ]);
+    
+            $mapel = Mapel::latest()->first();
+    
+            $guru = Kode::where('id', $mapel->kode_id)->first();
+    
+            if ($mapel->kode->status_mapel == 'bk') {
+                $murid = Murid::where('kelas_id', $mapel->kelas_id)
+                ->get();
+    
+                $percakapan = [];
+                foreach ($murid as $id) {
+                    $percakapan[] = [
+                        'user_one' => $guru->guru_id,
+                        'user_two' => $id->id,
+                        'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
+                        'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
+                    ];
+                }
+    
+                $new_percakapan = Percakapan::insert($percakapan);
             }
-
-            $new_percakapan = Percakapan::insert($percakapan);
+    
+            return response()->json([
+                'message' => 'Data Mata Pelajaran baru berhasil dibuat',
+                'data' => $data,
+                // 'mapel' => $mapel
+            ]);
+            
+        } else {
+            return response()->json([
+                'message' => 'Data Mata Pelajaran sudah ada',
+                // 'data' => $kelas_lama,
+            ], 400);
         }
-
-        return response()->json([
-            'message' => 'Data Mata Pelajaran baru berhasil dibuat',
-            'data' => $data,
-            // 'mapel' => $mapel
-        ]);
     }
 
     public function edit_mapel(Request $request, $id)
@@ -124,43 +142,168 @@ class AdminMapelController extends Controller
         try {
             $data = Mapel::where('id', $id)->first();
 
-            $data->update([
-                'kode_id' => $request->kode_id,
-                'kelas_id' => $request->kelas_id,
-                'asset_id' => $request->asset_id,
-                'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
-                'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
-            ]);
+            $kelas_cek = Mapel::join('kodes', 'kodes.id', '=', 'mapels.kode_id')
+            ->join('kelas', 'kelas.id', '=', 'mapels.kelas_id')
+            ->where('kelas.id', $request->kelas_id)
+            ->select([
+                'kodes.nama_mapel'
+            ])->get();
 
-            $mapel = Mapel::orderBy('updated_at','DESC')->first();
+            $kode_lama = Mapel::where('mapels.id', $id)
+            ->join('kodes', 'kodes.id', '=', 'mapels.kode_id')
+            ->join('kelas', 'kelas.id', '=', 'mapels.kelas_id')
+            ->join('tingkatans', 'tingkatans.id', '=', 'kelas.tingkatan_id')
+            ->join('jurusans', 'jurusans.id', '=', 'kelas.jurusan_id')
+            ->select([
+                'tingkatans.tingkat_ke',
+                'jurusans.nama_jurusan',
+                'kelas.nama_kelas',
+                'kodes.nama_mapel'
+            ])
+            ->first();
 
-            $guru = Kode::where('id', $mapel->kode_id)->first();
+            $kode_baru = Mapel::join('kodes', 'kodes.id', '=', 'mapels.kode_id')
+            ->join('kelas', 'kelas.id', '=', 'mapels.kelas_id')
+            ->join('tingkatans', 'tingkatans.id', '=', 'kelas.tingkatan_id')
+            ->join('jurusans', 'jurusans.id', '=', 'kelas.jurusan_id')
+            ->where('kodes.id', $request->kode_id)
+            ->where('kelas.id', $request->kelas_id)
+            ->select([
+                'tingkatans.tingkat_ke',
+                'jurusans.nama_jurusan',
+                'kelas.nama_kelas',
+                'kodes.nama_mapel'
+            ])
+            ->first();
 
-            if ($mapel->kode->status_mapel == 'bk') {
+            if (empty($kode_baru)) {
 
-                $data_percakapan = Percakapan::whereIn('user_one', array($guru->guru_id))->delete();
+                $data->update([
+                    'kode_id' => $request->kode_id,
+                    'kelas_id' => $request->kelas_id,
+                    'asset_id' => $request->asset_id,
+                    'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
+                    'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
+                ]);
 
-                $murid = Murid::where('kelas_id', $request->kelas_id)
-                ->get();
+                $mapel = Mapel::orderBy('updated_at','DESC')->first();
 
-    
-                $percakapan = [];
-                foreach ($murid as $id) {
-                    $percakapan[] = [
-                        'user_one' => $guru->guru_id,
-                        'user_two' => $id->id,
-                        'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
-                        'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
-                    ];
+                $guru = Kode::where('id', $mapel->kode_id)->first();
+
+                if ($mapel->kode->status_mapel == 'bk') {
+
+                    $data_percakapan = Percakapan::whereIn('user_one', array($guru->guru_id))->delete();
+
+                    $murid = Murid::where('kelas_id', $request->kelas_id)
+                    ->get();
+
+        
+                    $percakapan = [];
+                    foreach ($murid as $id) {
+                        $percakapan[] = [
+                            'user_one' => $guru->guru_id,
+                            'user_two' => $id->id,
+                            'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
+                            'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
+                        ];
+                    }
+        
+                    Percakapan::insert($percakapan);
                 }
+
+                return response()->json([
+                    'message' => 'Data Mata Pelajaran berhasil di ubah',
+                    // 'data' => $mapel,
+                ]);$data->update([
+                    'kode_id' => $request->kode_id,
+                    'kelas_id' => $request->kelas_id,
+                    'asset_id' => $request->asset_id,
+                    'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
+                    'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
+                ]);
+
+                $mapel = Mapel::orderBy('updated_at','DESC')->first();
+
+                $guru = Kode::where('id', $mapel->kode_id)->first();
+
+                if ($mapel->kode->status_mapel == 'bk') {
+
+                    $data_percakapan = Percakapan::whereIn('user_one', array($guru->guru_id))->delete();
+
+                    $murid = Murid::where('kelas_id', $request->kelas_id)
+                    ->get();
+
+        
+                    $percakapan = [];
+                    foreach ($murid as $id) {
+                        $percakapan[] = [
+                            'user_one' => $guru->guru_id,
+                            'user_two' => $id->id,
+                            'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
+                            'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
+                        ];
+                    }
+        
+                    Percakapan::insert($percakapan);
+                }
+
+                return response()->json([
+                    'message' => 'Data Mata Pelajaran berhasil di ubah',
+                    // 'data' => $mapel,
+                ]);
+
+            } else if (!empty($kelas_cek)) {
+
+                return response()->json([
+                    'message' => 'Data Mapel sudah ada',
+                    'mapel' => $kode_lama,
+                    // 'data2' => $kode_baru,
+                    // 'data3' => $kelas_cek
+                ]);
+                
     
-                Percakapan::insert($percakapan);
+            } else {
+
+                $data->update([
+                    'kode_id' => $request->kode_id,
+                    'kelas_id' => $request->kelas_id,
+                    'asset_id' => $request->asset_id,
+                    'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
+                    'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
+                ]);
+
+                $mapel = Mapel::orderBy('updated_at','DESC')->first();
+
+                $guru = Kode::where('id', $mapel->kode_id)->first();
+
+                if ($mapel->kode->status_mapel == 'bk') {
+
+                    $data_percakapan = Percakapan::whereIn('user_one', array($guru->guru_id))->delete();
+
+                    $murid = Murid::where('kelas_id', $request->kelas_id)
+                    ->get();
+
+        
+                    $percakapan = [];
+                    foreach ($murid as $id) {
+                        $percakapan[] = [
+                            'user_one' => $guru->guru_id,
+                            'user_two' => $id->id,
+                            'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
+                            'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
+                        ];
+                    }
+        
+                    Percakapan::insert($percakapan);
+                }
+
+                return response()->json([
+                    'message' => 'Data Mata Pelajaran berhasil di ubah',
+                    // 'data' => $mapel,
+                ]);
+
             }
 
-            return response()->json([
-                'message' => 'Data Mata Pelajaran berhasil di ubah',
-                // 'data' => $mapel,
-            ]);
         } catch (\Throwable $th) {
             //throw $th;
             return response()->json([
