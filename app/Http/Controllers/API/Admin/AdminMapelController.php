@@ -264,7 +264,7 @@ class AdminMapelController extends Controller
                     'mapel' => $kode_lama,
                     // 'data2' => $kode_baru,
                     // 'data3' => $kelas_cek
-                ]);
+                ], 400);
                 
     
             } else {
