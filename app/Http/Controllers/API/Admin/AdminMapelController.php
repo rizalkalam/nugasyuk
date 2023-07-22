@@ -73,10 +73,15 @@ class AdminMapelController extends Controller
 
         $data_mapel = Mapel::join('kodes', 'kodes.id', '=', 'mapels.kode_id')
         ->join('kelas', 'kelas.id', '=', 'mapels.kelas_id')
+        ->join('tingkatans', 'tingkatans.id', '=', 'kelas.tingkatan_id')
+        ->join('jurusans', 'jurusans.id', '=', 'kelas.jurusan_id')
         ->where('kodes.id', $request->kode_id)
+        ->where('kelas.id', $request->kelas_id)
         ->select([
-            'kodes.nama_mapel',
-            'kelas.nama_kelas'
+            'tingkatans.tingkat_ke',
+            'jurusans.nama_jurusan',
+            'kelas.nama_kelas',
+            'kodes.nama_mapel'
         ])
         ->first();
 
