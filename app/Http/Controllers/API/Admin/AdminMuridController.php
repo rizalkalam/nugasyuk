@@ -165,7 +165,7 @@ class AdminMuridController extends Controller
                 'message' => 'Data Siswa dan Wali Murid baru berhasil dibuat',
                 'siswa' => $data,
                 'wali_murid' => $wali_murid
-            ]);
+            ], 200);
         } catch (\Throwable $th) {
             //throw $th;
             return response()->json([

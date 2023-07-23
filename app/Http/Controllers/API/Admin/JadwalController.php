@@ -185,16 +185,16 @@ class JadwalController extends Controller
 
         try {
 
-                // $data = Jadwal::where('id', $id)->update([
-                //     'hari_id' => $request->hari_id,
-                //     'jam_id' => $request->jam_id,
-                //     'mapel_id' => $request->mapel_id
-                // ]);
+            // $data = Jadwal::where('id', $id)->update([
+            //     'hari_id' => $request->hari_id,
+            //     'jam_id' => $request->jam_id,
+            //     'mapel_id' => $request->mapel_id
+            // ]);
 
-                // return response()->json([
-                //     'message' => 'Data jadwal berhasil di ubah',
-                //     'data' => $data,
-                // ]);
+            // return response()->json([
+            //     'message' => 'Data jadwal berhasil di ubah',
+            //     'data' => $data,
+            // ]);
 
             $kelas_id = Mapel::where('id', $request->mapel_id)->value('kelas_id');
 
@@ -206,9 +206,12 @@ class JadwalController extends Controller
             ->where('mapels.kelas_id', $kelas_id)
             ->first();
 
-            if (empty($data_jam)) {
+            if (empty($data_kelas)) {
 
-                $data = Jadwal::where('id', $id)->update([
+                $data = Jadwal::where('id', $id)
+                ->orWhere('jam_id', $request->jam_id)
+                ->firstOrFail()
+                ->update([
                     'hari_id' => $request->hari_id,
                     'jam_id' => $request->jam_id,
                     'mapel_id' => $request->mapel_id
@@ -220,6 +223,7 @@ class JadwalController extends Controller
                 ]);
 
             }
+
 
             return response()->json([
                 'message' => 'Jam sudah terisi jadwal',
