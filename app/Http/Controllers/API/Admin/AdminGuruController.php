@@ -322,7 +322,10 @@ class AdminGuruController extends Controller
             Percakapan::whereIn('user_one', array($kode->guru_id))->delete();
             $kode->delete();
             $mapel->delete();
-        } else {
+        } elseif (empty($mapel)) {
+            $kode->delete();
+            // $mapel->delete();
+        }else {
             $kode->delete();
             $mapel->delete();
         }

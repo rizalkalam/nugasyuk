@@ -27,7 +27,7 @@ class PengumpulanController extends Controller
                             });
                         })
                         ->orderBy('murids.nama_siswa', 'ASC')
-                        ->get(['murids.id', 'murids.nama_siswa', 'murids.email', 'tingkatans.tingkat_ke', 'jurusans.nama_jurusan', 'kelas.nama_kelas']);
+                        ->get(['murids.id',  'murids.foto_profile', 'murids.nama_siswa', 'murids.email', 'tingkatans.tingkat_ke', 'jurusans.nama_jurusan', 'kelas.nama_kelas']);
                         
         $jumlah_murid = count($murid);
     

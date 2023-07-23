@@ -114,7 +114,7 @@ class AdminMuridController extends Controller
 
             // validasi input wali murid
             'nama'=>'required',
-            'email'=>'required',
+            'email_wali'=>'required|email|unique:ortus,email',
             'password'=>'required',
         ]);
 
@@ -171,12 +171,14 @@ class AdminMuridController extends Controller
             return response()->json([
                 'message' => 'failed',
                 'errors' => $th->getMessage(),
-            ]);
+            ], 400);
         }
     }
 
     public function edit_murid(Request $request, $id)
     {
+        $wali_id = Ortu::where('siswa_id', $id)->select('id')->get();
+
         $validator = Validator::make($request->all(),[
             'nis'=>'required|unique:murids,nis,' . $id,
             'nama_panggilan'=>'required',
@@ -189,7 +191,7 @@ class AdminMuridController extends Controller
 
              // validasi input wali murid
              'nama'=>'required',
-             'email'=>'required',
+             'email_wali'=>'required|email|unique:ortus,email,' . $wali_id,
              'password'=>'required',
             //  'siswa_id'=>'required'
         ]);
@@ -228,7 +230,7 @@ class AdminMuridController extends Controller
             ]);
 
             $ortu = Ortu::where('siswa_id', $id)->first();
-            $ortu->update([
+            $wali_id->update([
                 'nama'=>$request->nama,
                 'email'=>$request->email_wali,
                 'password'=>Hash::make($request->password_wali),
