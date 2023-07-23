@@ -238,6 +238,7 @@ class AdminGuruController extends Controller
         $guru = Guru::where('id', $id)->first();
         $kode = Kode::where('guru_id', $id)->first();
         $mapel = Mapel::join('kodes', 'kodes.id', '=', 'mapels.kode_id')
+        ->where('guru_id', $id)
         ->first();
         $percakapan = Percakapan::whereIn('user_one', array($id))->get();
 
