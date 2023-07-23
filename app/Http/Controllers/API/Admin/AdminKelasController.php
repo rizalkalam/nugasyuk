@@ -199,20 +199,21 @@ class AdminKelasController extends Controller
                     'data' => $kelas
                 ], 200);
 
-            } elseif (empty($kelas_edit)){
+            } elseif (!empty($kelas_edit)){
 
                 return response()->json([
                     'message' => 'Data kelas belum di buat',
                     'data' => $kelas_edit
                  ], 400);
 
+            } else {
+
+                return response()->json([
+                   'message' => 'Data kelas sudah ada',
+                   'data' => $kelas_edit
+                ], 400);
+
             }
-
-            return response()->json([
-               'message' => 'Data kelas sudah ada',
-               'data' => $kelas_edit
-            ], 400);
-
 
         } catch (\Throwable $th) {
             //throw $th;
