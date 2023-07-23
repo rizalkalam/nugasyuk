@@ -244,7 +244,7 @@ class AdminGuruController extends Controller
 
         if (empty($kode)) {
             $guru->delete();
-        }elseif ($kode->status_mapel == 'bk'){
+        }elseif (!empty($mapel) && $kode->status_mapel == 'bk'){
             Percakapan::whereIn('user_one', array($guru->id))->delete();
             $mapel->delete();
             $kode->delete();
