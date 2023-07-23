@@ -63,6 +63,18 @@ class KbmController extends Controller
                                 'gurus.nama_guru',
                                 'materis.tanggal_dibuat'
                             ])->get();
+        
+        $data_kelas = Kelas::join('tingkatans', 'tingkatans.id', '=', 'kelas.tingkatan_id')
+        ->join('jurusans', 'jurusans.id', '=', 'kelas.jurusan_id')
+        ->where('kelas.id', $kelas_id)
+        ->select([
+            'tingkatans.tingkat_ke',
+            'jurusans.nama_jurusan',
+            'kelas.nama_kelas'
+        ])
+        ->first();
+
+        $kelas = $data_kelas->tingkat_ke . ' ' . $data_kelas->nama_jurusan . ' ' . $data_kelas->nama_kelas;
 
         if (count($materi) == 0) {
             return response()->json([
@@ -75,6 +87,7 @@ class KbmController extends Controller
             return response()->json([   
                 "success" => true,
                 "message" => "List Materi",
+                "kelas" => $kelas,
                 "materi" => $materi,
             ], 200);
         }
