@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API\Admin;
 
 use App\Models\Jam;
 use App\Models\Hari;
+use App\Models\Mapel;
 use App\Models\Jadwal;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
@@ -29,7 +30,7 @@ class JadwalController extends Controller
 
     public function detail($id)
     {
-        $kelas = request ('kelas', 1);
+        $kelas = request ('kelas', null);
         $jadwal = Jadwal::join('mapels', 'mapels.id', '=', 'jadwals.mapel_id')
         ->join('kodes', 'kodes.id', '=', 'mapels.kode_id')
         ->join('haris', 'haris.id', '=', 'jadwals.hari_id')
@@ -117,13 +118,19 @@ class JadwalController extends Controller
                 'data' => [],
             ], 400);
         }
+
+        $kelas_id = Mapel::where('id', $request->mapel_id)->value('kelas_id');
         
         $jumlah_jam = Jam::where('id', '>=', $request->jam_id)
         ->limit($request->jumlah_jam)->get('id');
 
         $data_jam = Jadwal::join('jams', 'jams.id', '=', 'jadwals.jam_id')
-        ->where('jams.id', $request->jam_id)
-        ->first();
+            ->join('haris', 'haris.id', '=', 'jadwals.hari_id')
+            ->join('mapels', 'mapels.id', '=', 'jadwals.mapel_id')
+            ->where('haris.id', $request->hari_id)
+            ->where('jams.id', $request->jam_id)
+            ->where('mapels.kelas_id', $kelas_id)
+            ->first();
 
         if (empty($data_jam)) {
 
@@ -146,12 +153,16 @@ class JadwalController extends Controller
                 'data' => $data,
             ]);
 
+        } 
+        else {
+
+            return response()->json([
+                'message' => 'Jam sudah terisi jadwal',
+                // 'data' => $data,
+            ], 400);
+
         }
 
-        return response()->json([
-            'message' => 'Jam sudah terisi jadwal',
-            // 'data' => $data,
-        ], 400);
         
         
     }
@@ -174,8 +185,25 @@ class JadwalController extends Controller
 
         try {
 
+                // $data = Jadwal::where('id', $id)->update([
+                //     'hari_id' => $request->hari_id,
+                //     'jam_id' => $request->jam_id,
+                //     'mapel_id' => $request->mapel_id
+                // ]);
+
+                // return response()->json([
+                //     'message' => 'Data jadwal berhasil di ubah',
+                //     'data' => $data,
+                // ]);
+
+            $kelas_id = Mapel::where('id', $request->mapel_id)->value('kelas_id');
+
             $data_jam = Jadwal::join('jams', 'jams.id', '=', 'jadwals.jam_id')
+            ->join('haris', 'haris.id', '=', 'jadwals.hari_id')
+            ->join('mapels', 'mapels.id', '=', 'jadwals.mapel_id')
+            ->where('haris.id', $request->hari_id)
             ->where('jams.id', $request->jam_id)
+            ->where('mapels.kelas_id', $kelas_id)
             ->first();
 
             if (empty($data_jam)) {

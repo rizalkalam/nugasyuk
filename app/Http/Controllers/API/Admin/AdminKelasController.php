@@ -8,6 +8,7 @@ use App\Models\Jadwal;
 use App\Models\Jurusan;
 use App\Models\Tingkatan;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 
@@ -140,8 +141,8 @@ class AdminKelasController extends Controller
     public function edit_kelas(Request $request, $id)
     {
         $validator = Validator::make($request->all(),[
-            'nama_kelas' => 'required',
             'wali_kelas' => 'required',
+            'nama_kelas' => 'required',
             'jurusan' => 'required',
             'tingkatan' => 'required',
         ]);
@@ -156,19 +157,19 @@ class AdminKelasController extends Controller
 
         try {
 
-            $kelas_lama = Kelas::join('tingkatans', 'tingkatans.id', '=', 'kelas.tingkatan_id')
+            $kelas_pilih = Kelas::join('tingkatans', 'tingkatans.id', '=', 'kelas.tingkatan_id')
             ->join('jurusans', 'jurusans.id', '=', 'kelas.jurusan_id')
-            ->leftjoin('gurus', 'gurus.id', '=', 'kelas.guru_id')
+            ->join('gurus', 'gurus.id', '=', 'kelas.guru_id')
             ->where('kelas.id', $id)
             ->select([
                 'kelas.id',
                 'tingkatans.tingkat_ke',
                 'jurusans.nama_jurusan',
                 'kelas.nama_kelas',
-                'gurus.nama_guru',
+                // 'gurus.nama_guru',
             ])->first();
 
-            $kelas_baru = Kelas::join('tingkatans', 'tingkatans.id', '=', 'kelas.tingkatan_id')
+            $kelas_edit = Kelas::join('tingkatans', 'tingkatans.id', '=', 'kelas.tingkatan_id')
             ->join('jurusans', 'jurusans.id', '=', 'kelas.jurusan_id')
             ->leftjoin('gurus', 'gurus.id', '=', 'kelas.guru_id')
             ->where('tingkatans.id', $request->tingkatan)
@@ -179,69 +180,49 @@ class AdminKelasController extends Controller
                 'tingkatans.tingkat_ke',
                 'jurusans.nama_jurusan',
                 'kelas.nama_kelas',
-                'gurus.nama_guru',
+                // 'gurus.nama_guru',
             ])->first();
 
-            // $koela = Kelas::join('tingkatans', 'tingkatans.id', '=', 'kelas.tingkatan_id')
-            // ->join('jurusans', 'jurusans.id', '=', 'kelas.jurusan_id')
-            // ->leftjoin('gurus', 'gurus.id', '=', 'kelas.guru_id')
-            // ->where('tingkatans.id', $request->tingkatan)
-            // ->where('jurusans.id', $request->jurusan)
-            // ->where('kelas.nama_kelas',  $request->nama_kelas)
-            // ->select([
-            //     'kelas.id',
-            //     'tingkatans.tingkat_ke',
-            //     'jurusans.nama_jurusan',
-            //     'kelas.nama_kelas',
-            //     'gurus.nama_guru',
-            // ])->first();
-
-            // $tingkatan_lama = Kelas::join('tingkatans', 'tingkatans.id', '=', 'kelas.tingkatan_id')
-            // ->where('kelas.id', $id)->value('tingkat_ke');
-            // $jurusan_lama = Kelas::join('jurusans', 'jurusans.id', '=', 'kelas.jurusan_id')
-            // ->where('kelas.id', $id)->value('nama_jurusan');
-            // $nama_kelas_lama = Kelas::where('id', $id)->value('nama_kelas');
-            // $data_kelas_lama = $tingkatan_lama . ' ' . $jurusan_lama . ' ' . $nama_kelas_lama;
-
-            // $tingkatan = Tingkatan::where('id', $request->tingkatan)->value('tingkat_ke');
-            // $jurusan = Jurusan::where('id', $request->jurusan)->value('nama_jurusan');
-            // $nama_kelas = Kelas::where('nama_kelas', $request->nama_kelas)->value('nama_kelas');
-            // $data_kelas_baru = $tingkatan . ' ' . $jurusan . ' ' . $nama_kelas;
-
-            if (empty($kelas_baru)) {
+            if ($kelas_edit == $kelas_pilih) {
 
                 $kelas = Kelas::where('id', $id)->first();
     
-                // $kelas->update([
-                //     'nama_kelas' => $request->nama_kelas,
-                //     'guru_id' => $request->wali_kelas,
-                //     'jurusan_id' => $request->jurusan,
-                //     'tingkatan_id' => $request->tingkatan,
-                // ]);
+                $kelas->update([
+                    'nama_kelas' => $request->nama_kelas,
+                    'guru_id' => $request->wali_kelas,
+                    'jurusan_id' => $request->jurusan,
+                    'tingkatan_id' => $request->tingkatan,
+                ]);
 
                 return response()->json([
-                    'message' => 'Data Kelas berhasil di ubah (is empty)',
-                    // 'data1' => $kelas_baru,
-                    // 'data2' => $kalas_lama
+                    'message' => 'Data Kelas berhasil di ubah',
+                    'data' => $kelas
                 ], 200);
-            } else if (!empty($kelas_lama))
-            {
+
+            } elseif (empty($kelas_edit)){
+
                 return response()->json([
-                    'message' => 'is not empty'
+                    'message' => 'Data kelas belum di buat',
+                    'data' => $kelas_edit
                  ], 400);
+
             }
 
             return response()->json([
-               'message' => 'Data Kelas gagal di ubah'
+               'message' => 'Data kelas sudah ada',
+               'data' => $kelas_edit
             ], 400);
+
 
         } catch (\Throwable $th) {
             //throw $th;
             return response()->json([
                 'message' => 'failed',
-                'errors' => $th->getMessage(),
+                'errors' => $th->getMessage()
             ]);
         }
+
+       
     }
 
     public function hapus_kelas($id)

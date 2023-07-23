@@ -39,7 +39,7 @@ class Kelas extends Model
         return $this->hasMany(Murid::class);
     }
 
-    public function gurus()
+    public function guru()
     {
         return $this->belongsTo(Guru::class);
     }
