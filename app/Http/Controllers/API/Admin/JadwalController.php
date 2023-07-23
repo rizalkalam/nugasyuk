@@ -151,7 +151,7 @@ class JadwalController extends Controller
             return response()->json([
                 'message' => 'Data Jadwal baru berhasil dibuat',
                 'data' => $data,
-            ]);
+            ], 200);
 
         } 
         else {
