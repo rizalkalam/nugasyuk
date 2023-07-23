@@ -238,7 +238,8 @@ class AdminGuruController extends Controller
         $guru = Guru::where('id', $id)->first();
         $kode = Kode::where('guru_id', $id)->first();
         $mapel = Mapel::join('kodes', 'kodes.id', '=', 'mapels.kode_id')
-        ->where('guru_id', $id)->first();
+        ->where('guru_id', $id)
+        ->first();
         $percakapan = Percakapan::whereIn('user_one', array($id))->get();
 
         if (empty($kode)) {
@@ -248,8 +249,11 @@ class AdminGuruController extends Controller
             $mapel->delete();
             $kode->delete();
             $guru->delete();
-        } else {
+        } elseif (!empty($mapel)) {
             $mapel->delete();
+            $kode->delete();
+            $guru->delete();
+        } else {
             $kode->delete();
             $guru->delete();
         }
@@ -265,7 +269,7 @@ class AdminGuruController extends Controller
     {
         $validator = Validator::make($request->all(),[
             'kode_guru'=> 'required|unique:kodes',
-            'nama_mapel'=> 'required|unique:kodes',
+            'nama_mapel'=> 'required',
             'status_mapel'=> 'required',
             // 'guru_id'=> 'required',
         ]);
