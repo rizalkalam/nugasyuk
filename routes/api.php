@@ -138,6 +138,8 @@ Route::group(["middleware" => ['GuruBiasa', 'role:guru_biasa'], "prefix"=>"guru"
 
     // page pengumpulan
     Route::get('pengumpulan/kelas', [KbmController::class, 'kbm']);
+    Route::get('pengumpulan/menunggu/{id}', [PengumpulanController::class, 'pengumpulan_menunggu']);
+    Route::get('pengumpulan/selesai/{id}', [PengumpulanController::class, 'pengumpulan_selesai']);
 
 
 

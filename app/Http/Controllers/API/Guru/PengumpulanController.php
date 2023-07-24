@@ -123,4 +123,52 @@ class PengumpulanController extends Controller
             "pengumpulan" => $pengumpulan,
         ], 200);
     }
+
+    public function pengumpulan_menunggu($id)
+    {
+         $data = Pengumpulan::join('tugas', 'tugas.id', '=', 'pengumpulans.tugas_id')
+        ->join('murids', 'murids.id', '=', 'pengumpulans.murid_id')
+        ->join('mapels', 'mapels.id', '=', 'tugas.mapel_id')
+        ->join('kelas', 'kelas.id', '=', 'mapels.kelas_id')
+        ->join('kodes', 'kodes.id', '=', 'mapels.kode_id')
+        ->join('gurus', 'gurus.id', '=', 'kodes.guru_id')
+        ->where('gurus.id', '=', auth()->user()->id)
+        ->where('pengumpulans.murid_id', '=', $id)
+        ->where('pengumpulans.status', '=', 'menunggu')
+        ->select([
+            'murids.id',
+            'murids.nama_siswa',
+            'pengumpulans.status'
+        ])->get();
+
+        return response()->json([
+            "success" => true,
+            "message" => "List siswa menunggu pengumpulan",
+            "pengumpulan" => $data,
+        ], 200);
+    }
+
+    public function pengumpulan_selesai($id)
+    {
+         $data = Pengumpulan::join('tugas', 'tugas.id', '=', 'pengumpulans.tugas_id')
+        ->join('murids', 'murids.id', '=', 'pengumpulans.murid_id')
+        ->join('mapels', 'mapels.id', '=', 'tugas.mapel_id')
+        ->join('kelas', 'kelas.id', '=', 'mapels.kelas_id')
+        ->join('kodes', 'kodes.id', '=', 'mapels.kode_id')
+        ->join('gurus', 'gurus.id', '=', 'kodes.guru_id')
+        ->where('gurus.id', '=', auth()->user()->id)
+        ->where('murids.id', '=', $id)
+        ->where('pengumpulans.status', '=', 'selesai')
+        ->select([
+            'murids.id',
+            'murids.nama_siswa',
+            'pengumpulans.status'
+        ])->get();
+
+        return response()->json([
+            "success" => true,
+            "message" => "List siswa selesai pengumpulan",
+            "pengumpulan" => $data,
+        ], 200);
+    }
 }
