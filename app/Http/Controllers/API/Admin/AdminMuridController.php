@@ -130,6 +130,7 @@ class AdminMuridController extends Controller
         $nama = time().'-'.$berkas->getClientOriginalName();
 
         try {
+            
             $data = Murid::create([
                 'nis' => $request->nis,
                 'nama_panggilan'=>$request->nama_panggilan,
@@ -166,6 +167,7 @@ class AdminMuridController extends Controller
                 'siswa' => $data,
                 'wali_murid' => $wali_murid
             ], 200);
+
         } catch (\Throwable $th) {
             //throw $th;
             return response()->json([
@@ -230,7 +232,7 @@ class AdminMuridController extends Controller
             ]);
 
             $ortu = Ortu::where('siswa_id', $id)->first();
-            $wali_id->update([
+            $ortu->update([
                 'nama'=>$request->nama,
                 'email'=>$request->email_wali,
                 'password'=>Hash::make($request->password_wali),
@@ -267,7 +269,7 @@ class AdminMuridController extends Controller
                 'message' => 'Data Siswa dan Wali Murid berhasil di ubah',
                 'siswa' => $murid,
                 'wali_murid' => $ortu
-            ]);
+            ], 200);
         } catch (\Throwable $th) {
             //throw $th;
             return response()->json([
