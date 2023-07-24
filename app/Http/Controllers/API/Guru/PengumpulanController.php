@@ -112,16 +112,28 @@ class PengumpulanController extends Controller
         ->join('mapels', 'mapels.id', '=', 'tugas.mapel_id')
         ->join('kodes', 'kodes.id', '=', 'mapels.kode_id')
         ->where('kodes.guru_id', '=', auth()->user()->id)
-        ->where('murids.id', '=', $murid_id)
-        ->where('pengumpulans.id', '=', $pengumpulan_id)
-        ->where('pengumpulans.status', '=', 'belum selesai')
-        ->get('tugas.soal');
+        ->where('murids.id', '=', $id)
+        ->where('pengumpulans.status', '=', 'menunggu')
+        ->first();
 
-        return response()->json([
-            "success" => true,
-            "message" => "Pengumpulan",
-            "pengumpulan" => $pengumpulan,
-        ], 200);
+        if (!empty($pengumpulan)) {
+            $status = Pengumpulan::join('murids', 'murids.id', '=', 'pengumpulans.murid_id')
+            ->where('murids.id', $id)
+            ->update(['status'=>'selesai']);
+
+            return response()->json([
+                "success" => true,
+                "message" => "Pengumpulan berhasil dikonfirmasi",
+                "pengumpulan" => Pengumpulan::where('id', $id)->first(),
+            ], 200);
+        }else {
+            return response()->json([
+                "success" => true,
+                "message" => "Tidak ada data",
+                "pengumpulan" => $pengumpulan,
+            ], 400);
+        }
+
     }
 
     public function pengumpulan_menunggu($id)

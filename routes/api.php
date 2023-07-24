@@ -140,13 +140,14 @@ Route::group(["middleware" => ['GuruBiasa', 'role:guru_biasa'], "prefix"=>"guru"
     Route::get('pengumpulan/kelas', [KbmController::class, 'kbm']);
     Route::get('pengumpulan/menunggu/{id}', [PengumpulanController::class, 'pengumpulan_menunggu']);
     Route::get('pengumpulan/selesai/{id}', [PengumpulanController::class, 'pengumpulan_selesai']);
+    Route::post('/pengumpulan/konfirmasi/{id}', [PengumpulanController::class, 'konfirmasi']);
 
 
 
     Route::get('/pengumpulan', [PengumpulanController::class, 'pengumpulan']);
     Route::get('/pengumpulan/{id}', [PengumpulanController::class, 'detail_pengumpulan']);
     Route::get('/pengumpulan/detail/{id}', [PengumpulanController::class, 'status_pengumpulan']);
-    Route::get('/pengumpulan/konfirmasi/{murid_id}/{pengumpulan_id}', [PengumpulanController::class, 'konfirmasi']);
+    
 
     // Route Jadwal
     Route::get('/jadwal', [GuruJadwalController::class, 'index']);

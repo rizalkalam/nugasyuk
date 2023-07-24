@@ -16,7 +16,7 @@ class PengumpulanSeeder extends Seeder
         Pengumpulan::create([
             'id'=>1,
             'tugas_id'=>1,
-            'status'=>'selesai',
+            'status'=>'menunggu',
             // 'kelas_id'=>1,
             'murid_id'=>1,
             'tanggal'=>'2023-04-04'
@@ -24,10 +24,10 @@ class PengumpulanSeeder extends Seeder
 
         Pengumpulan::create([
             'id'=>2,
-            'tugas_id'=>2,
+            'tugas_id'=>1,
             'status'=>'belum_selesai',
             // 'kelas_id'=>1,
-            'murid_id'=>1,
+            'murid_id'=>2,
             'tanggal'=>'2023-04-04'
         ]);
 
@@ -36,7 +36,7 @@ class PengumpulanSeeder extends Seeder
             'tugas_id'=>1,
             'status'=>'belum_selesai',
             // 'kelas_id'=>1,
-            'murid_id'=>2,
+            'murid_id'=>3,
             'tanggal'=>'2023-04-04'
         ]);
 
@@ -45,16 +45,16 @@ class PengumpulanSeeder extends Seeder
             'tugas_id'=>1,
             'status'=>'menunggu',
             // 'kelas_id'=>2,
-            'murid_id'=>3,
+            'murid_id'=>4,
             'tanggal'=>'2023-04-04'
         ]);
 
         Pengumpulan::create([
             'id'=>5,
             'tugas_id'=>3,
-            'status'=>'belum_selesai',
+            'status'=>'menunggu',
             // 'kelas_id'=>1,
-            'murid_id'=>2,
+            'murid_id'=>1,
             'tanggal'=>'2023-04-04'
         ]);
 
@@ -63,25 +63,25 @@ class PengumpulanSeeder extends Seeder
             'tugas_id'=>3,
             'status'=>'selesai',
             // 'kelas_id'=>1,
-            'murid_id'=>1,
-            'tanggal'=>'2023-04-04'
-        ]);
-
-        Pengumpulan::create([
-            'id'=>7,
-            'tugas_id'=>2,
-            'status'=>'selesai',
-            // 'kelas_id'=>1,
             'murid_id'=>2,
             'tanggal'=>'2023-04-04'
         ]);
 
         Pengumpulan::create([
+            'id'=>7,
+            'tugas_id'=>3,
+            'status'=>'menunggu',
+            // 'kelas_id'=>1,
+            'murid_id'=>3,
+            'tanggal'=>'2023-04-04'
+        ]);
+
+        Pengumpulan::create([
             'id'=>8,
-            'tugas_id'=>5,
+            'tugas_id'=>3,
             'status'=>'selesai',
             // 'kelas_id'=>1,
-            'murid_id'=>1,
+            'murid_id'=>4,
             'tanggal'=>'2023-04-04'
         ]);
 
