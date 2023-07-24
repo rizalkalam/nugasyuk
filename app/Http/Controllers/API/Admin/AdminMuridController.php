@@ -130,7 +130,48 @@ class AdminMuridController extends Controller
         $nama = time().'-'.$berkas->getClientOriginalName();
 
         try {
-            
+
+            $guru_id = Mapel::join('kodes', 'kodes.id', '=', 'mapels.kode_id')
+            ->join('gurus', 'gurus.id', '=', 'kodes.guru_id')
+            ->where('mapels.kelas_id', $request->kelas_id)
+            ->where('kodes.status_mapel', 'bk')
+            ->first();
+
+            if (!empty($guru_id)) {
+
+                $data = Murid::create([
+                    'nis' => $request->nis,
+                    'nama_panggilan'=>$request->nama_panggilan,
+                    'nama_siswa' => $request->nama_siswa,
+                    'email' => $request->email,
+                    'password' => Hash::make($request->password),
+                    'alamat'=> $request->alamat,
+                    'foto_profile' => $berkas->storeAs('gambar_profile_siswa',$nama),
+                    'kelas_id' => $request->kelas_id
+                ]);
+        
+                $wali_murid = Ortu::create([
+                    'nama'=>$request->nama,
+                    'email'=>$request->email_wali,
+                    'password'=>Hash::make($request->password_wali),
+                    'siswa_id'=>Murid::latest()->first()->id
+                ]);
+                
+                $percakapan = Percakapan::insert([
+                    'user_one' => $guru_id->id,
+                    'user_two' => Murid::latest()->first()->id,
+                    'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
+                    'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
+                ]);
+        
+                return response()->json([
+                    'message' => 'Data Siswa dan Wali Murid baru berhasil dibuat',
+                    'siswa' => $data,
+                    'wali_murid' => $wali_murid
+                ], 200);
+
+            }
+
             $data = Murid::create([
                 'nis' => $request->nis,
                 'nama_panggilan'=>$request->nama_panggilan,
@@ -149,24 +190,12 @@ class AdminMuridController extends Controller
                 'siswa_id'=>Murid::latest()->first()->id
             ]);
 
-            $guru_id = Mapel::join('kodes', 'kodes.id', '=', 'mapels.kode_id')
-            ->join('gurus', 'gurus.id', '=', 'kodes.guru_id')
-            ->where('mapels.kelas_id', Murid::latest()->first()->kelas_id)
-            ->where('kodes.status_mapel', 'bk')
-            ->first();
-
-            $percakapan = Percakapan::insert([
-                'user_one' => $guru_id->id,
-                'user_two' => Murid::latest()->first()->id,
-                'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
-                'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
-            ]);
-    
             return response()->json([
                 'message' => 'Data Siswa dan Wali Murid baru berhasil dibuat',
                 'siswa' => $data,
                 'wali_murid' => $wali_murid
             ], 200);
+
 
         } catch (\Throwable $th) {
             //throw $th;
@@ -218,58 +247,73 @@ class AdminMuridController extends Controller
         }
 
         try {
-            $murid = Murid::where('id', $id)->first();
-
-            $murid->update([
-                'nis' => $request->nis,
-                'nama_panggilan'=>$request->nama_panggilan,
-                'nama_siswa' => $request->nama_siswa,
-                'email' => $request->email,
-                'password' => Hash::make($request->password),
-                'alamat' => $request->alamat,
-                'foto_profile' => $edit,
-                'kelas_id' => $request->kelas_id
-            ]);
-
-            $ortu = Ortu::where('siswa_id', $id)->first();
-            $ortu->update([
-                'nama'=>$request->nama,
-                'email'=>$request->email_wali,
-                'password'=>Hash::make($request->password_wali),
-                // 'siswa_id'=>Murid::latest()->first()->id
-            ]);
-
+          
             $guru_id = Mapel::join('kodes', 'kodes.id', '=', 'mapels.kode_id')
             ->join('gurus', 'gurus.id', '=', 'kodes.guru_id')
             ->where('kodes.status_mapel', 'bk')
             ->where('mapels.kelas_id', $request->kelas_id)
             ->first();
 
-            $data_percakapan = Percakapan::whereIn('user_two', array($id))
-            ->update([
-                'user_one' => $guru_id->id,
-                'user_two' => $id,
-                'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
-                'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
-            ]);
+            if (!empty($guru_id)) {
 
-            // $percakapan = [];
-            // foreach ($murid as $id) {
-            //     $percakapan[] = [
-            //         'user_one' => $guru,
-            //         'user_two' => $id->id,
-            //         'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
-            //         'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
-            //     ];
-            // }
+                $murid = Murid::where('id', $id)->first();
 
-            // Percakapan::insert($percakapan);
+                $murid->update([
+                    'nis' => $request->nis,
+                    'nama_panggilan'=>$request->nama_panggilan,
+                    'nama_siswa' => $request->nama_siswa,
+                    'email' => $request->email,
+                    'password' => Hash::make($request->password),
+                    'alamat' => $request->alamat,
+                    'foto_profile' => $edit,
+                    'kelas_id' => $request->kelas_id
+                ]);
+    
+                $ortu = Ortu::where('siswa_id', $id)->first();
+                $ortu->update([
+                    'nama'=>$request->nama,
+                    'email'=>$request->email_wali,
+                    'password'=>Hash::make($request->password_wali),
+                    // 'siswa_id'=>Murid::latest()->first()->id
+                ]);
+
+                $data_percakapan = Percakapan::whereIn('user_two', array($id))
+                ->update([
+                    'user_one' => $guru_id->id,
+                    'user_two' => $id,
+                    'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
+                    'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
+                ]);
+
+            }
+
+            $murid = Murid::where('id', $id)->first();
+
+                $murid->update([
+                    'nis' => $request->nis,
+                    'nama_panggilan'=>$request->nama_panggilan,
+                    'nama_siswa' => $request->nama_siswa,
+                    'email' => $request->email,
+                    'password' => Hash::make($request->password),
+                    'alamat' => $request->alamat,
+                    'foto_profile' => $edit,
+                    'kelas_id' => $request->kelas_id
+                ]);
+    
+                $ortu = Ortu::where('siswa_id', $id)->first();
+                $ortu->update([
+                    'nama'=>$request->nama,
+                    'email'=>$request->email_wali,
+                    'password'=>Hash::make($request->password_wali),
+                    // 'siswa_id'=>Murid::latest()->first()->id
+                ]);
 
             return response()->json([
                 'message' => 'Data Siswa dan Wali Murid berhasil di ubah',
                 'siswa' => $murid,
                 'wali_murid' => $ortu
             ], 200);
+
         } catch (\Throwable $th) {
             //throw $th;
             return response()->json([
