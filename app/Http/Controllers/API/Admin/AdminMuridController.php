@@ -208,7 +208,6 @@ class AdminMuridController extends Controller
 
     public function edit_murid(Request $request, $id)
     {
-        $wali_id = Ortu::where('siswa_id', $id)->select('id')->get();
 
         $validator = Validator::make($request->all(),[
             'nis'=>'required|unique:murids,nis,' . $id,
@@ -222,7 +221,7 @@ class AdminMuridController extends Controller
 
              // validasi input wali murid
              'nama'=>'required',
-             'email_wali'=>'required|email|unique:ortus,email,' . $wali_id,
+             'email_wali'=>'required|email|unique:ortus,email,' . $id,
              'password'=>'required',
             //  'siswa_id'=>'required'
         ]);

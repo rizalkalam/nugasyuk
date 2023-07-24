@@ -57,7 +57,7 @@ class TugasController extends Controller
         ->join('gurus', 'gurus.id', '=', 'kodes.guru_id')
         ->where('tugas.id', $id)
         ->where('pengumpulans.murid_id', auth()->user()->id)
-        ->select(['kodes.nama_mapel', 'tugas.id', 'pengumpulans.status', 'tugas.nama_tugas', 'tugas.soal', 'gurus.nama_guru', 'tugas.date', 'tugas.deadline'])->get();
+        ->select(['kodes.nama_mapel', 'tugas.id', 'pengumpulans.status', 'tugas.nama_tugas', 'tugas.soal', 'gurus.nama_guru', 'tugas.date', 'tugas.deadline', 'tugas.file'])->get();
 
         return response()->json([
             "success" => true,
@@ -109,13 +109,14 @@ class TugasController extends Controller
                 'message' => 'failed',
                 'errors' => $th->getMessage(),
             ], 400);
-        }
-
-        
+        }        
     }
 
-    public function pengumpulan()
+    public function hapus($id)
     {
-        
+        $jawaban = Pengumpulan::where('id', $id)->first();
+        $jawaban->update([
+            
+        ]);
     }
 }
