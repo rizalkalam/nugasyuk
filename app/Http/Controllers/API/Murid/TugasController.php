@@ -6,6 +6,7 @@ use App\Models\Tugas;
 use App\Models\Pengumpulan;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
 class TugasController extends Controller
@@ -89,20 +90,22 @@ class TugasController extends Controller
         $berkas = $request->file('file');
         $nama = $berkas->getClientOriginalName();
 
-        $jawaban = Pengumpulan::where('tugas_id', $id)
+        $status = Pengumpulan::where('tugas_id', $id)
         ->where('murid_id', auth()->user()->id)
-        ->first();
-        
-            $jawaban->update([
-                'link'=> $request->link,
-                'file'=> $berkas->storeAs('file', $nama),
-                'status'=> 'menunggu',
-            ]);
+        ->update(['status'=>'menunggu']);
+
+        $file = Tugas::where('id', $id)
+        ->update([
+            'link'=> $request->link,
+            'file'=> $berkas->storeAs('file', $nama),
+        ]);
 
             return response()->json([
                 'message' => 'Jawaban berhasil terkirim',
-                'data' => $jawaban,
+                // 'data' => $file,
+                // 'status' => $status
             ]);
+
         } catch (\Throwable $th) {
             //throw $th;
             return response()->json([
@@ -112,11 +115,24 @@ class TugasController extends Controller
         }        
     }
 
-    public function hapus($id)
+    public function hapus_file(Request $request, $id)
     {
-        $jawaban = Pengumpulan::where('id', $id)->first();
-        $jawaban->update([
-            
+        $status = Pengumpulan::where('tugas_id', $id)
+        ->where('murid_id', auth()->user()->id)
+        ->update(['status'=>'belum_selesai']);
+
+        $file_path = Tugas::where('id', $id)->value('file');
+        Storage::delete($file_path);
+
+        $file = Tugas::where('id', $id)
+        ->update([
+            'file' => null
         ]);
+
+        return response()->json([
+            'message' => "file terhapus, status berubah 'belum_selesai'",
+            // 'data' => $jawaban,
+        ]);
+
     }
 }
