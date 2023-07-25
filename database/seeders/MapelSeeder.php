@@ -133,5 +133,14 @@ class MapelSeeder extends Seeder
             // 'nama_mapel'=>'Math',
             // 'asset_id'=>2,
         ]);
+
+        Mapel::create([
+            'id'=>'14',
+            'kode_id'=>7,
+            'kelas_id'=>3,
+            'asset_id'=>4,
+            // 'nama_mapel'=>'Qur'an',
+            // 'asset_id'=>2,
+        ]);
     }
 }

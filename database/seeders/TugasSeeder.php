@@ -69,5 +69,16 @@ class TugasSeeder extends Seeder
             'file'=>null,
             'mapel_id'=>1
         ]);
+
+        Tugas::create([
+            'id'=>'6',
+            'nama_tugas'=>"Baca Tulis Al-Qur'an",
+            'soal'=>'Bacalah surat Al-Kahfi ayat 1-20',
+            'date'=>Carbon::now()->format('Y-m-d'),
+            'deadline'=>'2023-07-10',
+            'link'=>null,
+            'file'=>null,
+            'mapel_id'=>14
+        ]);
     }
 }
