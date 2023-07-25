@@ -470,7 +470,7 @@ class KbmController extends Controller
         }
     }
 
-    public function edit_tugas(Request $request, $kelas_id, $tugas_id)
+    public function edit_tugas(Request $request, $id)
     {
         $validator = Validator::make($request->all(),[
             'nama_tugas'=> 'required',
@@ -498,7 +498,6 @@ class KbmController extends Controller
             ->join('gurus', 'gurus.id', '=', 'kodes.guru_id')
             ->where('gurus.id', '=', auth()->user()->id)
             ->where('tugas.id', '=', $tugas_id)
-            ->where('kelas.id', '=', $kelas_id)
             ->first('tugas.id');
             
             $tugas->update([
