@@ -142,6 +142,8 @@ Route::group(["middleware" => ['GuruBiasa', 'role:guru_biasa'], "prefix"=>"guru"
     Route::get('pengumpulan/selesai/{id}', [PengumpulanController::class, 'pengumpulan_selesai']);
     Route::post('/pengumpulan/konfirmasi/{id}', [PengumpulanController::class, 'konfirmasi']);
 
+    // =================================================================================================
+
 
 
     Route::get('/pengumpulan', [PengumpulanController::class, 'pengumpulan']);

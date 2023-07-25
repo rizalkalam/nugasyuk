@@ -150,6 +150,10 @@ class PengumpulanController extends Controller
         ->select([
             'murids.id',
             'murids.nama_siswa',
+            'tugas.nama_tugas',
+            'gurus.nama_guru',
+            'tugas.deadline',
+            'tugas.date',
             'pengumpulans.status'
         ])->get();
 
@@ -174,6 +178,10 @@ class PengumpulanController extends Controller
         ->select([
             'murids.id',
             'murids.nama_siswa',
+            'tugas.nama_tugas',
+            'gurus.nama_guru',
+            'tugas.deadline',
+            'tugas.date',
             'pengumpulans.status'
         ])->get();
 
