@@ -55,7 +55,9 @@ class PengumpulanSeeder extends Seeder
             'status'=>'menunggu',
             // 'kelas_id'=>1,
             'murid_id'=>1,
-            'tanggal'=>'2023-04-04'
+            'tanggal'=>'2023-04-04',
+            'file' => 'file/data_kuis_app',
+            'link' => 'https://youtu.be/Vgt1d3eAm7A',
         ]);
 
         Pengumpulan::create([
@@ -64,7 +66,9 @@ class PengumpulanSeeder extends Seeder
             'status'=>'selesai',
             // 'kelas_id'=>1,
             'murid_id'=>2,
-            'tanggal'=>'2023-04-04'
+            'tanggal'=>'2023-04-04',
+            'file' => 'file/data_kuis_app',
+            'link' => 'https://youtu.be/Vgt1d3eAm7A',
         ]);
 
         Pengumpulan::create([
@@ -73,7 +77,9 @@ class PengumpulanSeeder extends Seeder
             'status'=>'menunggu',
             // 'kelas_id'=>1,
             'murid_id'=>3,
-            'tanggal'=>'2023-04-04'
+            'tanggal'=>'2023-04-04',
+            'file' => 'file/data_kuis_app',
+            'link' => 'https://youtu.be/Vgt1d3eAm7A',
         ]);
 
         Pengumpulan::create([
@@ -82,7 +88,9 @@ class PengumpulanSeeder extends Seeder
             'status'=>'selesai',
             // 'kelas_id'=>1,
             'murid_id'=>4,
-            'tanggal'=>'2023-04-04'
+            'tanggal'=>'2023-04-04',
+            'file' => 'file/data_kuis_app',
+            'link' => 'https://youtu.be/Vgt1d3eAm7A',
         ]);
 
         Pengumpulan::create([
@@ -109,7 +117,9 @@ class PengumpulanSeeder extends Seeder
             'status'=>'menunggu',
             // 'kelas_id'=>1,
             'murid_id'=>5,
-            'tanggal'=>'2023-04-04'
+            'tanggal'=>'2023-04-04',
+            'file' => 'file/data_kuis_app',
+            'link' => 'https://youtu.be/Vgt1d3eAm7A',
         ]);
 
         Pengumpulan::create([
@@ -118,7 +128,9 @@ class PengumpulanSeeder extends Seeder
             'status'=>'selesai',
             // 'kelas_id'=>1,
             'murid_id'=>6,
-            'tanggal'=>'2023-04-04'
+            'tanggal'=>'2023-04-04',
+            'file' => 'file/data_kuis_app',
+            'link' => 'https://youtu.be/Vgt1d3eAm7A',
         ]);
 
         Pengumpulan::create([
@@ -127,7 +139,9 @@ class PengumpulanSeeder extends Seeder
             'status'=>'menunggu',
             // 'kelas_id'=>1,
             'murid_id'=>1,
-            'tanggal'=>'2023-04-04'
+            'tanggal'=>'2023-04-04',
+            'file' => 'file/data_kuis_app',
+            'link' => 'https://youtu.be/Vgt1d3eAm7A',
         ]);
 
         Pengumpulan::create([
@@ -136,7 +150,9 @@ class PengumpulanSeeder extends Seeder
             'status'=>'selesai',
             // 'kelas_id'=>1,
             'murid_id'=>2,
-            'tanggal'=>'2023-04-04'
+            'tanggal'=>'2023-04-04',
+            'file' => 'file/data_kuis_app',
+            'link' => 'https://youtu.be/Vgt1d3eAm7A',
         ]);
 
         Pengumpulan::create([
@@ -145,7 +161,9 @@ class PengumpulanSeeder extends Seeder
             'status'=>'menunggu',
             // 'kelas_id'=>1,
             'murid_id'=>3,
-            'tanggal'=>'2023-04-04'
+            'tanggal'=>'2023-04-04',
+            'file' => 'file/data_kuis_app',
+            'link' => 'https://youtu.be/Vgt1d3eAm7A',
         ]);
 
         Pengumpulan::create([
@@ -154,7 +172,9 @@ class PengumpulanSeeder extends Seeder
             'status'=>'selesai',
             // 'kelas_id'=>1,
             'murid_id'=>4,
-            'tanggal'=>'2023-04-04'
+            'tanggal'=>'2023-04-04',
+            'file' => 'file/data_kuis_app',
+            'link' => 'https://youtu.be/Vgt1d3eAm7A',
         ]);
 
         Pengumpulan::create([
@@ -163,7 +183,9 @@ class PengumpulanSeeder extends Seeder
             'status'=>'menunggu',
             // 'kelas_id'=>1,
             'murid_id'=>5,
-            'tanggal'=>'2023-04-04'
+            'tanggal'=>'2023-04-04',
+            'file' => 'file/data_kuis_app',
+            'link' => 'https://youtu.be/Vgt1d3eAm7A',
         ]);
 
         Pengumpulan::create([
@@ -172,58 +194,9 @@ class PengumpulanSeeder extends Seeder
             'status'=>'menunggu',
             // 'kelas_id'=>1,
             'murid_id'=>6,
-            'tanggal'=>'2023-04-04'
+            'tanggal'=>'2023-04-04',
+            'file' => 'file/data_kuis_app',
+            'link' => 'https://youtu.be/Vgt1d3eAm7A',
         ]);
-
-
-
-        // Pengumpulan::create([
-        //     'id'=>2,
-        //     'tugas_id'=>3,
-        //     'status'=>'belum selesai',
-        //     // 'murid_id'=>1
-        // ]);
-
-        // Pengumpulan::create([
-        //     'id'=>3,
-        //     'tugas_id'=>1,
-        //     'status'=>'selesai',
-        //     // 'murid_id'=>2
-        // ]);
-
-        // Pengumpulan::create([
-        //     'id'=>4,
-        //     'tugas_id'=>3,
-        //     'status'=>'selesai',
-        //     // 'murid_id'=>2
-        // ]);
-
-        // Pengumpulan::create([
-        //     'id'=>5,
-        //     'tugas_id'=>1,
-        //     'status'=>'belum selesai',
-        //     // 'murid_id'=>3
-        // ]);
-
-        // Pengumpulan::create([
-        //     'id'=>6,
-        //     'tugas_id'=>1,
-        //     'status'=>'belum selesai',
-        //     // 'murid_id'=>4
-        // ]);
-
-        // Pengumpulan::create([
-        //     'id'=>7,
-        //     'tugas_id'=>2,
-        //     'status'=>'belum selesai',
-        //     // 'murid_id'=>3
-        // ]);
-
-        // Pengumpulan::create([
-        //     'id'=>8,
-        //     'tugas_id'=>2,
-        //     'status'=>'selesai',
-        //     // 'murid_id'=>1
-        // ]);
     }
 }

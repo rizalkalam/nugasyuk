@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API\Guru;
 use App\Models\Guru;
 use App\Models\Mapel;
 use App\Models\Murid;
+use App\Models\Tugas;
 use App\Models\Pengumpulan;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -41,38 +42,45 @@ class PengumpulanController extends Controller
 
     public function detail_pengumpulan($id)
     {
-        $data = Murid::join('kelas', 'kelas.id', '=', 'murids.kelas_id')
-        ->join('jurusans', 'jurusans.id', '=', 'kelas.jurusan_id')
-        ->join('tingkatans', 'tingkatans.id', '=', 'kelas.tingkatan_id')
-        ->where('murids.id', $id)
-        ->select([
-            'murids.foto_profile',
-            'murids.nama_siswa',
-            'murids.email',
-            'tingkatans.tingkat_ke',
-            'jurusans.nama_jurusan',
-            'kelas.nama_kelas',
-        ])->get();
+        $tugas = Pengumpulan::join('tugas', 'tugas.id', '=', 'pengumpulans.tugas_id')
+                        ->join('murids', 'murids.id', '=', 'pengumpulans.murid_id')
+                        ->join('mapels', 'mapels.id', '=', 'tugas.mapel_id')
+                        ->join('kodes','kodes.id', '=', 'mapels.kode_id')
+                        ->join('kelas', 'kelas.id', '=', 'mapels.kelas_id')
+                        ->join('gurus', 'gurus.id', '=', 'kodes.guru_id')
+                        ->join('jurusans', 'jurusans.id', '=', 'kelas.jurusan_id')
+                        ->join('tingkatans', 'tingkatans.id', '=', 'kelas.tingkatan_id')
+                        ->where('gurus.id', '=', auth()->user()->id)
+                        ->where('tugas.id', '=', $id)
+                        ->select([
+                            'tugas.id',
+                            'pengumpulans.murid_id',
+                            'murids.nama_siswa',
+                            'murids.email',
+                            'tingkatans.tingkat_ke',
+                            'jurusans.nama_jurusan',
+                            'kelas.nama_kelas',
+                            'tugas.nama_tugas',
+                            'tugas.soal',
+                            'tugas.date',
+                            'pengumpulans.status',
+                            'pengumpulans.file',
+                            'pengumpulans.link',
+                        ])->first();
 
-        return response()->json([
-            "success" => true,
-            "message" => "Pengumpulan",
-            "pengumpulan" => $data,
-        ], 200);
-
-        // $data = Pengumpulan::join('tugas', 'tugas.id', '=', 'pengumpulans.tugas_id')
-        //             ->join('murids', 'murids.id', '=', 'pengumpulans.murid_id')
-        //             ->join('mapels', 'mapels.id', '=', 'tugas.mapel_id')
-        //             ->join('kodes', 'kodes.id', '=', 'mapels.kode_id')
-        //             ->where('kodes.guru_id', '=', auth()->user()->id)
-        //             ->where('murids.id', $id)
-        //             ->select([
-        //                 'tugas.id',
-        //                 'tugas.nama_tugas',
-        //                 'pengumpulans.status'
-        //             ])->get();
-
-                   
+        if (empty($tugas)) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Tugas tidak ada',
+            ], 404);
+        }
+        else {
+            return response()->json([
+                "success" => true,
+                "message" => "Detail Tugas",
+                "tugas" => $tugas,
+            ], 200);
+        }
     }
 
     public function status_pengumpulan($nama, $status)
@@ -149,6 +157,7 @@ class PengumpulanController extends Controller
         ->where('pengumpulans.status', '=', 'menunggu')
         ->select([
             'murids.id',
+            'pengumpulans.tugas_id',
             'murids.nama_siswa',
             'tugas.nama_tugas',
             'gurus.nama_guru',
@@ -177,6 +186,7 @@ class PengumpulanController extends Controller
         ->where('pengumpulans.status', '=', 'selesai')
         ->select([
             'murids.id',
+            'pengumpulans.tugas_id',
             'murids.nama_siswa',
             'tugas.nama_tugas',
             'gurus.nama_guru',
