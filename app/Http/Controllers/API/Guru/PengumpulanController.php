@@ -201,27 +201,4 @@ class PengumpulanController extends Controller
             "pengumpulan" => $data,
         ], 200);
     }
-
-    // public function detail_tugas($id)
-    // {
-    //     $data = Tugas::join('mapels', 'mapels.id', '=', 'tugas.mapel_id')
-    //     ->join('kodes','kodes.id', '=', 'mapels.kode_id')
-    //     ->join('kelas', 'kelas.id', '=', 'mapels.kelas_id')
-    //     ->join('gurus', 'gurus.id', '=', 'kodes.guru_id')
-    //     ->where('gurus.id', '=', auth()->user()->id)
-    //     ->where('tugas.id', '=', $id)
-    //     ->select([
-    //         'tugas.id',
-    //         'gurus.nama_guru',
-    //         'tugas.nama_tugas',
-    //         'tugas.soal',
-    //         'tugas.date',
-    //     ])->get();
-
-    //     return response()->json([
-    //         "success" => true,
-    //         "message" => "Detail Tugas",
-    //         "tugas" => $data,
-    //     ], 200);
-    // }
 }

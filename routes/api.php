@@ -127,20 +127,20 @@ Route::group(["middleware" => ['GuruBiasa', 'role:guru_biasa'], "prefix"=>"guru"
     Route::get('/notifikasi', [GuruNotificationController::class, 'index']);
 
     // page kbm
-    Route::get('/kbm', [KbmController::class, 'kbm']);
-    Route::get('/materi/kelas/{kelas_id}', [KbmController::class, 'materi']);
-    Route::get('/tugas/kelas/{kelas_id}', [KbmController::class, 'tugas']);
-    Route::get('/materi/{materi_id}', [KbmController::class, 'detail_materi']);
-    Route::get('/tugas/{tugas_id}', [KbmController::class, 'detail_tugas']);
-    Route::get('/detail/pengumpulan/{tugas_id}', [KbmController::class, 'cek_pengumpulan']);
+    Route::get('/kbm', [KbmController::class, 'index']);
+    Route::get('/materi/kelas/{id}', [KbmController::class, 'materi']);
+    Route::get('/tugas/kelas/{id}', [KbmController::class, 'tugas']);
+    Route::get('/materi/{id}', [KbmController::class, 'detail_materi']);
+    Route::get('/tugas/{id}', [KbmController::class, 'detail_tugas']);
+    Route::get('/detail/pengumpulan/{id}', [KbmController::class, 'cek_pengumpulan']);
     Route::get('/cek/pengumpulan/menunggu/{id}', [KbmController::class, 'pengumpulan_menunggu']);
     Route::get('/cek/pengumpulan/selesai/{id}', [KbmController::class, 'pengumpulan_selesai']);
     Route::post('/edit/tugas/{id}', [KbmController::class, 'edit_tugas']);
 
     // page pengumpulan
-    Route::get('pengumpulan/kelas', [KbmController::class, 'kbm']);
-    Route::get('pengumpulan/menunggu/{id}', [PengumpulanController::class, 'pengumpulan_menunggu']);
-    Route::get('pengumpulan/selesai/{id}', [PengumpulanController::class, 'pengumpulan_selesai']);
+    Route::get('/pengumpulan/kelas', [KbmController::class, 'kbm']);
+    Route::get('/pengumpulan/menunggu/{id}', [PengumpulanController::class, 'pengumpulan_menunggu']);
+    Route::get('/pengumpulan/selesai/{id}', [PengumpulanController::class, 'pengumpulan_selesai']);
     Route::get('/pengumpulan/{id}', [PengumpulanController::class, 'detail_pengumpulan']);
     Route::post('/pengumpulan/konfirmasi/{id}', [PengumpulanController::class, 'konfirmasi']);
 
