@@ -100,7 +100,7 @@ class TugasSeeder extends Seeder
             'deadline'=>'2023-07-10',
             'link'=>null,
             'file'=>null,
-            'mapel_id'=>7
+            'mapel_id'=>9
         ]);
         
     }
