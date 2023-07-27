@@ -62,7 +62,7 @@ class MuridSeeder extends Seeder
             'password'=>bcrypt('bimawan123'),
             'alamat'=>'Sumbawa Barat, NTB',
             'foto_profile'=>'gambar_profile_siswa/bimawan.png',
-            'kelas_id'=>2,
+            'kelas_id'=>1,
             // 'tugas_id'=>1,
         ]);
 
@@ -78,5 +78,44 @@ class MuridSeeder extends Seeder
             'kelas_id'=>2,
             // 'tugas_id'=>1,
         ]);
+
+        Murid::create([
+            'id'=>'6',
+            'nis'=>'0450',
+            'nama_panggilan'=>'Gavra',
+            'nama_siswa'=>'Javier Gavra Abhinaya',
+            'email'=>'gavra@gmail.com',
+            'password'=>bcrypt('gavra123'),
+            'alamat'=>'Dawe, Kudus',
+            'foto_profile'=>'gambar_profile_siswa/gavra.png',
+            'kelas_id'=>3,
+            // 'tugas_id'=>1,
+        ]);
+
+        Murid::create([
+            'id'=>'7',
+            'nis'=>'0451',
+            'nama_panggilan'=>'Putri',
+            'nama_siswa'=>'Putri Agustina Rahayu Sentosa',
+            'email'=>'putri@gmail.com',
+            'password'=>bcrypt('putri123'),
+            'alamat'=>'Gebog, Kudus',
+            'foto_profile'=>'gambar_profile_siswa/putri.png',
+            'kelas_id'=>3,
+            // 'tugas_id'=>1,
+        ]);
+
+        // Murid::create([
+        //     'id'=>'5',
+        //     'nis'=>'0445',
+        //     'nama_panggilan'=>'Wahyu',
+        //     'nama_siswa'=>'Muh Wahyu Ageng Pambudi',
+        //     'email'=>'wahyu@gmail.com',
+        //     'password'=>bcrypt('wahyu123'),
+        //     'alamat'=>'Bae, Kudus',
+        //     'foto_profile'=>'gambar_profile_siswa/wahyu.png',
+        //     'kelas_id'=>2,
+        //     // 'tugas_id'=>1,
+        // ]);
     }
 }

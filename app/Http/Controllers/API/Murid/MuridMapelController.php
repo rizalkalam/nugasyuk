@@ -61,8 +61,7 @@ class MuridMapelController extends Controller
     public function tugas($id)
     {
         $tugas = Pengumpulan::join('tugas', 'tugas.id', '=', 'pengumpulans.tugas_id')
-        ->join('materis', 'materis.id', '=', 'tugas.materi_id')
-        ->join('mapels', 'mapels.id', '=', 'materis.mapel_id')
+        ->join('mapels', 'mapels.id', '=', 'tugas.mapel_id')
         ->join('kodes', 'kodes.id', '=', 'mapels.kode_id')
         ->join('gurus', 'gurus.id', '=', 'kodes.guru_id')
         ->where('mapels.id', $id)

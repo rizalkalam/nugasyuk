@@ -35,15 +35,15 @@ Deploy:
     - ssh $VAR_USER@$VAR_IP "docker exec webserver composer require pusher/pusher-php-server"
     - ssh $VAR_USER@$VAR_IP "docker exec webserver composer install"
     - ssh $VAR_USER@$VAR_IP "docker exec webserver composer fund"
-    # - ssh $VAR_USER@$VAR_IP "docker exec webserver composer update"
     # - ssh $VAR_USER@$VAR_IP "dock
     # - ssh $VAR_USER@$VAR_IP "docker exec webserver php artisan queue:flush"
     # - ssh $VAR_USER@$VAR_IP "docker exec webserver php artisan queue:clear"
+    # - ssh $VAR_USER@$VAR_IP "docker exec webserver php artisan migrate --seed"
     - ssh $VAR_USER@$VAR_IP "docker exec webserver php artisan migrate:fresh --seed"
     # - ssh $VAR_USER@$VAR_IP "docker exec webserver php artisan db:seed"
     - ssh $VAR_USER@$VAR_IP "docker exec webserver php artisan jwt:secret"
     - ssh $VAR_USER@$VAR_IP "docker exec webserver php artisan key:generate"
     - ssh $VAR_USER@$VAR_IP "docker exec webserver php artisan cache:clear"
     # - ssh $VAR_USER@$VAR_IP "docker exec webserver php artisan storage:link"
-    - echo "UPDATE SUCCESS!"
+    - echo "UPDATE SUCCESS!!!"
 
