@@ -269,35 +269,59 @@ class KbmController extends Controller
         ], 200);
     }
 
-    public function buat_materi(Request $request, $kelas_id, $mapel_id)
+    public function buat_materi(Request $request, $id)
     {
          $validator = Validator::make($request->all(),[
-                'mapel_id'=> 'required',
-                'nama_materi'=> 'required',
-                'isi'=> 'required',
-                'tanggal_dibuat'=> 'required',
-                'tahun_mulai'=> 'required',
-                'tahun_selesai'=> 'required',
-                'file'=> 'mimes:pdf,docx,xlsx|max:10000',
+             'nama_materi'=> 'required',
+             'isi'=> 'required',
+             'tahun_mulai'=> 'required',
+             'tahun_selesai'=> 'required',
+             'file'=> 'mimes:pdf,docx,xlsx|max:10000',
+             // 'mapel_id'=> 'required',
+             // 'tanggal_dibuat'=> 'required',
             ]);
+        
+            if ($validator->fails()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => $validator->errors(),
+                    'data' => [],
+                ], 400);
+            }
 
             $berkas = $request->file('file');
             $nama = $berkas->getClientOriginalName();
+
+            $mapel_id = Materi::join('mapels', 'mapels.id', '=', 'materis.mapel_id')
+            ->join('kodes', 'kodes.id', '=', 'mapels.kode_id')
+            ->join('kelas', 'kelas.id', '=', 'mapels.kelas_id')
+            ->where('kodes.guru_id', '=', auth()->user()->id)
+            ->where('kelas_id', '=', $id)
+            ->first();
+
+            try {
+                $materi = Materi::create([
+                    'mapel_id'=> $mapel_id->id,
+                    'nama_materi'=> $request->nama_materi,
+                    'isi'=> $request->isi,
+                    'tanggal_dibuat'=> Carbon::now()->format('Y-m-d'),
+                    'tahun_mulai'=> $request->tahun_mulai,
+                    'tahun_selesai'=> $request->tahun_selesai,
+                    'file'=> $berkas->storeAs('file', $nama),
+                ]);
+        
+                return response()->json([
+                    'message' => 'Materi berhasil dibuat',
+                    'data' => $materi,
+                ], 200);
+            } catch (\Throwable $th) {
+                return response()->json([
+                    'message' => 'failed',
+                    'errors' => $th->getMessage(),
+                ], 400);
+            }
     
-            $materi = Materi::create([
-                'mapel_id'=> $mapel_id,
-                'nama_materi'=> $request->nama_materi,
-                'isi'=> $request->isi,
-                'tanggal_dibuat'=> Carbon::now()->format('Y-m-d'),
-                'tahun_mulai'=> $request->tahun_mulai,
-                'tahun_selesai'=> $request->tahun_selesai,
-                'file'=> $berkas->storeAs('file', $nama),
-            ]);
-    
-            return response()->json([
-                'message' => 'Materi berhasil dibuat',
-                'data' => $materi,
-            ]);
+           
     }
 
     public function edit_materi(Request $request, $kelas_id, $mapel_id, $id)
@@ -367,62 +391,83 @@ class KbmController extends Controller
         ]);
     }
 
-    public function buat_tugas(Request $request, $kelas_id, $mapel_id)
+    public function buat_tugas(Request $request, $id)
     {
-        $mapel = Tugas::join('mapels', 'mapels.id', '=', 'tugas.mapel_id')
+        $validator = Validator::make($request->all(),[
+            'nama_tugas'=> 'required',
+            'soal'=> 'required',
+            'description'=> 'required',
+            'deadline'=> 'required'
+            // 'mapel_id'=> 'required',
+            // 'date'=> 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => $validator->errors(),
+                'data' => [],
+            ], 400);
+        }
+
+        try {
+            $mapel = Tugas::join('mapels', 'mapels.id', '=', 'tugas.mapel_id')
                         ->join('kodes', 'kodes.id', '=', 'mapels.kode_id')
                         ->join('kelas', 'kelas.id', '=', 'mapels.kelas_id')
                         ->where('kodes.guru_id', '=', auth()->user()->id)
-                        ->where('kelas_id', '=', $kelas_id)
+                        ->where('kelas_id', '=', $id)
                         ->get();
-
-        if (!$mapel->isEmpty()) {
-            $validator = Validator::make($request->all(),[
-                'mapel_id'=> 'required',
-                'nama_tugas'=> 'required',
-                'soal'=> 'required',
-                'description'=> 'required',
-                'date'=> 'required',
-                'deadline'=> 'required'
-            ]);
-    
-            $tugas = Tugas::create([
-                'mapel_id'=> $mapel_id,
-                'nama_tugas'=> $request->nama_tugas,
-                'soal'=> $request->soal,
-                'description'=> $request->description,
-                'date'=> Carbon::now()->format('Y-m-d'),
-                'deadline'=> $request->deadline,
-            ]);
-
-            $tugasId = Tugas::latest()->first()->id;
-
-            $muridId = Murid::where('kelas_id', $kelas_id)
-            ->get();
-
-            $data = [];
-            foreach ($muridId as $id) {
-                $data[] = [
-                    'tugas_id' => $tugasId,
-                    'murid_id' => $id->id,
-                    'tanggal' => Carbon::now()->format('Y-m-d')
-                ];
-            }
             
-            $pengumpulan = Pengumpulan::insert($data);
+            if (!$mapel->isEmpty()) {
+        
+                $tugas = Tugas::create([
+                    'mapel_id'=> $mapel->first()->id,
+                    'nama_tugas'=> $request->nama_tugas,
+                    'soal'=> $request->soal,
+                    'description'=> $request->description,
+                    'date'=> Carbon::now()->format('Y-m-d'),
+                    'deadline'=> $request->deadline,
+                ]);
     
-            return response()->json([
-                'message' => 'Tugas berhasil dibuat',
-                'tugas' => $tugas,
-            ]);
-           
-        } else {
-            return response()->json([
-                'pesan' => 'Tugas gagal dibuat',
-                'data' => 'error',
-            ]);
+                $tugasId = Tugas::latest()->first()->id;
+    
+                $muridId = Murid::where('kelas_id', $id)
+                ->get();
+    
+                $data = [];
+                foreach ($muridId as $id) {
+                    $data[] = [
+                        'tugas_id' => $tugasId,
+                        'murid_id' => $id->id,
+                        'tanggal' => Carbon::now()->format('Y-m-d')
+                    ];
+                }
+                
+                $pengumpulan = Pengumpulan::insert($data);
+        
+                return response()->json([
+                    'message' => 'Tugas berhasil dibuat',
+                    'tugas' => $tugas,
+                ]);
+               
+            } else {
 
+                return response()->json([
+                    'pesan' => 'Tugas gagal dibuat',
+                    'data' => 'error',
+                ]);
+    
+            }
+
+        } catch (\Throwable $th) {
+            //throw $th;
+            return response()->json([
+                'message' => 'failed',
+                'errors' => $th->getMessage(),
+            ], 400);
         }
+
+        
     }
 
     public function edit_tugas(Request $request, $id)

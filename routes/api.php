@@ -144,12 +144,18 @@ Route::group(["middleware" => ['GuruBiasa', 'role:guru_biasa'], "prefix"=>"guru"
     Route::get('/pengumpulan/{id}', [PengumpulanController::class, 'detail_pengumpulan']);
     Route::post('/pengumpulan/konfirmasi/{id}', [PengumpulanController::class, 'konfirmasi']);
 
+
+    // crud route materi
+    Route::post('/materi/{id}', [KbmController::class, 'buat_materi']);
+
+    // crud route tugas
+    Route::post('/tugas/{id}', [KbmController::class, 'buat_tugas']);
+
     // =================================================================================================
 
 
 
     Route::get('/pengumpulan', [PengumpulanController::class, 'pengumpulan']);
-    Route::get('/pengumpulan/{id}', [PengumpulanController::class, 'detail_pengumpulan']);
     Route::get('/pengumpulan/detail/{id}', [PengumpulanController::class, 'status_pengumpulan']);
     
 
@@ -158,18 +164,12 @@ Route::group(["middleware" => ['GuruBiasa', 'role:guru_biasa'], "prefix"=>"guru"
     Route::get('/jadwal/{id}', [JadwalController::class, 'index']);
 
     // crud route materi
-    
-    Route::post('/materi/kelas/{kelas_id}/mapel/{mapel_id}', [KbmController::class, 'buat_materi']);
     Route::post('/materi/kelas/{kelas_id}/mapel/{mapel_id}/materi/{id}', [KbmController::class, 'edit_materi']);
     Route::delete('/materi/kelas/{kelas_id}/mapel/{mapel_id}/materi/{id}', [KbmController::class, 'hapus_materi']);
 
     // crud route tugas
-    
-    // Route::post('/tugas/kelas/{kelas_id}/mapel/{mapel_id}', [KbmController::class, 'buat_tugas']);
-    // Route::post('/tugas/kelas/{kelas_id}/tugas/{tugas_id}', [KbmController::class, 'edit_tugas']);
-    // Route::delete('/tugas/kelas/{kelas_id}/tugas/{tugas_id}', [KbmController::class, 'hapus_tugas']);
-
-    // cek pengumpulan
+    Route::post('/tugas/kelas/{kelas_id}/tugas/{tugas_id}', [KbmController::class, 'edit_tugas']);
+    Route::delete('/tugas/kelas/{kelas_id}/tugas/{tugas_id}', [KbmController::class, 'hapus_tugas']);
     
 });
 
@@ -192,7 +192,6 @@ Route::middleware('auth:murid')->group(function(){
         Route::post('/tugas/{id}', [TugasController::class, 'kirim']);
         Route::delete('/tugas/{id}', [TugasController::class, 'hapus_file']);
         
-
         // Route Mapel Murid
         Route::get('/matapelajaran', [MuridMapelController::class, 'index']);
         Route::get('/matapelajaran/{id}', [MuridMapelController::class, 'detail_mapel']);
