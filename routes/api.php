@@ -144,9 +144,10 @@ Route::group(["middleware" => ['GuruBiasa', 'role:guru_biasa'], "prefix"=>"guru"
     Route::get('/pengumpulan/{id}', [PengumpulanController::class, 'detail_pengumpulan']);
     Route::post('/pengumpulan/konfirmasi/{id}', [PengumpulanController::class, 'konfirmasi']);
 
-
     // crud route materi
-    Route::post('/materi/{id}', [KbmController::class, 'buat_materi']);
+    Route::post('/materi/{kelas_id}', [KbmController::class, 'buat_materi']);
+    Route::post('/materi/edit/{id}', [KbmController::class, 'edit_materi']);
+    Route::delete('/materi/{id}', [KbmController::class, 'hapus_materi']);
 
     // crud route tugas
     Route::post('/tugas/{id}', [KbmController::class, 'buat_tugas']);
@@ -157,7 +158,6 @@ Route::group(["middleware" => ['GuruBiasa', 'role:guru_biasa'], "prefix"=>"guru"
 
     Route::get('/pengumpulan', [PengumpulanController::class, 'pengumpulan']);
     Route::get('/pengumpulan/detail/{id}', [PengumpulanController::class, 'status_pengumpulan']);
-    
 
     // Route Jadwal
     Route::get('/jadwal', [GuruJadwalController::class, 'index']);
