@@ -66,7 +66,7 @@ class KbmController extends Controller
         
         $data_kelas = Kelas::join('tingkatans', 'tingkatans.id', '=', 'kelas.tingkatan_id')
         ->join('jurusans', 'jurusans.id', '=', 'kelas.jurusan_id')
-        ->where('kelas.id', $kelas_id)
+        ->where('kelas.id', $id)
         ->select([
             'tingkatans.tingkat_ke',
             'jurusans.nama_jurusan',
@@ -269,7 +269,7 @@ class KbmController extends Controller
         ], 200);
     }
 
-    public function buat_materi(Request $request, $id)
+    public function buat_materi(Request $request, $kelas_id)
     {
          $validator = Validator::make($request->all(),[
              'nama_materi'=> 'required',
@@ -296,7 +296,7 @@ class KbmController extends Controller
             ->join('kodes', 'kodes.id', '=', 'mapels.kode_id')
             ->join('kelas', 'kelas.id', '=', 'mapels.kelas_id')
             ->where('kodes.guru_id', '=', auth()->user()->id)
-            ->where('kelas_id', '=', $id)
+            ->where('kelas_id', '=', $kelas_id)
             ->first();
 
             try {
@@ -308,6 +308,7 @@ class KbmController extends Controller
                     'tahun_mulai'=> $request->tahun_mulai,
                     'tahun_selesai'=> $request->tahun_selesai,
                     'file'=> $berkas->storeAs('file', $nama),
+                    'link'=> $request->link
                 ]);
         
                 return response()->json([
@@ -324,13 +325,14 @@ class KbmController extends Controller
            
     }
 
-    public function edit_materi(Request $request, $kelas_id, $mapel_id, $id)
+    public function edit_materi(Request $request, $id)
     {
         $validator = Validator::make($request->all(),[
             'nama_materi'=> 'required',
             'isi'=> 'required',
             'tahun_mulai'=> 'required',
             'tahun_selesai'=> 'required',
+            'file'=> 'mimes:pdf,docx,xlsx|max:10000',
         ]);
 
         if ($validator->fails()) {
@@ -341,46 +343,47 @@ class KbmController extends Controller
             ]);
         }
 
+        $file_path = Materi::where('id', $id)->value('file');
+
+        if ($request->hasFile('file')) {
+            Storage::delete($file_path);
+            $berkas = $request->file('file');
+            $nama = time().'-'.$berkas->getClientOriginalName();
+            $edit = $berkas->storeAs('file', $nama);
+        } else {
+            $edit = $file_path;
+        }
+
         try {
-            $materi = Materi::join('mapels', 'mapels.id', '=', 'materis.mapel_id')
-            ->join('kodes', 'kodes.id', '=', 'mapels.kode_id')
-            ->join('kelas', 'kelas.id', '=', 'mapels.kelas_id')
-            ->where('kodes.guru_id', '=', auth()->user()->id)
-            ->where('kelas_id', $kelas_id)
-            ->where('mapels.id', $mapel_id)
-            ->where('materis.id', $id)
-            ->first('materis.id');
+            $materi = Materi::where('id', '=', $id)
+            ->first();
 
             $materi->update([
                 'nama_materi'=> $request->nama_materi,
                 'isi'=> $request->isi,
                 'tahun_mulai'=> $request->tahun_mulai,
                 'tahun_selesai'=> $request->tahun_selesai,
+                'link'=> $request->link,
+                'file' => $edit
             ]);
 
             return response()->json([
-                'message' => 'test',
+                'message' => 'Materi berhasil diedit',
                 'data' => $materi,
-            ]);
+            ], 200);
             
         } catch (\Throwable $th) {
             //throw $th;
             return response()->json([
                 'message' => 'failed',
                 'errors' => $th->getMessage(),
-            ]);
+            ], 400);
         }
     }
 
-    public function hapus_materi($kelas_id, $mapel_id, $id)
+    public function hapus_materi($id)
     {
-        $materi = Materi::join('mapels', 'mapels.id', '=', 'materis.mapel_id')
-            ->join('kodes', 'kodes.id', '=', 'mapels.kode_id')
-            ->join('kelas', 'kelas.id', '=', 'mapels.kelas_id')
-            ->where('kodes.guru_id', '=', auth()->user()->id)
-            ->where('kelas_id', $kelas_id)
-            ->where('mapels.id', $mapel_id)
-            ->where('materis.id', $id)
+        $materi = Materi::where('id', $id)
             ->first('materis.id');
         
         $materi->delete();
