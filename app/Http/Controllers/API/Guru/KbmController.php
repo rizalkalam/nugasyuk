@@ -456,7 +456,7 @@ class KbmController extends Controller
                 ]);
 
                 return response()->json([
-                    'pesan' => 'Tugas gagal dibuat',
+                    'message' => 'Tugas gagal dibuat',
                     'data' => 'error',
                 ]);
 
