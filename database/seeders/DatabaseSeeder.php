@@ -18,6 +18,7 @@ use Database\Seeders\TugasSeeder;
 use Database\Seeders\JadwalSeeder;
 use Database\Seeders\MateriSeeder;
 use Database\Seeders\StatusSeeder;
+use Database\Seeders\JanjianSeeder;
 use Database\Seeders\JurusanSeeder;
 use Database\Seeders\TingkatanSeeder;
 use Database\Seeders\PercakapanSeeder;
@@ -55,6 +56,7 @@ class DatabaseSeeder extends Seeder
             HariSeeder::class,
             JadwalSeeder::class,
             PercakapanSeeder::class,
+            JanjianSeeder::class
             // SoalSeeder::class
             // StatusSeeder::class
          ]);
