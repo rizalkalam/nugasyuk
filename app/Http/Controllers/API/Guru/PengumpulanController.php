@@ -51,9 +51,9 @@ class PengumpulanController extends Controller
                         ->join('jurusans', 'jurusans.id', '=', 'kelas.jurusan_id')
                         ->join('tingkatans', 'tingkatans.id', '=', 'kelas.tingkatan_id')
                         ->where('gurus.id', '=', auth()->user()->id)
-                        ->where('tugas.id', '=', $id)
+                        ->where('murids.id', '=', $id)
                         ->select([
-                            'tugas.id',
+                            'pengumpulans.tugas_id',
                             'pengumpulans.murid_id',
                             'murids.nama_siswa',
                             'murids.email',

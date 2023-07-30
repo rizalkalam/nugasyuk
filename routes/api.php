@@ -135,7 +135,6 @@ Route::group(["middleware" => ['GuruBiasa', 'role:guru_biasa'], "prefix"=>"guru"
     Route::get('/detail/pengumpulan/{id}', [KbmController::class, 'cek_pengumpulan']);
     Route::get('/cek/pengumpulan/menunggu/{id}', [KbmController::class, 'pengumpulan_menunggu']);
     Route::get('/cek/pengumpulan/selesai/{id}', [KbmController::class, 'pengumpulan_selesai']);
-    Route::post('/edit/tugas/{id}', [KbmController::class, 'edit_tugas']);
 
     // page pengumpulan
     Route::get('/pengumpulan/kelas', [KbmController::class, 'kbm']);
@@ -144,32 +143,23 @@ Route::group(["middleware" => ['GuruBiasa', 'role:guru_biasa'], "prefix"=>"guru"
     Route::get('/pengumpulan/{id}', [PengumpulanController::class, 'detail_pengumpulan']);
     Route::post('/pengumpulan/konfirmasi/{id}', [PengumpulanController::class, 'konfirmasi']);
 
+    // page jadwal
+    Route::get('/jadwal', [GuruJadwalController::class, 'index']);
+
     // crud route materi
     Route::post('/materi/{kelas_id}', [KbmController::class, 'buat_materi']);
     Route::post('/materi/edit/{id}', [KbmController::class, 'edit_materi']);
     Route::delete('/materi/{id}', [KbmController::class, 'hapus_materi']);
 
     // crud route tugas
-    Route::post('/tugas/{id}', [KbmController::class, 'buat_tugas']);
+    Route::post('/tugas/{kelas_id}', [KbmController::class, 'buat_tugas']);
+    Route::post('/tugas/edit/{id}', [KbmController::class, 'edit_tugas']);
+    Route::delete('/tugas/{id}', [KbmController::class, 'hapus_tugas']);
 
     // =================================================================================================
-
-
-
     Route::get('/pengumpulan', [PengumpulanController::class, 'pengumpulan']);
-    Route::get('/pengumpulan/detail/{id}', [PengumpulanController::class, 'status_pengumpulan']);
-
-    // Route Jadwal
-    Route::get('/jadwal', [GuruJadwalController::class, 'index']);
-    Route::get('/jadwal/{id}', [JadwalController::class, 'index']);
-
-    // crud route materi
-    Route::post('/materi/kelas/{kelas_id}/mapel/{mapel_id}/materi/{id}', [KbmController::class, 'edit_materi']);
-    Route::delete('/materi/kelas/{kelas_id}/mapel/{mapel_id}/materi/{id}', [KbmController::class, 'hapus_materi']);
-
-    // crud route tugas
-    Route::post('/tugas/kelas/{kelas_id}/tugas/{tugas_id}', [KbmController::class, 'edit_tugas']);
-    Route::delete('/tugas/kelas/{kelas_id}/tugas/{tugas_id}', [KbmController::class, 'hapus_tugas']);
+    // Route::get('/pengumpulan/detail/{id}', [PengumpulanController::class, 'status_pengumpulan']);
+    // Route::get('/jadwal/{id}', [JadwalController::class, 'index']);
     
 });
 
