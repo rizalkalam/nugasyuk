@@ -42,7 +42,7 @@ class PengumpulanController extends Controller
 
     public function detail_pengumpulan($id)
     {
-        $tugas = Pengumpulan::join('tugas', 'tugas.id', '=', 'pengumpulans.tugas_id')
+        $data = Pengumpulan::join('tugas', 'tugas.id', '=', 'pengumpulans.tugas_id')
                         ->join('murids', 'murids.id', '=', 'pengumpulans.murid_id')
                         ->join('mapels', 'mapels.id', '=', 'tugas.mapel_id')
                         ->join('kodes','kodes.id', '=', 'mapels.kode_id')
@@ -53,32 +53,52 @@ class PengumpulanController extends Controller
                         ->where('gurus.id', '=', auth()->user()->id)
                         ->where('murids.id', '=', $id)
                         ->select([
-                            'pengumpulans.tugas_id',
                             'pengumpulans.murid_id',
+                            'pengumpulans.tugas_id',
                             'murids.nama_siswa',
                             'murids.email',
                             'tingkatans.tingkat_ke',
                             'jurusans.nama_jurusan',
                             'kelas.nama_kelas',
-                            'tugas.nama_tugas',
-                            'tugas.soal',
-                            'tugas.date',
-                            'pengumpulans.status',
-                            'pengumpulans.file',
-                            'pengumpulans.link',
                         ])->first();
+        
+        $siswa = Murid::join('kelas', 'kelas.id', '=', 'murids.kelas_id')
+        ->join('jurusans', 'jurusans.id', '=', 'kelas.jurusan_id')
+        ->join('tingkatans', 'tingkatans.id', '=', 'kelas.tingkatan_id')
+        ->where('murids.id', $id)
+        ->select([
+            // 'pengumpulans.murid_id',
+            // 'pengumpulans.tugas_id',
+            'murids.id',
+            'murids.nama_siswa',
+            'murids.email',
+            'tingkatans.tingkat_ke',
+            'jurusans.nama_jurusan',
+            'kelas.nama_kelas',
+        ])->first();
 
-        if (empty($tugas)) {
+        $data_siswa = [
+            "murid_id" => $siswa->id,
+            "tugas_id" => [],
+            'nama_siswa'=>$siswa->nama_siswa,
+            'email'=>$siswa->email,
+            'tingkat_ke'=>$siswa->tingkat_ke,
+            'nama_jurusan'=>$siswa->nama_jurusan,
+            'nama_kelas'=>$siswa->nama_kelas,
+        ];
+
+        if (empty($data)) {
             return response()->json([
                 'success' => false,
                 'message' => 'Tugas tidak ada',
-            ], 404);
+                'pengumpulan' => $data_siswa
+            ], 200);
         }
         else {
             return response()->json([
                 "success" => true,
-                "message" => "Detail Tugas",
-                "tugas" => $tugas,
+                "message" => "Detail Siswa",
+                "pengumpulan" => $data,
             ], 200);
         }
     }
@@ -95,7 +115,7 @@ class PengumpulanController extends Controller
                                     ->join('tingkatans', 'tingkatans.id', '=', 'kelas.tingkatan_id')
                                     ->where('gurus.id', '=', auth()->user()->id)
                                     ->where('murids.nama_siswa', '=', $nama)
-                                    ->where('pengumpulans.status', '=', $status)
+                                    ->whereNull('pengumpulans.status', '=', $status)
                                     ->get(['tugas.soal', 'gurus.nama_guru', 'tugas.deadline', 'tugas.created_at', 'pengumpulans.status']);
 
         if (count($pengumpulan) == 0) {
@@ -153,7 +173,7 @@ class PengumpulanController extends Controller
         ->join('kodes', 'kodes.id', '=', 'mapels.kode_id')
         ->join('gurus', 'gurus.id', '=', 'kodes.guru_id')
         ->where('gurus.id', '=', auth()->user()->id)
-        ->where('pengumpulans.murid_id', '=', $id)
+        ->where('murids.id', '=', $id)
         ->where('pengumpulans.status', '=', 'menunggu')
         ->select([
             'murids.id',

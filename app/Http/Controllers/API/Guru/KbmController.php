@@ -13,6 +13,7 @@ use Illuminate\Support\Carbon;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
+use App\Http\Resources\GuruDetailTugasResource;
 
 class KbmController extends Controller
 {
@@ -173,7 +174,11 @@ class KbmController extends Controller
                             'tugas.nama_tugas',
                             'tugas.soal',
                             'tugas.date',
+                            'tugas.link',
+                            'tugas.file'
                         ])->get();
+
+        $data = GuruDetailTugasResource::collection($tugas);
 
         if (count($tugas) == 0) {
             return response()->json([
@@ -185,7 +190,7 @@ class KbmController extends Controller
             return response()->json([
                 "success" => true,
                 "message" => "Detail Tugas",
-                "tugas" => $tugas,
+                "tugas" => $data,
             ], 200);
         }
     }
