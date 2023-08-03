@@ -16,8 +16,8 @@ class DetailTugasKbmResource extends JsonResource
     {
         // return parent::toArray($request);
 
-        $link_tugas = $this->link_tugas;
-        $file_tugas = $this->file_tugas;
+        // $link_tugas = $this->link_tugas;
+        // $file_tugas = $this->file_tugas;
 
         return[
             "id" => $this->id,
@@ -26,8 +26,8 @@ class DetailTugasKbmResource extends JsonResource
             "soal" => $this->soal,
             "date" => $this->date,
             "deadline" => $this->deadline,
-            "link" => !empty($link_tugas) ? $link_tugas : [],
-            "file" => !empty($file_tugas) ? $file_tugas : [],
+            "link" => $this->link_tugas,
+            "file" => $this->file_tugas,
         ];
     }
 }

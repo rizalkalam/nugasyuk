@@ -107,6 +107,7 @@ class PengumpulanController extends Controller
     public function detail_tugas_pengumpuluan($id)
     {
         $tugas = Pengumpulan::join('tugas', 'tugas.id', '=', 'pengumpulans.tugas_id')
+                        ->join('murids', 'murids.id', '=', 'pengumpulans.murid_id')
                         ->join('mapels', 'mapels.id', '=', 'tugas.mapel_id')
                         ->join('kodes','kodes.id', '=', 'mapels.kode_id')
                         ->join('kelas', 'kelas.id', '=', 'mapels.kelas_id')
@@ -115,6 +116,7 @@ class PengumpulanController extends Controller
                         ->where('pengumpulans.id', '=', $id)
                         ->select([
                             'pengumpulans.id',
+                            'pengumpulans.murid_id',
                             'pengumpulans.tugas_id',
                             'pengumpulans.status',
                             'gurus.nama_guru',
@@ -130,7 +132,6 @@ class PengumpulanController extends Controller
 
         $data = DetailTugasPengumpulanResource::collection($tugas);
 
-        
             return response()->json([
                 "success" => true,
                 "message" => "Detail Tugas",
@@ -227,6 +228,25 @@ class PengumpulanController extends Controller
             "success" => true,
             "message" => "List siswa selesai pengumpulan",
             "pengumpulan" => $data,
+        ], 200);
+    }
+
+    public function data_kelas()
+    {
+        $data = Mapel::join('kodes', 'kodes.id', '=', 'mapels.kode_id')
+                        ->join('gurus', 'gurus.id', '=', 'kodes.guru_id')
+                        ->join('kelas', 'kelas.id', '=', 'mapels.kelas_id')
+                        ->join('jurusans', 'jurusans.id', '=', 'kelas.jurusan_id')
+                        ->join('tingkatans', 'tingkatans.id', '=', 'kelas.tingkatan_id')
+                        ->where('gurus.id', '=', auth()->user()->id)
+                        ->select(['kelas.id', 'tingkatans.tingkat_ke', 'jurusans.nama_jurusan', 'kelas.nama_kelas'])
+                        ->distinct()
+                        ->get();
+
+        return response()->json([
+            "success" => true,
+            "message" => "KBM",
+            "kelas" => $data,
         ], 200);
     }
 }

@@ -116,10 +116,25 @@ class KbmController extends Controller
                         ->select([
                             'tugas.id',
                             'tugas.soal',
+                            'tugas.date',
+                            'tugas.deadline',
+                            'gurus.nama_guru',
                             'tingkatans.tingkat_ke',
                             'jurusans.nama_jurusan',
                             'kelas.nama_kelas', 
                         ])->get();
+
+        $data_kelas = Kelas::join('tingkatans', 'tingkatans.id', '=', 'kelas.tingkatan_id')
+        ->join('jurusans', 'jurusans.id', '=', 'kelas.jurusan_id')
+        ->where('kelas.id', $id)
+        ->select([
+            'tingkatans.tingkat_ke',
+            'jurusans.nama_jurusan',
+            'kelas.nama_kelas'
+        ])
+        ->first();
+
+        $kelas = $data_kelas->tingkat_ke . ' ' . $data_kelas->nama_jurusan . ' ' . $data_kelas->nama_kelas;
 
         if (count($tugas) == 0) {
             return response()->json([
@@ -132,6 +147,7 @@ class KbmController extends Controller
             return response()->json([
                 "success" => true,
                 "message" => "List Tugas",
+                "kelas" => $kelas,
                 "tugas" => $tugas,
             ], 200);
         }
@@ -147,6 +163,7 @@ class KbmController extends Controller
                             ->where('materis.id', '=', $id)
                             ->select([
                                 'materis.id',
+                                'mapels.kelas_id',
                                 'materis.nama_materi',
                                 'gurus.nama_guru',
                                 'materis.tanggal_dibuat',
@@ -154,6 +171,18 @@ class KbmController extends Controller
                                 'materis.link',
                                 'materis.file'
                             ])->first();
+
+                            $data_kelas = Kelas::join('tingkatans', 'tingkatans.id', '=', 'kelas.tingkatan_id')
+                            ->join('jurusans', 'jurusans.id', '=', 'kelas.jurusan_id')
+                            ->where('kelas.id', $materi->kelas_id)
+                            ->select([
+                                'tingkatans.tingkat_ke',
+                                'jurusans.nama_jurusan',
+                                'kelas.nama_kelas'
+                            ])
+                            ->first();
+                    
+                            $kelas = $data_kelas->tingkat_ke . ' ' . $data_kelas->nama_jurusan . ' ' . $data_kelas->nama_kelas;
         
         $data = [
             "id" => $materi->id,
@@ -175,6 +204,7 @@ class KbmController extends Controller
             return response()->json([
                 "success" => true,
                 "message" => "Detail Materi",
+                "kelas" => $kelas,
                 "materi" => $data,
             ], 200);
         }
@@ -190,6 +220,7 @@ class KbmController extends Controller
                         ->where('tugas.id', '=', $id)
                         ->select([
                             'tugas.id',
+                            'mapels.kelas_id',
                             'gurus.nama_guru',
                             'tugas.nama_tugas',
                             'tugas.soal',
@@ -198,6 +229,18 @@ class KbmController extends Controller
                             'tugas.link_tugas',
                             'tugas.file_tugas'
                         ])->get();
+
+                        $data_kelas = Kelas::join('tingkatans', 'tingkatans.id', '=', 'kelas.tingkatan_id')
+                            ->join('jurusans', 'jurusans.id', '=', 'kelas.jurusan_id')
+                            ->where('kelas.id', $tugas->first()->kelas_id)
+                            ->select([
+                                'tingkatans.tingkat_ke',
+                                'jurusans.nama_jurusan',
+                                'kelas.nama_kelas'
+                            ])
+                            ->first();
+                    
+                        $kelas = $data_kelas->tingkat_ke . ' ' . $data_kelas->nama_jurusan . ' ' . $data_kelas->nama_kelas;
 
         $data = DetailTugasKbmResource::collection($tugas);
 
@@ -211,6 +254,7 @@ class KbmController extends Controller
             return response()->json([
                 "success" => true,
                 "message" => "Detail Tugas",
+                "kelas" => $kelas,
                 "tugas" => $data,
             ], 200);
         }
@@ -356,8 +400,8 @@ class KbmController extends Controller
         $validator = Validator::make($request->all(),[
             'judul'=> 'required',
             'deskripsi'=> 'required',
-            'link'=> 'required',
             'file'=> 'mimes:pdf,docx,xlsx|max:10000',
+            'link'=> 'nullable',
             // 'tahun_mulai'=> 'required',
             // 'tahun_selesai'=> 'required',
         ]);
@@ -373,7 +417,9 @@ class KbmController extends Controller
         $file_path = Materi::where('id', $id)->value('file');
 
         if ($request->hasFile('file')) {
-            Storage::delete($file_path);
+            if (!empty($file_path)) {
+                Storage::delete($file_path);
+            }
             $berkas = $request->file('file');
             $nama = time().'-'.$berkas->getClientOriginalName();
             $edit = $berkas->storeAs('file', $nama);
