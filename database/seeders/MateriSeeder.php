@@ -105,8 +105,8 @@ class MateriSeeder extends Seeder
             'tanggal_dibuat'=>Carbon::yesterday()->format('Y-m-d'),
             // 'tahun_mulai'=>'2022',
             // 'tahun_selesai'=>'2023',
-            'link'=>null,
-            'file'=>null,
+            'link'=>"https://youtu.be/9OQBDdNHmXo",
+            'file'=>"file/1691078712-MAKALAH.docx",
             'mapel_id'=>7
         ]);
 
@@ -117,8 +117,8 @@ class MateriSeeder extends Seeder
             'tanggal_dibuat'=>Carbon::now()->format('Y-m-d'),
             // 'tahun_mulai'=>'2022',
             // 'tahun_selesai'=>'2023',
-            'link'=>"https://youtu.be/9OQBDdNHmXo",
-            'file'=>null,
+            'link'=>null,
+            'file'=>"file/1691078749-Memperkuat Keimanan.pdf",
             'mapel_id'=>7
         ]);
 
