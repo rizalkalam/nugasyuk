@@ -96,8 +96,8 @@ class TugasController extends Controller
 
         $file = Tugas::where('id', $id)
         ->update([
-            'link'=> $request->link,
-            'file'=> $berkas->storeAs('file', $nama),
+            'link_tugas'=> $request->link,
+            'file_tugas'=> $berkas->storeAs('file', $nama),
         ]);
 
             return response()->json([
@@ -126,7 +126,7 @@ class TugasController extends Controller
 
         $file = Tugas::where('id', $id)
         ->update([
-            'file' => null
+            'file_tugas' => null
         ]);
 
         return response()->json([

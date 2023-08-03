@@ -16,14 +16,14 @@ class DetailTugasPengumpulanResource extends JsonResource
     {
         // return parent::toArray($request);
 
-        $link = $this->link;
-        $file = $this->file;
-        $nama_mapel = $this->nama_mapel;
-        $link_tugas = $this->link_tugas;
-        $file_tugas = $this->file_tugas;
+        // $file = $this->file;
+        // $link_tugas = $this->link_tugas;
+        // $file_tugas = $this->file_tugas;
+        // $nama_mapel = $this->nama_mapel;
 
         return[
             "pengumpulan_id" => $this->id,
+            "murid_id" => $this->murid_id,
             "tugas_id" => $this->tugas_id,
             "nama_guru" => $this->nama_guru,
             "nama_tugas" => $this->nama_tugas,
@@ -31,9 +31,12 @@ class DetailTugasPengumpulanResource extends JsonResource
             "date" => $this->date,
             "deadline" => $this->deadline,
             "status" => $this->status,
-            "soal_link" => !empty($link_tugas) ? $link_tugas : [],
-            "soal_file" => !empty($file_tugas) ? $file_tugas : [],
-            "file" => !empty($file) ? $file : [],
+            "soal_link" => $this->link_tugas,
+            "soal_file" => $this->file_tugas,
+            "file" => $this->file,
+            // "nama_file_soal"=>$this->file_tugas->getClientOriginalName(),
+            // "nama_file_tugas"=>$this->file->getClientOriginalName()
+            // "file" => !empty($file) ? $file : [],
             // "nama_mapel" => !empty($nama_mapel) ? $nama_mapel : [],
         ];
     }
