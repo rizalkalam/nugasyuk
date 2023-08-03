@@ -20,9 +20,10 @@ class TugasSeeder extends Seeder
             'soal'=>'Hosting Wordpres di 000 Webhost',
             'date'=>'2023-05-04',
             'deadline'=>'2023-05-05',
-            'link'=>null,
-            'file'=>null,
-            'mapel_id'=>'1'
+            'link_tugas'=>'https://youtu.be/Vgt1d3eAm7A',
+            'file_tugas'=>null,
+            'mapel_id'=>'1',
+            'input_jawaban'=> 'ya'
             // 'materi_id'=>1
         ]);
 
@@ -32,9 +33,10 @@ class TugasSeeder extends Seeder
             'soal'=>'Cek Suhu',
             'date'=>'2023-05-04',
             'deadline'=>'2023-05-05',
-            'link'=>null,
-            'file'=>null,
-            'mapel_id'=>2
+            'link_tugas'=>null,
+            'file_tugas'=>'file/data_kuis_app.xlsx',
+            'mapel_id'=>2,
+            'input_jawaban'=> 'ya'
         ]);
 
         Tugas::create([
@@ -43,9 +45,10 @@ class TugasSeeder extends Seeder
             'soal'=>'Bacalah surat Al-Kahfi ayat 1-20',
             'date'=>Carbon::now()->format('Y-m-d'),
             'deadline'=>'2023-07-10',
-            'link'=>null,
-            'file'=>null,
-            'mapel_id'=>7
+            'link_tugas'=>null,
+            'file_tugas'=>'file/data_kuis_app.xlsx',
+            'mapel_id'=>7,
+            'input_jawaban'=> 'ya'
         ]);
 
         Tugas::create([
@@ -54,9 +57,10 @@ class TugasSeeder extends Seeder
             'soal'=>'Desain boleh dikembangkan lagi sendiri',
             'date'=>Carbon::now()->format('Y-m-d'),
             'deadline'=>'2023-07-10',
-            'link'=>null,
-            'file'=>null,
-            'mapel_id'=>3
+            'link_tugas'=>null,
+            'file_tugas'=>'file/data_kuis_app.xlsx'            ,
+            'mapel_id'=>3,
+            'input_jawaban'=> 'ya'
         ]);
 
         Tugas::create([
@@ -65,9 +69,10 @@ class TugasSeeder extends Seeder
             'soal'=>'Lorem ipsum dolor sit amet.',
             'date'=>Carbon::now()->format('Y-m-d'),
             'deadline'=>'2023-07-10',
-            'link'=>null,
-            'file'=>null,
-            'mapel_id'=>1
+            'link_tugas'=>null,
+            'file_tugas'=>'file/data_kuis_app.xlsx',
+            'mapel_id'=>1,
+            'input_jawaban'=> 'ya'
         ]);
 
         Tugas::create([
@@ -76,9 +81,10 @@ class TugasSeeder extends Seeder
             'soal'=>'Bacalah surat Al-Kahfi ayat 1-20',
             'date'=>Carbon::now()->format('Y-m-d'),
             'deadline'=>'2023-07-10',
-            'link'=>null,
-            'file'=>null,
-            'mapel_id'=>9
+            'link_tugas'=>'https://youtu.be/Vgt1d3eAm7A',
+            'file_tugas'=>null,
+            'mapel_id'=>9,
+            'input_jawaban'=> 'ya'
         ]);
 
         Tugas::create([
@@ -87,9 +93,10 @@ class TugasSeeder extends Seeder
             'soal'=>'Bagaimana peradaban Islam pada masa kejayaan ntara Tahun 650-1250 M',
             'date'=>Carbon::now()->format('Y-m-d'),
             'deadline'=>'2023-07-10',
-            'link'=>null,
-            'file'=>null,
-            'mapel_id'=>7
+            'link_tugas'=>'https://youtu.be/Vgt1d3eAm7A',
+            'file_tugas'=>'file/data_kuis_app.xlsx',
+            'mapel_id'=>7,
+            'input_jawaban'=> 'ya'
         ]);
 
         Tugas::create([
@@ -98,9 +105,10 @@ class TugasSeeder extends Seeder
             'soal'=>'Jelaskan pengertian mandi wajib dalam islam, beserta tata caranya',
             'date'=>Carbon::now()->format('Y-m-d'),
             'deadline'=>'2023-07-10',
-            'link'=>null,
-            'file'=>null,
-            'mapel_id'=>9
+            'link_tugas'=>'https://youtu.be/Vgt1d3eAm7A',
+            'file_tugas'=>null,
+            'mapel_id'=>9,
+            'input_jawaban'=> 'ya'
         ]);
         
     }

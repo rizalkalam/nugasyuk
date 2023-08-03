@@ -13,15 +13,6 @@ class TugasController extends Controller
 {
     public function tugas()
     {
-
-        // $deadline = Tugas::join('materis', 'materis.id', '=', 'tugas.materi_id')
-        // ->join('mapels', 'mapels.id', '=', 'materis.mapel_id')
-        // ->where('mapels.kelas_id', auth()->user()->kelas_id)
-        // ->value('tugas.deadline');
-
-        // $dalamdeadline = '<=';
-        // $lebihdeadline = '>=';
-
         $status = request ('status', null);
         $status_mapel = request('status_mapel', null);
         $soal = request('soal', null);
@@ -41,7 +32,16 @@ class TugasController extends Controller
         ->when($soal, function ($query) use ($soal){
             $query->where('tugas.soal', 'LIKE', '%' . $soal . '%');
         })
-        ->select(['tugas.id', 'status', 'nama_tugas', 'tugas.soal', 'gurus.nama_guru', 'tugas.date', 'tugas.deadline'])->get();
+        ->select([
+            'pengumpulans.id',
+            'pengumpulans.tugas_id',
+            'pengumpulans.status',
+            'nama_tugas',
+            'tugas.soal',
+            'gurus.nama_guru',
+            'tugas.date',
+            'tugas.deadline'
+        ])->get();
 
         return response()->json([
             "success" => true,
@@ -56,9 +56,9 @@ class TugasController extends Controller
         ->join('mapels', 'mapels.id', '=', 'tugas.mapel_id')
         ->join('kodes', 'kodes.id', '=', 'mapels.kode_id')
         ->join('gurus', 'gurus.id', '=', 'kodes.guru_id')
-        ->where('tugas.id', $id)
+        ->where('pengumpulans.id', $id)
         ->where('pengumpulans.murid_id', auth()->user()->id)
-        ->select(['kodes.nama_mapel', 'tugas.id', 'pengumpulans.status', 'tugas.nama_tugas', 'tugas.soal', 'gurus.nama_guru', 'tugas.date', 'tugas.deadline', 'tugas.file'])->get();
+        ->select(['kodes.nama_mapel', 'tugas.id', 'pengumpulans.status', 'tugas.nama_tugas', 'tugas.soal', 'gurus.nama_guru', 'tugas.date', 'tugas.deadline', 'tugas.file_tugas'])->get();
 
         return response()->json([
             "success" => true,

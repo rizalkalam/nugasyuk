@@ -9,6 +9,7 @@ use App\Models\Tugas;
 use App\Models\Pengumpulan;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\DetailTugasPengumpulanResource;
 
 class PengumpulanController extends Controller
 {
@@ -103,34 +104,39 @@ class PengumpulanController extends Controller
         }
     }
 
-    public function status_pengumpulan($nama, $status)
+    public function detail_tugas_pengumpuluan($id)
     {
-        $pengumpulan = Pengumpulan::join('tugas', 'tugas.id', '=', 'pengumpulans.tugas_id')
-                                    ->join('murids', 'murids.id', '=', 'pengumpulans.murid_id')
-                                    ->join('mapels', 'mapels.id', '=', 'tugas.mapel_id')
-                                    ->join('kelas', 'kelas.id', '=', 'mapels.kelas_id')
-                                    ->join('kodes', 'kodes.id', '=', 'mapels.kode_id')
-                                    ->join('gurus', 'gurus.id', '=', 'kodes.guru_id')
-                                    ->join('jurusans', 'jurusans.id', '=', 'kelas.jurusan_id')
-                                    ->join('tingkatans', 'tingkatans.id', '=', 'kelas.tingkatan_id')
-                                    ->where('gurus.id', '=', auth()->user()->id)
-                                    ->where('murids.nama_siswa', '=', $nama)
-                                    ->whereNull('pengumpulans.status', '=', $status)
-                                    ->get(['tugas.soal', 'gurus.nama_guru', 'tugas.deadline', 'tugas.created_at', 'pengumpulans.status']);
+        $tugas = Pengumpulan::join('tugas', 'tugas.id', '=', 'pengumpulans.tugas_id')
+                        ->join('mapels', 'mapels.id', '=', 'tugas.mapel_id')
+                        ->join('kodes','kodes.id', '=', 'mapels.kode_id')
+                        ->join('kelas', 'kelas.id', '=', 'mapels.kelas_id')
+                        ->join('gurus', 'gurus.id', '=', 'kodes.guru_id')
+                        ->where('gurus.id', '=', auth()->user()->id)
+                        ->where('pengumpulans.id', '=', $id)
+                        ->select([
+                            'pengumpulans.id',
+                            'pengumpulans.tugas_id',
+                            'pengumpulans.status',
+                            'gurus.nama_guru',
+                            'tugas.nama_tugas',
+                            'tugas.soal',
+                            'tugas.date',
+                            'tugas.deadline',
+                            'tugas.link_tugas',
+                            'tugas.file_tugas',
+                            // 'pengumpulans.link',
+                            'pengumpulans.file'
+                        ])->get();
 
-        if (count($pengumpulan) == 0) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Data tidak ada',
-            ], 404);
-        }
-        else {
+        $data = DetailTugasPengumpulanResource::collection($tugas);
+
+        
             return response()->json([
                 "success" => true,
-                "message" => "Pengumpulan",
-                "pengumpulan" => $pengumpulan,
+                "message" => "Detail Tugas",
+                "tugas" => $data,
             ], 200);
-        }
+        
     }
 
     public function konfirmasi($id)
@@ -140,13 +146,13 @@ class PengumpulanController extends Controller
         ->join('mapels', 'mapels.id', '=', 'tugas.mapel_id')
         ->join('kodes', 'kodes.id', '=', 'mapels.kode_id')
         ->where('kodes.guru_id', '=', auth()->user()->id)
-        ->where('murids.id', '=', $id)
+        ->where('pengumpulans.id', '=', $id)
         ->where('pengumpulans.status', '=', 'menunggu')
         ->first();
 
         if (!empty($pengumpulan)) {
             $status = Pengumpulan::join('murids', 'murids.id', '=', 'pengumpulans.murid_id')
-            ->where('murids.id', $id)
+            ->where('pengumpulans.id', $id)
             ->update(['status'=>'selesai']);
 
             return response()->json([
@@ -176,7 +182,8 @@ class PengumpulanController extends Controller
         ->where('murids.id', '=', $id)
         ->where('pengumpulans.status', '=', 'menunggu')
         ->select([
-            'murids.id',
+            'pengumpulans.id',
+            'pengumpulans.murid_id',
             'pengumpulans.tugas_id',
             'murids.nama_siswa',
             'tugas.nama_tugas',
@@ -205,7 +212,8 @@ class PengumpulanController extends Controller
         ->where('murids.id', '=', $id)
         ->where('pengumpulans.status', '=', 'selesai')
         ->select([
-            'murids.id',
+            'pengumpulans.id',
+            'pengumpulans.murid_id',
             'pengumpulans.tugas_id',
             'murids.nama_siswa',
             'tugas.nama_tugas',

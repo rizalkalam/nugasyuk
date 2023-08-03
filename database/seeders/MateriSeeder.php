@@ -21,8 +21,8 @@ class MateriSeeder extends Seeder
            'isi'=>'lorem ipsum dolor sit amet bla bli blu ble blo ohok ohok',
            'link'=>null,
            'file'=>null,
-           'tahun_mulai'=>'2023',
-           'tahun_selesai'=>'2024',
+        //    'tahun_mulai'=>'2023',
+        //    'tahun_selesai'=>'2024',
            'mapel_id'=>1
         ]);
 
@@ -33,8 +33,8 @@ class MateriSeeder extends Seeder
             'isi'=>'lorem ipsum dolor sit amet bla bli blu ble blo ohok ohok',
             'link'=>null,
             'file'=>null,
-            'tahun_mulai'=>'2023',
-            'tahun_selesai'=>'2024',
+            // 'tahun_mulai'=>'2023',
+            // 'tahun_selesai'=>'2024',
             'mapel_id'=>5
         ]);
 
@@ -45,8 +45,8 @@ class MateriSeeder extends Seeder
              'isi'=>'lorem ipsum dolor sit amet bla bli blu ble blo ohok ohok',
              'link'=>null,
              'file'=>null,
-             'tahun_mulai'=>'2023',
-            'tahun_selesai'=>'2024',
+            //  'tahun_mulai'=>'2023',
+            // 'tahun_selesai'=>'2024',
              'mapel_id'=>6
         ]);
 
@@ -57,8 +57,8 @@ class MateriSeeder extends Seeder
             'isi'=>'lorem ipsum dolor sit amet bla bli blu ble blo ohok ohok',
             'link'=>null,
             'file'=>null,
-            'tahun_mulai'=>'2023',
-            'tahun_selesai'=>'2024',
+            // 'tahun_mulai'=>'2023',
+            // 'tahun_selesai'=>'2024',
             'mapel_id'=>2
         ]);
 
@@ -69,8 +69,8 @@ class MateriSeeder extends Seeder
            'isi'=>'lorem ipsum dolor sit amet bla bli blu ble blo ohok ohok',
            'link'=>null,
            'file'=>null,
-           'tahun_mulai'=>'2023',
-           'tahun_selesai'=>'2024',
+        //    'tahun_mulai'=>'2023',
+        //    'tahun_selesai'=>'2024',
            'mapel_id'=>1
         ]);
 
@@ -81,8 +81,8 @@ class MateriSeeder extends Seeder
            'isi'=>'lorem ipsum dolor sit amet bla bli blu ble blo ohok ohok',
            'link'=>null,
            'file'=>null,
-           'tahun_mulai'=>'2023',
-           'tahun_selesai'=>'2024',
+        //    'tahun_mulai'=>'2023',
+        //    'tahun_selesai'=>'2024',
            'mapel_id'=>4
         ]);
         
@@ -93,8 +93,8 @@ class MateriSeeder extends Seeder
            'isi'=>'lorem ipsum dolor sit amet bla bli blu ble blo ohok ohok',
            'link'=>null,
            'file'=>null,
-           'tahun_mulai'=>'2023',
-           'tahun_selesai'=>'2024',
+        //    'tahun_mulai'=>'2023',
+        //    'tahun_selesai'=>'2024',
            'mapel_id'=>3
         ]);
 
@@ -103,8 +103,8 @@ class MateriSeeder extends Seeder
             'nama_materi'=>"Keutamaan membaca Al-Qur'an",
             'isi'=>'lorem ipsum dolor sit amet',
             'tanggal_dibuat'=>Carbon::yesterday()->format('Y-m-d'),
-            'tahun_mulai'=>'2022',
-            'tahun_selesai'=>'2023',
+            // 'tahun_mulai'=>'2022',
+            // 'tahun_selesai'=>'2023',
             'link'=>null,
             'file'=>null,
             'mapel_id'=>7
@@ -115,8 +115,8 @@ class MateriSeeder extends Seeder
             'nama_materi'=>'Keimanan',
             'isi'=>'lorem ipsum dolor sit amet',
             'tanggal_dibuat'=>Carbon::now()->format('Y-m-d'),
-            'tahun_mulai'=>'2022',
-            'tahun_selesai'=>'2023',
+            // 'tahun_mulai'=>'2022',
+            // 'tahun_selesai'=>'2023',
             'link'=>null,
             'file'=>null,
             'mapel_id'=>7
