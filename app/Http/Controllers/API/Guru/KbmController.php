@@ -13,6 +13,8 @@ use Illuminate\Support\Carbon;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
+use App\Http\Resources\DetailTugasResource;
+use App\Http\Resources\DetailTugasKbmResource;
 use App\Http\Resources\GuruDetailTugasResource;
 
 class KbmController extends Controller
@@ -82,7 +84,7 @@ class KbmController extends Controller
                 'success' => false,
                 'message' => 'Materi tidak ada',
                 'data' => $materi
-            ], 404);
+            ], 200);
         }
         else {
             return response()->json([   
@@ -124,7 +126,7 @@ class KbmController extends Controller
                 'success' => false,
                 'message' => 'Tugas tidak ada',
                 "tugas" => $tugas
-            ], 404);
+            ], 200);
         }
         else {
             return response()->json([
@@ -143,9 +145,27 @@ class KbmController extends Controller
                             ->join('kelas', 'kelas.id', '=', 'mapels.kelas_id')
                             ->where('gurus.id', '=', auth()->user()->id)
                             ->where('materis.id', '=', $id)
-                            ->select(['materis.id', 'materis.nama_materi', 'gurus.nama_guru', 'materis.tanggal_dibuat', 'materis.isi', 'materis.link', 'materis.file'])->get();
+                            ->select([
+                                'materis.id',
+                                'materis.nama_materi',
+                                'gurus.nama_guru',
+                                'materis.tanggal_dibuat',
+                                'materis.isi',
+                                'materis.link',
+                                'materis.file'
+                            ])->first();
+        
+        $data = [
+            "id" => $materi->id,
+            "nama_materi" => $materi->nama_materi,
+            "nama_guru" => $materi->nama_guru,
+            "tanggal_dibuat" => $materi->tanggal_dibuat,
+            "isi" => $materi->isi,
+            "link" => $materi->link !== null ? $materi->link : 0,
+            "file" => $materi->file !== null ? $materi->file : 0
+        ];
 
-        if (count($materi) == 0) {
+        if (empty($materi)) {
             return response()->json([
                 'success' => false,
                 'message' => 'Materi tidak ada',
@@ -155,7 +175,7 @@ class KbmController extends Controller
             return response()->json([
                 "success" => true,
                 "message" => "Detail Materi",
-                "materi" => $materi,
+                "materi" => $data,
             ], 200);
         }
     }
@@ -174,11 +194,12 @@ class KbmController extends Controller
                             'tugas.nama_tugas',
                             'tugas.soal',
                             'tugas.date',
-                            'tugas.link',
-                            'tugas.file'
+                            'tugas.deadline',
+                            'tugas.link_tugas',
+                            'tugas.file_tugas'
                         ])->get();
 
-        $data = GuruDetailTugasResource::collection($tugas);
+        $data = DetailTugasKbmResource::collection($tugas);
 
         if (count($tugas) == 0) {
             return response()->json([
@@ -277,11 +298,12 @@ class KbmController extends Controller
     public function buat_materi(Request $request, $kelas_id)
     {
          $validator = Validator::make($request->all(),[
-             'nama_materi'=> 'required',
-             'isi'=> 'required',
-             'tahun_mulai'=> 'required',
-             'tahun_selesai'=> 'required',
+             'judul'=> 'required',
+             'deskripsi'=> 'required',
+             'link'=> 'required',
              'file'=> 'mimes:pdf,docx,xlsx|max:10000',
+            //  'tahun_mulai'=> 'required',
+            //  'tahun_selesai'=> 'required',
              // 'mapel_id'=> 'required',
              // 'tanggal_dibuat'=> 'required',
             ]);
@@ -306,13 +328,13 @@ class KbmController extends Controller
 
                 $materi = Materi::create([
                     'mapel_id'=> $mapel_id->id,
-                    'nama_materi'=> $request->nama_materi,
-                    'isi'=> $request->isi,
+                    'nama_materi'=> $request->judul,
+                    'isi'=> $request->deskripsi,
                     'tanggal_dibuat'=> Carbon::now()->format('Y-m-d'),
-                    'tahun_mulai'=> $request->tahun_mulai,
-                    'tahun_selesai'=> $request->tahun_selesai,
                     'file'=> $berkas->storeAs('file', $nama),
                     'link'=> $request->link
+                    // 'tahun_mulai'=> $request->tahun_mulai,
+                    // 'tahun_selesai'=> $request->tahun_selesai,
                 ]);
         
                 return response()->json([
@@ -332,11 +354,12 @@ class KbmController extends Controller
     public function edit_materi(Request $request, $id)
     {
         $validator = Validator::make($request->all(),[
-            'nama_materi'=> 'required',
-            'isi'=> 'required',
-            'tahun_mulai'=> 'required',
-            'tahun_selesai'=> 'required',
+            'judul'=> 'required',
+            'deskripsi'=> 'required',
+            'link'=> 'required',
             'file'=> 'mimes:pdf,docx,xlsx|max:10000',
+            // 'tahun_mulai'=> 'required',
+            // 'tahun_selesai'=> 'required',
         ]);
 
         if ($validator->fails()) {
@@ -363,12 +386,12 @@ class KbmController extends Controller
             ->first();
 
             $materi->update([
-                'nama_materi'=> $request->nama_materi,
-                'isi'=> $request->isi,
-                'tahun_mulai'=> $request->tahun_mulai,
-                'tahun_selesai'=> $request->tahun_selesai,
+                'nama_materi'=> $request->judul,
+                'isi'=> $request->deskripsi,
                 'link'=> $request->link,
                 'file' => $edit
+                // 'tahun_mulai'=> $request->tahun_mulai,
+                // 'tahun_selesai'=> $request->tahun_selesai,
             ]);
 
             return response()->json([
@@ -401,11 +424,12 @@ class KbmController extends Controller
     public function buat_tugas(Request $request, $kelas_id)
     {
         $validator = Validator::make($request->all(),[
-            'nama_tugas'=> 'required',
-            'soal'=> 'required',
-            'description'=> 'required',
+            'judul_tugas'=> 'required',
+            'tugas'=> 'required',
             'deadline'=> 'required',
-            'file'=> 'mimes:pdf,docx,xlsx|max:10000'
+            'link'=> 'required',
+            'file'=> 'mimes:pdf,docx,xlsx|max:10000',
+            'input_jawaban'=> 'required'
             // 'mapel_id'=> 'required',
             // 'date'=> 'required',
         ]);
@@ -418,10 +442,11 @@ class KbmController extends Controller
             ], 400);
         }
 
-        $berkas = $request->file('file');
-        $nama = $berkas->getClientOriginalName();
-
+        
         try {
+            $berkas = $request->file('file');
+            $nama = $berkas->getClientOriginalName();
+
             $mapel_id = Mapel::join('kodes', 'kodes.id', '=', 'mapels.kode_id')
             ->join('kelas', 'kelas.id', '=', 'mapels.kelas_id')
             ->where('kodes.guru_id', '=', auth()->user()->id)
@@ -430,13 +455,13 @@ class KbmController extends Controller
         
                 $tugas = Tugas::create([
                     'mapel_id'=> $mapel_id->id,
-                    'nama_tugas'=> $request->nama_tugas,
-                    'soal'=> $request->soal,
-                    'description'=> $request->description,
-                    'date'=> Carbon::now()->format('Y-m-d'),
+                    'nama_tugas'=> $request->judul_tugas,
+                    'soal'=> $request->tugas,
                     'deadline'=> $request->deadline,
-                    'link'=> $request->link,
-                    'file'=> $berkas->storeAs('file', $nama)
+                    'date'=>Carbon::now()->format('Y-m-d'),
+                    'link_tugas'=> $request->link,
+                    'file_tugas'=> $berkas->storeAs('file', $nama),
+                    'input_jawban'=> $request->input_jawaban
                 ]);
     
                 $tugasId = Tugas::latest()->first()->id;
@@ -479,9 +504,8 @@ class KbmController extends Controller
     public function edit_tugas(Request $request, $id)
     {
         $validator = Validator::make($request->all(),[
-            'nama_tugas'=> 'required',
-            'soal'=> 'required',
-            'description'=> 'required',
+            'judul_tugas'=> 'required',
+            'tugas'=> 'required',
             'deadline'=> 'required',
         ]);
 
@@ -503,8 +527,8 @@ class KbmController extends Controller
             ->first('tugas.id');
             
             $tugas->update([
-                'nama_tugas'=> $request->nama_tugas,
-                'soal'=> $request->soal,
+                'nama_tugas'=> $request->judul_tugas,
+                'soal'=> $request->tugas,
                 'description'=> $request->description,
                 'deadline'=> $request->deadline
             ]);

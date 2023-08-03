@@ -17,9 +17,10 @@ return new class extends Migration
             $table->string('soal');
             $table->date('date');
             $table->date('deadline');
-            $table->string('link')->nullable();
-            $table->string('file')->nullable();
+            $table->string('link_tugas')->nullable();
+            $table->string('file_tugas')->nullable();
             $table->foreignId('mapel_id');
+            $table->enum('input_jawaban', ['tidak', 'ya']);
             $table->timestamps();
         });
     }

@@ -18,8 +18,8 @@ return new class extends Migration
             $table->string('link')->nullable();
             $table->string('file')->nullable();
             $table->date('tanggal_dibuat')->nullable();
-            $table->year('tahun_mulai');
-            $table->year('tahun_selesai');
+            // $table->year('tahun_mulai')->nullable();;
+            // $table->year('tahun_selesai')->nullable();;
             $table->foreignId('mapel_id');
             $table->timestamps();
         });

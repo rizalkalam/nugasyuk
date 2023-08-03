@@ -6,6 +6,7 @@ use App\Models\Ortu;
 use App\Models\Pengumpulan;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\DetailTugasResource;
 
 class OrtuTugasController extends Controller
 {
@@ -34,7 +35,17 @@ class OrtuTugasController extends Controller
         ->when($soal, function ($query) use ($soal){
             $query->where('tugas.soal', 'LIKE', '%' . $soal . '%');
         })
-        ->select(['status', 'tugas.id', 'gurus.nama_guru', 'nama_tugas', 'tugas.soal', 'tugas.date', 'tugas.deadline', 'kodes.status_mapel'])->get();
+        ->select([
+            'pengumpulans.id',
+            'pengumpulans.tugas_id',
+            'pengumpulans.status',
+            'gurus.nama_guru',
+            'tugas.nama_tugas',
+            'tugas.soal',
+            'tugas.date',
+            'tugas.deadline',
+            'kodes.status_mapel'
+        ])->get();
 
         return response()->json([
             "success" => true,
@@ -45,17 +56,27 @@ class OrtuTugasController extends Controller
 
     public function detail($id)
     {
-        // $kelas_id = Ortu::join('murids', 'murids.id', '=', 'ortus.siswa_id')
-        // ->where('murids.id', auth()->user()->id)
-        // ->value('murids.kelas_id');
-
-        $data = Pengumpulan::join('tugas', 'tugas.id', '=', 'pengumpulans.tugas_id')
+        $data_pengumpulan = Pengumpulan::join('tugas', 'tugas.id', '=', 'pengumpulans.tugas_id')
             ->join('mapels', 'mapels.id', '=', 'tugas.mapel_id')
             ->join('kodes', 'kodes.id', '=', 'mapels.kode_id')
             ->join('gurus', 'gurus.id', '=', 'kodes.guru_id')
-            ->where('tugas.id', $id)
+            ->where('pengumpulans.id', $id)
             ->where('pengumpulans.murid_id', auth()->user()->siswa_id)
-        ->get(['tugas.id', 'gurus.nama_guru', 'kodes.nama_mapel', 'nama_tugas', 'soal', 'pengumpulans.status', 'tugas.date', 'tugas.deadline']);
+            ->get([
+                'pengumpulans.id',
+                'pengumpulans.tugas_id',
+                'gurus.nama_guru',
+                'kodes.nama_mapel',
+                'tugas.nama_tugas',
+                'tugas.soal',
+                'tugas.date',
+                'tugas.deadline',
+                'pengumpulans.status',
+                'pengumpulans.link',
+                'pengumpulans.file'
+            ]);
+
+        $data = DetailTugasResource::collection($data_pengumpulan);
 
         return response()->json([
             "success" => true,

@@ -30,7 +30,7 @@ class AdminJadwalResource extends JsonResource
             });
         })
         ->where('haris.id', $this->id)
-        ->groupBy('gurus.id')
+        // ->groupBy('gurus.id') //solve ngrok error
         ->select([
             'gurus.id',
             'gurus.foto_profile',

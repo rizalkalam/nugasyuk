@@ -1,9 +1,13 @@
 <?php
 
+use App\Models\Murid;
+use App\Models\Tugas;
+use App\Models\Pengumpulan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\GuruController;
 use App\Http\Controllers\API\LoginController;
+use App\Http\Resources\GuruDetailTugasResource;
 use App\Http\Controllers\API\Guru\KbmController;
 use App\Http\Controllers\API\Murid\TugasController;
 use App\Http\Controllers\API\Admin\JadwalController;
@@ -137,10 +141,11 @@ Route::group(["middleware" => ['GuruBiasa', 'role:guru_biasa'], "prefix"=>"guru"
     Route::get('/cek/pengumpulan/selesai/{id}', [KbmController::class, 'pengumpulan_selesai']);
 
     // page pengumpulan
-    Route::get('/pengumpulan/kelas', [KbmController::class, 'index']);
+    Route::get('/pengumpulan', [PengumpulanController::class, 'pengumpulan']);
+    Route::get('/pengumpulan/{id}', [PengumpulanController::class, 'detail_pengumpulan']);
     Route::get('/pengumpulan/menunggu/{id}', [PengumpulanController::class, 'pengumpulan_menunggu']);
     Route::get('/pengumpulan/selesai/{id}', [PengumpulanController::class, 'pengumpulan_selesai']);
-    Route::get('/pengumpulan/{id}', [PengumpulanController::class, 'detail_pengumpulan']);
+    Route::get('/pengumpulan/tugas/{id}', [PengumpulanController::class, 'detail_tugas_pengumpuluan']);
     Route::post('/pengumpulan/konfirmasi/{id}', [PengumpulanController::class, 'konfirmasi']);
 
     // page jadwal
@@ -157,7 +162,6 @@ Route::group(["middleware" => ['GuruBiasa', 'role:guru_biasa'], "prefix"=>"guru"
     Route::delete('/tugas/{id}', [KbmController::class, 'hapus_tugas']);
 
     // =================================================================================================
-    Route::get('/pengumpulan', [PengumpulanController::class, 'pengumpulan']);
     // Route::get('/pengumpulan/detail/{id}', [PengumpulanController::class, 'status_pengumpulan']);
     // Route::get('/jadwal/{id}', [JadwalController::class, 'index']);
     

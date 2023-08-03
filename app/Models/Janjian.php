@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\Jam;
 use App\Models\Guru;
 use App\Models\Murid;
+use App\Models\Lokasi;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -25,5 +26,10 @@ class Janjian extends Model
     public function jam()
     {
         return $this->belongsTo(Jam::class);
+    }
+
+    public function lokasi()
+    {
+        return $this->belongsTo(Lokasi::class);
     }
 }
