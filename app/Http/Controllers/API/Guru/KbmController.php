@@ -375,7 +375,7 @@ class KbmController extends Controller
             ->first('mapels.id');
 
             if (empty($request->hasFile('file'))) {
-                $data_cek = $request->file;
+                $data_cek = null;
             }else{
                 $berkas = $request->file('file');
                 $data_cek = $berkas->getClientOriginalName();
