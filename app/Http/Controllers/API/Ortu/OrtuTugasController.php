@@ -76,12 +76,12 @@ class OrtuTugasController extends Controller
                 'pengumpulans.file'
             ]);
 
-        $data = DetailTugasResource::collection($data_pengumpulan);
+        // $data = DetailTugasResource::collection($data_pengumpulan);
 
         return response()->json([
             "success" => true,
             "message" => "List Tugas",
-            "data" => $data,
+            "data" => $data_pengumpulan,
         ], 200);
     }
 }

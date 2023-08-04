@@ -62,7 +62,7 @@ class TugasController extends Controller
 
         return response()->json([
             "success" => true,
-            "message" => "List Tugas",
+            "message" => "Detail Tugas",
             "data" => $tugas,
         ], 200);
     }
@@ -119,18 +119,23 @@ class TugasController extends Controller
         }        
     }
 
-    public function hapus_file(Request $request, $id)
+    public function hapus_file($id)
     {
-        $status = Pengumpulan::where('tugas_id', $id)
+        $status = Pengumpulan::where('id', $id)
         ->where('murid_id', auth()->user()->id)
-        ->update(['status'=>'belum_selesai']);
+        ->first();
 
-        $file_path = Tugas::where('id', $id)->value('file');
-        Storage::delete($file_path);
+        $status->update(['status'=>'belum_selesai']);
 
-        $file = Tugas::where('id', $id)
+        $file_path = Pengumpulan::where('id', $id)->value('file');
+
+        if (!empty($file_path)) {
+            Storage::delete($file_path);
+        }
+
+        $file = Pengumpulan::where('id', $id)
         ->update([
-            'file_tugas' => null
+            'file' => null
         ]);
 
         return response()->json([
