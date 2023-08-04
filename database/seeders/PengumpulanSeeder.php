@@ -140,33 +140,33 @@ class PengumpulanSeeder extends Seeder
         Pengumpulan::create([
             'id'=>13,
             'tugas_id'=>7,
-            'status'=>'menunggu',
+            'status'=>'selesai',
             // 'kelas_id'=>1,
             'murid_id'=>1,
             'tanggal'=>'2023-04-04',
-            'file' => 'file/data_kuis_app',
-            'link' => 'https://youtu.be/Vgt1d3eAm7A',
+            'file' => 'file/1691078749-Memperkuat Keimanan.pdf',
+            'link' => null,
         ]);
 
         Pengumpulan::create([
             'id'=>14,
             'tugas_id'=>7,
-            'status'=>'selesai',
+            'status'=>'menunggu',
             // 'kelas_id'=>1,
             'murid_id'=>2,
             'tanggal'=>'2023-04-04',
-            'file' => 'file/data_kuis_app',
+            'file' => 'file/1691078712-MAKALAH.docx',
             'link' => 'https://youtu.be/Vgt1d3eAm7A',
         ]);
 
         Pengumpulan::create([
             'id'=>15,
             'tugas_id'=>7,
-            'status'=>'menunggu',
+            'status'=>'selesai',
             // 'kelas_id'=>1,
             'murid_id'=>3,
             'tanggal'=>'2023-04-04',
-            'file' => 'file/data_kuis_app',
+            'file' => null,
             'link' => 'https://youtu.be/Vgt1d3eAm7A',
         ]);
 
@@ -177,29 +177,29 @@ class PengumpulanSeeder extends Seeder
             // 'kelas_id'=>1,
             'murid_id'=>4,
             'tanggal'=>'2023-04-04',
-            'file' => 'file/data_kuis_app',
+            'file' => 'file/1691078749-Memperkuat Keimanan.pdf',
             'link' => 'https://youtu.be/Vgt1d3eAm7A',
         ]);
 
         Pengumpulan::create([
             'id'=>17,
             'tugas_id'=>8,
-            'status'=>'menunggu',
+            'status'=>'selesai',
             // 'kelas_id'=>1,
             'murid_id'=>5,
             'tanggal'=>'2023-04-04',
-            'file' => 'file/data_kuis_app',
-            'link' => 'https://youtu.be/Vgt1d3eAm7A',
+            'file' => 'file/1691078749-Memperkuat Keimanan.pdf',
+            'link' => null,
         ]);
 
         Pengumpulan::create([
             'id'=>18,
             'tugas_id'=>8,
-            'status'=>'menunggu',
+            'status'=>'selesai',
             // 'kelas_id'=>1,
             'murid_id'=>6,
             'tanggal'=>'2023-04-04',
-            'file' => 'file/data_kuis_app',
+            'file' => null,
             'link' => 'https://youtu.be/Vgt1d3eAm7A',
         ]);
     }

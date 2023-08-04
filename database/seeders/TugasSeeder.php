@@ -81,8 +81,8 @@ class TugasSeeder extends Seeder
             'soal'=>'Bacalah surat Al-Kahfi ayat 1-20',
             'date'=>Carbon::now()->format('Y-m-d'),
             'deadline'=>'2023-07-10',
-            'link_tugas'=>'https://youtu.be/Vgt1d3eAm7A',
-            'file_tugas'=>null,
+            'link_tugas'=>null,
+            'file_tugas'=>'file/1691078749-Memperkuat Keimanan.pdf',
             'mapel_id'=>9,
             'input_jawaban'=> 'ya'
         ]);
@@ -94,7 +94,7 @@ class TugasSeeder extends Seeder
             'date'=>Carbon::now()->format('Y-m-d'),
             'deadline'=>'2023-07-10',
             'link_tugas'=>'https://youtu.be/Vgt1d3eAm7A',
-            'file_tugas'=>'file/data_kuis_app.xlsx',
+            'file_tugas'=>'file/1691078712-MAKALAH.docx',
             'mapel_id'=>7,
             'input_jawaban'=> 'ya'
         ]);

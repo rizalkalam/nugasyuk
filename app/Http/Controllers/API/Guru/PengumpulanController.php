@@ -187,6 +187,7 @@ class PengumpulanController extends Controller
             'pengumpulans.murid_id',
             'pengumpulans.tugas_id',
             'murids.nama_siswa',
+            'murids.email',
             'tugas.nama_tugas',
             'gurus.nama_guru',
             'tugas.deadline',
@@ -203,7 +204,7 @@ class PengumpulanController extends Controller
 
     public function pengumpulan_selesai($id)
     {
-         $data = Pengumpulan::join('tugas', 'tugas.id', '=', 'pengumpulans.tugas_id')
+        $data = Pengumpulan::join('tugas', 'tugas.id', '=', 'pengumpulans.tugas_id')
         ->join('murids', 'murids.id', '=', 'pengumpulans.murid_id')
         ->join('mapels', 'mapels.id', '=', 'tugas.mapel_id')
         ->join('kelas', 'kelas.id', '=', 'mapels.kelas_id')
@@ -217,6 +218,7 @@ class PengumpulanController extends Controller
             'pengumpulans.murid_id',
             'pengumpulans.tugas_id',
             'murids.nama_siswa',
+            'murids.email',
             'tugas.nama_tugas',
             'gurus.nama_guru',
             'tugas.deadline',
