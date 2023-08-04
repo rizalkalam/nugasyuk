@@ -185,7 +185,7 @@ Route::middleware('auth:murid')->group(function(){
         Route::get('/tugas', [TugasController::class, 'tugas']);
         Route::get('/tugas/{id}', [TugasController::class, 'detail']);
         Route::post('/tugas/{id}', [TugasController::class, 'kirim']);
-        Route::delete('/tugas/{id}', [TugasController::class, 'hapus_file']);
+        Route::get('/tugas/hapus/{id}', [TugasController::class, 'hapus_file']);
         
         // Route Mapel Murid
         Route::get('/matapelajaran', [MuridMapelController::class, 'index']);
