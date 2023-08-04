@@ -133,5 +133,17 @@ class MateriSeeder extends Seeder
             'file'=>null,
             'mapel_id'=>7
         ]);
+
+        Materi::create([
+            'id'=>'11',
+            'nama_materi'=>'Beriman kepada hari akhir',
+            'isi'=>'lorem ipsum dolor sit amet',
+            'tanggal_dibuat'=>Carbon::now()->format('Y-m-d'),
+            // 'tahun_mulai'=>'2022',
+            // 'tahun_selesai'=>'2023',
+            'link'=>"https://youtu.be/9OQBDdNHmXo",
+            'file'=>null,
+            'mapel_id'=>9
+        ]);
     }
 }

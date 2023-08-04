@@ -58,7 +58,7 @@ class TugasController extends Controller
         ->join('gurus', 'gurus.id', '=', 'kodes.guru_id')
         ->where('pengumpulans.id', $id)
         ->where('pengumpulans.murid_id', auth()->user()->id)
-        ->select(['kodes.nama_mapel', 'tugas.id', 'pengumpulans.status', 'tugas.nama_tugas', 'tugas.soal', 'gurus.nama_guru', 'tugas.date', 'tugas.deadline', 'tugas.file_tugas'])->get();
+        ->select(['kodes.nama_mapel', 'tugas.id', 'pengumpulans.status', 'tugas.nama_tugas', 'tugas.soal', 'gurus.nama_guru', 'tugas.date', 'tugas.deadline', 'pengumpulans.file'])->get();
 
         return response()->json([
             "success" => true,
@@ -90,15 +90,19 @@ class TugasController extends Controller
         $berkas = $request->file('file');
         $nama = $berkas->getClientOriginalName();
 
-        $status = Pengumpulan::where('tugas_id', $id)
+        $data_update = Pengumpulan::where('id', $id)
         ->where('murid_id', auth()->user()->id)
-        ->update(['status'=>'menunggu']);
-
-        $file = Tugas::where('id', $id)
         ->update([
-            'link_tugas'=> $request->link,
-            'file_tugas'=> $berkas->storeAs('file', $nama),
+            'status'=>'menunggu',
+            'link'=> $request->link,
+            'file'=> $berkas->storeAs('file', $nama),
         ]);
+
+        // $file = Tugas::where('id', $id)
+        // ->update([
+        //     'link_tugas'=> $request->link,
+        //     'file_tugas'=> $berkas->storeAs('file', $nama),
+        // ]);
 
             return response()->json([
                 'message' => 'Jawaban berhasil terkirim',
