@@ -29,6 +29,7 @@ class GuruJadwalController extends Controller
                 $query->where('id', $hari);
             });
         })
+        ->orderBy('jams.id', 'ASC')  
         ->select([
             'jadwals.id',
             // 'haris.hari',

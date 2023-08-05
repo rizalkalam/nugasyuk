@@ -145,7 +145,9 @@ class AdminMapelController extends Controller
         }
 
         try {
-            $data = Mapel::where('id', $id)->first();
+            $data = Mapel::join('assets', 'assets.id', 'mapels.asset_id')
+            ->where('mapels.id', $id)
+            ->first();
 
             $kelas_cek = Mapel::join('kodes', 'kodes.id', '=', 'mapels.kode_id')
             ->join('kelas', 'kelas.id', '=', 'mapels.kelas_id')
