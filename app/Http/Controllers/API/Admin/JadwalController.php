@@ -132,36 +132,49 @@ class JadwalController extends Controller
             ->where('mapels.kelas_id', $kelas_id)
             ->first();
 
+        $nama_mapel = Mapel::join('kodes', 'kodes.id', 'mapels.kode_id')
+        ->where('mapels.id', $request->mapel_id)
+        ->value('kodes.nama_mapel');
+        
+        $data_mapel = Jadwal::join('jams', 'jams.id', '=', 'jadwals.jam_id')
+        ->join('haris', 'haris.id', '=', 'jadwals.hari_id')
+        ->join('mapels', 'mapels.id', '=', 'jadwals.mapel_id')
+        ->join('kodes', 'kodes.id', 'mapels.kode_id')
+        ->where('haris.id', $request->hari_id)
+        ->where('jams.id', $request->jam_id)
+        ->where('kodes.nama_mapel', '=', $nama_mapel)
+        ->first();
+
         if (empty($data_jam)) {
+            if (empty($data_mapel)) {
+                // $data = [];
+                // foreach ($jumlah_jam as $jam_id) {
+                //     $data[] = [
+                //         'hari_id' => $request->hari_id,
+                //         'jam_id' => $jam_id->id,
+                //         'mapel_id' => $request->mapel_id,
+                //         'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
+                //         'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
+                //     ];
+                // }
+                // $jadwal = Jadwal::insert($data);
 
-            $data = [];
-            foreach ($jumlah_jam as $jam_id) {
-                $data[] = [
-                    'hari_id' => $request->hari_id,
-                    'jam_id' => $jam_id->id,
-                    'mapel_id' => $request->mapel_id,
-                    'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
-                    'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
-                ];
+                return response()->json([
+                    'message' => 'Data Jadwal baru berhasil dibuat',
+                    // 'data' => $data,
+                    'tes' => $data_mapel
+                ], 200);
             }
-
-            $jadwal = Jadwal::insert($data);
-
-
             return response()->json([
-                'message' => 'Data Jadwal baru berhasil dibuat',
-                'data' => $data,
-            ], 200);
-
+                'message' => 'Jadwal mapel sudah ada dikelas lain, pada jam ini',
+                // 'data' => $data,
+            ], 400);
         } 
-        else {
-
             return response()->json([
                 'message' => 'Jam sudah terisi jadwal',
                 // 'data' => $data,
             ], 400);
 
-        }
 
         
         
