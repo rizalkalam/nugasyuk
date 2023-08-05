@@ -60,6 +60,7 @@ class KbmController extends Controller
                                 });
                             })
                             ->where('gurus.id', auth()->user()->id)
+                            ->where('materis.tanggal_dibuat', 'ASC')
                             ->select([
                                 'materis.id',
                                 'mapels.kelas_id',
@@ -115,6 +116,7 @@ class KbmController extends Controller
                                 $query->where('id', $mapel);
                             });
                         })
+                        ->orderBy('tugas.date', 'ASC')
                         ->select([
                             'tugas.id',
                             'mapels.kelas_id',
@@ -642,8 +644,14 @@ class KbmController extends Controller
 
     public function hapus_tugas($id)
     {
-        $tugas = Tugas::where('id', $id)
-            ->first('tugas.id');
+            $tugas = Tugas::where('id', $id)
+            ->first('id');
+
+            $file_path = Materi::where('id', $id)->value('file_tugas');
+
+            if (!empty($file_path)) {
+                Storage::delete($file_path);
+            }
         
             $tugas->delete();
             $pengumpulan = Pengumpulan::where('tugas_id', $id)->delete();
