@@ -60,6 +60,7 @@ class KbmController extends Controller
                                 });
                             })
                             ->where('gurus.id', auth()->user()->id)
+                            ->where('materis.tanggal_dibuat', 'ASC')
                             ->select([
                                 'materis.id',
                                 'mapels.kelas_id',
@@ -115,6 +116,7 @@ class KbmController extends Controller
                                 $query->where('id', $mapel);
                             });
                         })
+                        ->orderBy('tugas.date', 'ASC')
                         ->select([
                             'tugas.id',
                             'mapels.kelas_id',
@@ -374,14 +376,15 @@ class KbmController extends Controller
             ->where('mapels.kelas_id', '=', $kelas_id)
             ->first('mapels.id');
 
-            if (empty($request->hasFile('file'))) {
-                $data_cek = $request->file;
-            }else{
-                $berkas = $request->file('file');
-                $data_cek = $berkas->getClientOriginalName();
-            }
-
             try {
+
+                if ($request->hasFile('file')) {
+                    $berkas = $request->file('file');
+                    $data_cek = time().'-'.$berkas->getClientOriginalName();
+                    $data_file = $berkas->storeAs('file', $data_cek);
+                }else{
+                    $data_file = null;
+                }
                 // $berkas = $request->file('file');
                 // $nama = $berkas->getClientOriginalName();
 
@@ -390,7 +393,7 @@ class KbmController extends Controller
                     'nama_materi'=> $request->judul,
                     'isi'=> $request->deskripsi,
                     'tanggal_dibuat'=> Carbon::now()->format('Y-m-d'),
-                    'file'=> $data_cek,
+                    'file'=> $data_file,
                     'link'=> $request->link
                     // 'tahun_mulai'=> $request->tahun_mulai,
                     // 'tahun_selesai'=> $request->tahun_selesai,
@@ -472,7 +475,13 @@ class KbmController extends Controller
     public function hapus_materi($id)
     {
         $materi = Materi::where('id', $id)
-            ->first('materis.id');
+            ->first('id');
+
+        $file_path = Materi::where('id', $id)->value('file');
+
+        if (!empty($file_path)) {
+            Storage::delete($file_path);
+        }
         
         $materi->delete();
 
@@ -503,11 +512,12 @@ class KbmController extends Controller
             ], 400);
         }
 
-        if (empty($request->hasFile('file'))) {
-            $data_cek = $request->file;
-        }else{
+        if ($request->hasFile('file')) {
             $berkas = $request->file('file');
-            $data_cek = $berkas->getClientOriginalName();
+            $data_cek = time().'-'.$berkas->getClientOriginalName();
+            $data_file = $berkas->storeAs('file', $data_cek);
+        }else{
+            $data_file = null;
         }
         
         try {
@@ -527,7 +537,7 @@ class KbmController extends Controller
                     'deadline'=> $request->deadline,
                     'date'=>Carbon::now()->format('Y-m-d'),
                     'link_tugas'=> $request->link,
-                    'file_tugas'=> $data_cek,
+                    'file_tugas'=> $data_file,
                     'input_jawban'=> $request->input_jawaban
                 ]);
     
@@ -634,8 +644,14 @@ class KbmController extends Controller
 
     public function hapus_tugas($id)
     {
-        $tugas = Tugas::where('id', $id)
-            ->first('tugas.id');
+            $tugas = Tugas::where('id', $id)
+            ->first('id');
+
+            $file_path = Materi::where('id', $id)->value('file_tugas');
+
+            if (!empty($file_path)) {
+                Storage::delete($file_path);
+            }
         
             $tugas->delete();
             $pengumpulan = Pengumpulan::where('tugas_id', $id)->delete();
