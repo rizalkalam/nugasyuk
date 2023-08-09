@@ -90,26 +90,20 @@ class TugasController extends Controller
         $berkas = $request->file('file');
         $nama = $berkas->getClientOriginalName();
 
-        $data_update = Pengumpulan::where('id', $id)
+        $data_kiriman = Pengumpulan::where('id', $id)
         ->where('murid_id', auth()->user()->id)
-        ->update([
+        ->first();
+
+        $data_kiriman->update([
             'status'=>'menunggu',
             'link'=> $request->link,
             'file'=> $berkas->storeAs('file', $nama),
         ]);
-
-        // $file = Tugas::where('id', $id)
-        // ->update([
-        //     'link_tugas'=> $request->link,
-        //     'file_tugas'=> $berkas->storeAs('file', $nama),
-        // ]);
-
             return response()->json([
                 'message' => 'Jawaban berhasil terkirim',
-                // 'data' => $file,
+                'data' => $data_kiriman,
                 // 'status' => $status
             ]);
-
         } catch (\Throwable $th) {
             //throw $th;
             return response()->json([

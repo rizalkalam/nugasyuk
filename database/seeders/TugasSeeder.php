@@ -43,7 +43,7 @@ class TugasSeeder extends Seeder
             'id'=>'3',
             'nama_tugas'=>"Baca Tulis Al-Qur'an",
             'soal'=>'Bacalah surat Al-Kahfi ayat 1-20',
-            'date'=>Carbon::now()->format('Y-m-d'),
+            'date'=>Carbon::yesterday()->format('Y-m-d'),
             'deadline'=>'2023-07-10',
             'link_tugas'=>null,
             'file_tugas'=>'file/data_kuis_app.xlsx',

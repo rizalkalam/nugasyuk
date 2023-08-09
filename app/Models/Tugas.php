@@ -14,6 +14,7 @@ class Tugas extends Model
     use HasFactory;
     
     protected $guarded = ['id'];
+    protected $date = 'dd/mm/yyyy';
 
     public function mapel()
     {

@@ -12,6 +12,8 @@ class Materi extends Model
     use HasFactory;
 
     protected $guarded = ['id'];
+    
+    protected $tanggal_dibuat = 'dd/mm/yyyy';
 
     public function scopeFilter($query, array $kelas)
     {
