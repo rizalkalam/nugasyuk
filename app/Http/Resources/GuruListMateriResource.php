@@ -3,9 +3,10 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class DetailTugasKbmResource extends JsonResource
+class GuruListMateriResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,19 +17,12 @@ class DetailTugasKbmResource extends JsonResource
     {
         // return parent::toArray($request);
 
-        // $link_tugas = $this->link_tugas;
-        // $file_tugas = $this->file_tugas;
-
-        return[
+        return [
             "id" => $this->id,
             "kelas_id" => $this->kelas_id,
+            "nama_materi" => $this->nama_materi,
             "nama_guru" => $this->nama_guru,
-            "nama_tugas" => $this->nama_tugas,
-            "soal" => $this->soal,
-            "date" => $this->date,
-            "deadline" => $this->deadline,
-            "link" => $this->link_tugas,
-            "file" => $this->file_tugas,
+            "tanggal_dibuat" => Carbon::parse($this->tanggal_dibuat)->format('d-m-Y')
         ];
     }
 }

@@ -74,4 +74,20 @@ class MuridMapelController extends Controller
             "data" => $tugas,
         ], 200);
     }
+
+    public function detail_materi($id)
+    {
+        $materi = Materi::join('mapels', 'mapels.id', '=', 'materis.mapel_id')
+        ->join('kodes', 'kodes.id', '=', 'mapels.kode_id')
+        ->join('gurus', 'gurus.id', '=', 'kodes.guru_id')
+        ->where('materis.id', $id)
+        ->where('mapels.kelas_id', auth()->user()->kelas_id)
+        ->select(['materis.id', 'kodes.nama_mapel', 'materis.nama_materi', 'materis.isi', 'gurus.nama_guru', 'materis.tanggal_dibuat'])->get();
+
+        return response()->json([
+            "success" => true,
+            "message" => "List Materi",
+            "data" => $materi,
+        ], 200);
+    }
 }

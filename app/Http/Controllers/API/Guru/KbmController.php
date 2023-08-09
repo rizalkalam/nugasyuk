@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Resources\DetailTugasResource;
 use App\Http\Resources\DetailTugasKbmResource;
+use App\Http\Resources\GuruListMateriResource;
 use App\Http\Resources\GuruDetailTugasResource;
 
 class KbmController extends Controller
@@ -60,15 +61,17 @@ class KbmController extends Controller
                                 });
                             })
                             ->where('gurus.id', auth()->user()->id)
-                            ->where('materis.tanggal_dibuat', 'ASC')
+                            ->orderBy('materis.created_at', 'DESC')
+                            ->orderBy('materis.tanggal_dibuat', 'DESC')
                             ->select([
                                 'materis.id',
                                 'mapels.kelas_id',
                                 'materis.nama_materi',
                                 'gurus.nama_guru',
                                 'materis.tanggal_dibuat'
-                            ])->get();
-        
+                            ])
+                            ->get();
+
         $data_kelas = Kelas::join('tingkatans', 'tingkatans.id', '=', 'kelas.tingkatan_id')
         ->join('jurusans', 'jurusans.id', '=', 'kelas.jurusan_id')
         ->where('kelas.id', $id)
@@ -116,7 +119,8 @@ class KbmController extends Controller
                                 $query->where('id', $mapel);
                             });
                         })
-                        ->orderBy('tugas.date', 'ASC')
+                        ->orderBy('tugas.created_at', 'DESC')
+                        ->orderBy('tugas.date', 'DESC')
                         ->select([
                             'tugas.id',
                             'mapels.kelas_id',
@@ -182,6 +186,7 @@ class KbmController extends Controller
                             ->join('jurusans', 'jurusans.id', '=', 'kelas.jurusan_id')
                             ->where('kelas.id', $materi->kelas_id)
                             ->select([
+                                'kelas.id',
                                 'tingkatans.tingkat_ke',
                                 'jurusans.nama_jurusan',
                                 'kelas.nama_kelas'
@@ -189,9 +194,11 @@ class KbmController extends Controller
                             ->first();
                     
                             $kelas = $data_kelas->tingkat_ke . ' ' . $data_kelas->nama_jurusan . ' ' . $data_kelas->nama_kelas;
+                            $id_kelas = $data_kelas->id;
         
         $data = [
             "id" => $materi->id,
+            "kelas_id" => $materi->kelas_id,
             "nama_materi" => $materi->nama_materi,
             "nama_guru" => $materi->nama_guru,
             "tanggal_dibuat" => $materi->tanggal_dibuat,
@@ -211,6 +218,7 @@ class KbmController extends Controller
                 "success" => true,
                 "message" => "Detail Materi",
                 "kelas" => $kelas,
+                "kelas_id" => $id_kelas,
                 "materi" => $data,
             ], 200);
         }
@@ -240,6 +248,7 @@ class KbmController extends Controller
                             ->join('jurusans', 'jurusans.id', '=', 'kelas.jurusan_id')
                             ->where('kelas.id', $tugas->first()->kelas_id)
                             ->select([
+                                'kelas.id',
                                 'tingkatans.tingkat_ke',
                                 'jurusans.nama_jurusan',
                                 'kelas.nama_kelas'
@@ -247,6 +256,7 @@ class KbmController extends Controller
                             ->first();
                     
                         $kelas = $data_kelas->tingkat_ke . ' ' . $data_kelas->nama_jurusan . ' ' . $data_kelas->nama_kelas;
+                        $id_kelas = $data_kelas->id;
 
         $data = DetailTugasKbmResource::collection($tugas);
 
@@ -261,6 +271,7 @@ class KbmController extends Controller
                 "success" => true,
                 "message" => "Detail Tugas",
                 "kelas" => $kelas,
+                'kelas_id' => $id_kelas,
                 "tugas" => $data,
             ], 200);
         }
@@ -521,16 +532,14 @@ class KbmController extends Controller
         }
         
         try {
-            // $berkas = $request->file('file');
-            // $nama = $berkas->getClientOriginalName();
-
             $mapel_id = Mapel::join('kodes', 'kodes.id', '=', 'mapels.kode_id')
             ->join('kelas', 'kelas.id', '=', 'mapels.kelas_id')
             ->where('kodes.guru_id', '=', auth()->user()->id)
             ->where('mapels.kelas_id', '=', $kelas_id)
             ->first('mapels.id');
-        
-                $tugas = Tugas::create([
+
+            if ($request->deadline >= Carbon::now()->format('Y-m-d')) {
+              $tugas = Tugas::create([
                     'mapel_id'=> $mapel_id->id,
                     'nama_tugas'=> $request->judul_tugas,
                     'soal'=> $request->tugas,
@@ -560,13 +569,12 @@ class KbmController extends Controller
                 return response()->json([
                     'message' => 'Tugas berhasil dibuat',
                     'tugas' => $tugas,
-                ]);
-
+                ], 200);
+            }
                 return response()->json([
                     'message' => 'Tugas gagal dibuat',
                     'data' => 'error',
-                ]);
-
+                ], 400);
         } catch (\Throwable $th) {
             //throw $th;
             return response()->json([
@@ -574,8 +582,6 @@ class KbmController extends Controller
                 'errors' => $th->getMessage(),
             ], 400);
         }
-
-        
     }
 
     public function edit_tugas(Request $request, $id)
@@ -586,6 +592,7 @@ class KbmController extends Controller
             'deadline'=> 'required',
             'file'=> 'max:10000|nullable',
             'link'=> 'nullable',
+            'input_jawaban'=> 'required'
         ]);
 
         if ($validator->fails()) {
@@ -617,22 +624,26 @@ class KbmController extends Controller
             ->where('gurus.id', '=', auth()->user()->id)
             ->where('tugas.id', '=', $id)
             ->first('tugas.id');
-            
-            $tugas->update([
-                'nama_tugas'=> $request->judul_tugas,
-                'soal'=> $request->tugas,
-                'description'=> $request->description,
-                'deadline'=> $request->deadline,
-                'link_tugas'=> $request->link,
-                'file_tugas'=> $edit,
-                'input_jawaban'=> $request->input_jawaban
-            ]);
 
+            if ($request->deadline >= Carbon::now()->format('Y-m-d')) {
+                $tugas->update([
+                    'nama_tugas'=> $request->judul_tugas,
+                    'soal'=> $request->tugas,
+                    'deadline'=> $request->deadline,
+                    'link_tugas'=> $request->link,
+                    'file_tugas'=> $edit,
+                    'input_jawaban'=> $request->input_jawaban
+                ]);
+    
+                return response()->json([
+                    'message' => 'Tugas berhasil diubah',
+                    'data' => $tugas,
+                ]);
+            }
             return response()->json([
-                'message' => 'test',
-                'data' => $tugas,
-            ]);
-                            
+                'message' => 'Tugas gagal diubah',
+                'data' => 'error',
+            ], 400);                
         } catch (\Throwable $th) {
             //throw $th;
             return response()->json([
@@ -644,16 +655,14 @@ class KbmController extends Controller
 
     public function hapus_tugas($id)
     {
-            $tugas = Tugas::where('id', $id)
-            ->first('id');
-
-            $file_path = Materi::where('id', $id)->value('file_tugas');
+            $file_path = Tugas::where('id', $id)->value('file_tugas');
 
             if (!empty($file_path)) {
                 Storage::delete($file_path);
             }
         
-            $tugas->delete();
+            $tugas = Tugas::where('id', $id)
+            ->first()->delete();
             $pengumpulan = Pengumpulan::where('tugas_id', $id)->delete();
 
             return response()->json([
