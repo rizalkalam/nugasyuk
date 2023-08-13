@@ -34,7 +34,7 @@ Deploy:
     - ssh $VAR_USER@$VAR_IP "docker exec webserver composer validate --strict"
     - ssh $VAR_USER@$VAR_IP "docker exec webserver composer require pusher/pusher-php-server"
     - ssh $VAR_USER@$VAR_IP "docker exec webserver composer require maatwebsite/excel --ignore-platform-reqs"
-    - ssh $VAR_USER@$VAR_IP "docker exec webserver composer update --ignore-platform-reqs"
+    - ssh $VAR_USER@$VAR_IP "docker exec webserver composer require install --ignore-platform-reqs"
     - ssh $VAR_USER@$VAR_IP "docker exec webserver composer fund"
     # - ssh $VAR_USER@$VAR_IP "dock
     # - ssh $VAR_USER@$VAR_IP "docker exec webserver php artisan queue:flush"
