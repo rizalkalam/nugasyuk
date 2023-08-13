@@ -33,7 +33,7 @@ Deploy:
     - ssh $VAR_USER@$VAR_IP "cd $VAR_DIREKTORI && echo '$VAR_FILE_HTACCESS' >> .htaccess"
     - ssh $VAR_USER@$VAR_IP "docker exec webserver composer validate --strict"
     - ssh $VAR_USER@$VAR_IP "docker exec webserver composer require pusher/pusher-php-server"
-    - ssh $VAR_USER@$VAR_IP "docker exec webserver composer require maatwebsite/excel"
+    - ssh $VAR_USER@$VAR_IP "docker exec webserver composer require psr/simple-cache:^3.0 maatwebsite/excel"
     - ssh $VAR_USER@$VAR_IP "docker exec webserver composer update --ignore-platform-reqs"
     - ssh $VAR_USER@$VAR_IP "docker exec webserver composer fund"
     # - ssh $VAR_USER@$VAR_IP "dock
