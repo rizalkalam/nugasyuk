@@ -19,7 +19,7 @@ class AdminListGuruResource extends JsonResource
 
         $kode = Kode::join('gurus', 'gurus.id', '=', 'kodes.guru_id')
         ->where('gurus.id', $this->id)
-        ->select(['kodes.id', 'kodes.kode_guru'])->get();
+        ->select(['kodes.id', 'kodes.kode_guru', 'kodes.nama_mapel'])->get();
         
         $status_mapel = $this->status_mapel;
 

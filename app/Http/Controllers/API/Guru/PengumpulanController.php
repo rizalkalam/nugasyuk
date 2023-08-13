@@ -8,6 +8,7 @@ use App\Models\Murid;
 use App\Models\Tugas;
 use App\Models\Pengumpulan;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\DetailTugasPengumpulanResource;
 
@@ -148,27 +149,46 @@ class PengumpulanController extends Controller
         ->join('kodes', 'kodes.id', '=', 'mapels.kode_id')
         ->where('kodes.guru_id', '=', auth()->user()->id)
         ->where('pengumpulans.id', '=', $id)
-        ->where('pengumpulans.status', '=', 'menunggu')
+        ->where('pengumpulans.status', '=', 'menunggu_dalam_deadline')
+        ->orWhere('pengumpulans.status', '=', 'menunggu_lebih_deadline')
         ->first();
 
+        $deadline = Pengumpulan::join('tugas', 'tugas.id', '=', 'pengumpulans.tugas_id')
+        ->where('pengumpulans.id', $id)
+        ->value('tugas.deadline');
+
         if (!empty($pengumpulan)) {
+
+            if (Carbon::now() <= $deadline) {
+                $status = Pengumpulan::join('murids', 'murids.id', '=', 'pengumpulans.murid_id')
+                ->where('pengumpulans.id', $id)
+                ->update(['status'=>'selesai_dalam_deadline']);
+    
+                return response()->json([
+                    "success" => true,
+                    "message" => "Pengumpulan berhasil dikonfirmasi",
+                    "pengumpulan" => Pengumpulan::where('id', $id)->first(),
+                    'tes'=>$deadline
+                ], 200);
+            }
+
             $status = Pengumpulan::join('murids', 'murids.id', '=', 'pengumpulans.murid_id')
             ->where('pengumpulans.id', $id)
-            ->update(['status'=>'selesai']);
+            ->update(['status'=>'selesai_lebih_deadline']);
 
             return response()->json([
                 "success" => true,
                 "message" => "Pengumpulan berhasil dikonfirmasi",
                 "pengumpulan" => Pengumpulan::where('id', $id)->first(),
             ], 200);
-        }else {
-            return response()->json([
-                "success" => true,
-                "message" => "Tidak ada data",
-                "pengumpulan" => $pengumpulan,
-            ], 400);
-        }
 
+           
+        }
+        return response()->json([
+            "success" => true,
+            "message" => "Tidak ada data",
+            "pengumpulan" => $pengumpulan,
+        ], 400);
     }
 
     public function pengumpulan_menunggu($id)
@@ -212,7 +232,10 @@ class PengumpulanController extends Controller
         ->join('gurus', 'gurus.id', '=', 'kodes.guru_id')
         ->where('gurus.id', '=', auth()->user()->id)
         ->where('murids.id', '=', $id)
-        ->where('pengumpulans.status', '=', 'selesai')
+        ->where(function ($query) {
+            $query->where('pengumpulans.status', '=', 'selesai_dalam_deadline')
+            ->orWhere('pengumpulans.status', '=', 'selesai_lebih_deadline');
+        })
         ->select([
             'pengumpulans.id',
             'pengumpulans.murid_id',

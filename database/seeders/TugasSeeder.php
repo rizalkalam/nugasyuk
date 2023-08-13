@@ -44,7 +44,7 @@ class TugasSeeder extends Seeder
             'nama_tugas'=>"Baca Tulis Al-Qur'an",
             'soal'=>'Bacalah surat Al-Kahfi ayat 1-20',
             'date'=>Carbon::yesterday()->format('Y-m-d'),
-            'deadline'=>'2023-07-10',
+            'deadline'=>'2023-08-25',
             'link_tugas'=>null,
             'file_tugas'=>'file/data_kuis_app.xlsx',
             'mapel_id'=>7,
@@ -58,7 +58,7 @@ class TugasSeeder extends Seeder
             'date'=>Carbon::now()->format('Y-m-d'),
             'deadline'=>'2023-07-10',
             'link_tugas'=>null,
-            'file_tugas'=>'file/data_kuis_app.xlsx'            ,
+            'file_tugas'=>'file/data_kuis_app.xlsx',
             'mapel_id'=>3,
             'input_jawaban'=> 'ya'
         ]);

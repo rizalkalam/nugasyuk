@@ -75,6 +75,7 @@ return [
         public_path('gambar_profile_siswa') => storage_path('app/gambar_profile_siswa'),
         public_path('assets') => storage_path('app/assets'),
         public_path('file') => storage_path('app/file'),
+        public_path('file_data') => storage_path('app/file_data'),
     ],
 
 ];

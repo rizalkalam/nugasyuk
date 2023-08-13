@@ -16,7 +16,15 @@ return new class extends Migration
             $table->foreignId('tugas_id');
             $table->string('link')->nullable();
             $table->string('file')->nullable();
-            $table->enum('status', ['menunggu', 'selesai', 'belum_selesai'])->default('belum_selesai');
+            $table->enum('status', [
+                    'menunggu_dalam_deadline', 
+                    'menunggu_lebih_deadline',
+                    'selesai_dalam_deadline', 
+                    'selesai_lebih_deadline',
+                    'belum_selesai_dalam_deadline',
+                    'belum_selesai_luar_deadline'
+                ])
+                ->default('belum_selesai_dalam_deadline');
             $table->date('tanggal')->nullable();
             // $table->foreignId('kelas_id');
             $table->foreignId('murid_id')->nullable();
