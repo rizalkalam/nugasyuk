@@ -342,7 +342,10 @@ class KbmController extends Controller
         ->join('gurus', 'gurus.id', '=', 'kodes.guru_id')
         ->where('gurus.id', '=', auth()->user()->id)
         ->where('tugas.id', '=', $id)
-        ->where('pengumpulans.status', '=', 'selesai')
+        ->where(function ($query) {
+            $query->where('pengumpulans.status', '=', 'selesai_dalam_deadline')
+            ->orWhere('pengumpulans.status', '=', 'selesai_lebih_deadline');
+        })
         ->select([
             'murids.id',
             'murids.nama_siswa',

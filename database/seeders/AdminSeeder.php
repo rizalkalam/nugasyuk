@@ -20,6 +20,7 @@ class AdminSeeder extends Seeder
             'nama'=>'Erika Yanti',
             'email'=>'erika@gmail.com',
             'password'=>bcrypt('erika123'),
+            'foto_profile'=>'gambar_profile_guru/erikakw.jpg'
         ]);
 
         Asset::create([

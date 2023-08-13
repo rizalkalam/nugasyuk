@@ -16,7 +16,7 @@ class PengumpulanSeeder extends Seeder
         Pengumpulan::create([
             'id'=>1,
             'tugas_id'=>1,
-            'status'=>'menunggu',
+            'status'=>'menunggu_dalam_deadline',
             // 'kelas_id'=>1,
             'murid_id'=>1,
             'tanggal'=>'2023-04-04',
@@ -26,7 +26,7 @@ class PengumpulanSeeder extends Seeder
         Pengumpulan::create([
             'id'=>2,
             'tugas_id'=>1,
-            'status'=>'belum_selesai',
+            'status'=>'belum_selesai_dalam_deadline',
             // 'kelas_id'=>1,
             'murid_id'=>2,
             'tanggal'=>'2023-04-04'
@@ -35,7 +35,7 @@ class PengumpulanSeeder extends Seeder
         Pengumpulan::create([
             'id'=>3,
             'tugas_id'=>1,
-            'status'=>'belum_selesai',
+            'status'=>'belum_selesai_dalam_deadline',
             // 'kelas_id'=>1,
             'murid_id'=>3,
             'tanggal'=>'2023-04-04'
@@ -44,7 +44,7 @@ class PengumpulanSeeder extends Seeder
         Pengumpulan::create([
             'id'=>4,
             'tugas_id'=>1,
-            'status'=>'menunggu',
+            'status'=>'menunggu_dalam_deadline',
             // 'kelas_id'=>2,
             'murid_id'=>4,
             'tanggal'=>'2023-04-04',
@@ -54,7 +54,7 @@ class PengumpulanSeeder extends Seeder
         Pengumpulan::create([
             'id'=>5,
             'tugas_id'=>3,
-            'status'=>'menunggu',
+            'status'=>'menunggu_dalam_deadline',
             // 'kelas_id'=>1,
             'murid_id'=>1,
             'tanggal'=>'2023-04-04',
@@ -65,7 +65,7 @@ class PengumpulanSeeder extends Seeder
         Pengumpulan::create([
             'id'=>6,
             'tugas_id'=>3,
-            'status'=>'selesai',
+            'status'=>'selesai_dalam_deadline',
             // 'kelas_id'=>1,
             'murid_id'=>2,
             'tanggal'=>'2023-04-04',
@@ -76,7 +76,7 @@ class PengumpulanSeeder extends Seeder
         Pengumpulan::create([
             'id'=>7,
             'tugas_id'=>3,
-            'status'=>'menunggu',
+            'status'=>'selesai_lebih_deadline',
             // 'kelas_id'=>1,
             'murid_id'=>3,
             'tanggal'=>'2023-04-04',
@@ -87,7 +87,7 @@ class PengumpulanSeeder extends Seeder
         Pengumpulan::create([
             'id'=>8,
             'tugas_id'=>3,
-            'status'=>'selesai',
+            'status'=>'selesai_lebih_deadline',
             // 'kelas_id'=>1,
             'murid_id'=>4,
             'tanggal'=>'2023-04-04',
@@ -98,7 +98,7 @@ class PengumpulanSeeder extends Seeder
         Pengumpulan::create([
             'id'=>9,
             'tugas_id'=>5,
-            'status'=>'selesai',
+            'status'=>'selesai_dalam_deadline',
             // 'kelas_id'=>1,
             'murid_id'=>2,
             'tanggal'=>'2023-04-04',
@@ -108,7 +108,7 @@ class PengumpulanSeeder extends Seeder
         Pengumpulan::create([
             'id'=>10,
             'tugas_id'=>5,
-            'status'=>'selesai',
+            'status'=>'selesai_dalam_deadline',
             // 'kelas_id'=>1,
             'murid_id'=>3,
             'tanggal'=>'2023-04-04',
@@ -118,10 +118,10 @@ class PengumpulanSeeder extends Seeder
         Pengumpulan::create([
             'id'=>11,
             'tugas_id'=>6,
-            'status'=>'menunggu',
+            'status'=>'menunggu_lebih_deadline',
             // 'kelas_id'=>1,
             'murid_id'=>5,
-            'tanggal'=>'2023-04-04',
+            'tanggal'=>'2023-07-11',
             'file' => 'file/data_kuis_app',
             'link' => 'https://youtu.be/Vgt1d3eAm7A',
         ]);
@@ -129,7 +129,7 @@ class PengumpulanSeeder extends Seeder
         Pengumpulan::create([
             'id'=>12,
             'tugas_id'=>6,
-            'status'=>'selesai',
+            'status'=>'selesai_dalam_deadline',
             // 'kelas_id'=>1,
             'murid_id'=>6,
             'tanggal'=>'2023-04-04',
@@ -140,7 +140,7 @@ class PengumpulanSeeder extends Seeder
         Pengumpulan::create([
             'id'=>13,
             'tugas_id'=>7,
-            'status'=>'selesai',
+            'status'=>'selesai_dalam_deadline',
             // 'kelas_id'=>1,
             'murid_id'=>1,
             'tanggal'=>'2023-04-04',
@@ -151,10 +151,10 @@ class PengumpulanSeeder extends Seeder
         Pengumpulan::create([
             'id'=>14,
             'tugas_id'=>7,
-            'status'=>'menunggu',
+            'status'=>'menunggu_lebih_deadline',
             // 'kelas_id'=>1,
             'murid_id'=>2,
-            'tanggal'=>'2023-04-04',
+            'tanggal'=>'2023-07-012',
             'file' => 'file/1691078712-MAKALAH.docx',
             'link' => 'https://youtu.be/Vgt1d3eAm7A',
         ]);
@@ -162,7 +162,7 @@ class PengumpulanSeeder extends Seeder
         Pengumpulan::create([
             'id'=>15,
             'tugas_id'=>7,
-            'status'=>'selesai',
+            'status'=>'selesai_dalam_deadline',
             // 'kelas_id'=>1,
             'murid_id'=>3,
             'tanggal'=>'2023-04-04',
@@ -173,7 +173,7 @@ class PengumpulanSeeder extends Seeder
         Pengumpulan::create([
             'id'=>16,
             'tugas_id'=>7,
-            'status'=>'selesai',
+            'status'=>'selesai_lebih_deadline',
             // 'kelas_id'=>1,
             'murid_id'=>4,
             'tanggal'=>'2023-04-04',
@@ -184,7 +184,7 @@ class PengumpulanSeeder extends Seeder
         Pengumpulan::create([
             'id'=>17,
             'tugas_id'=>8,
-            'status'=>'selesai',
+            'status'=>'selesai_lebih_deadline',
             // 'kelas_id'=>1,
             'murid_id'=>5,
             'tanggal'=>'2023-04-04',
@@ -195,7 +195,7 @@ class PengumpulanSeeder extends Seeder
         Pengumpulan::create([
             'id'=>18,
             'tugas_id'=>8,
-            'status'=>'selesai',
+            'status'=>'selesai_lebih_deadline',
             // 'kelas_id'=>1,
             'murid_id'=>6,
             'tanggal'=>'2023-04-04',

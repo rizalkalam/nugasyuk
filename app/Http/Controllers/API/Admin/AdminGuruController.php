@@ -8,11 +8,14 @@ use App\Models\Kelas;
 use App\Models\Mapel;
 use App\Models\Murid;
 use App\Models\Percakapan;
+use App\Exports\ExportGuru;
+use App\Imports\ImportGuru;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use App\Http\Requests\EditDataGuru;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
+use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Resources\AdminListGuruResource;
@@ -124,7 +127,7 @@ class AdminGuruController extends Controller
     {
         $validator = Validator::make($request->all(),[
             'nama_guru' => 'required',
-            'email' => 'required|email|unique:gurus',
+            'email' => 'required|email|unique:gurus|unique:murids|unique:admins',
             'password' => 'required',
             'niy' => 'required|unique:gurus',
             'foto_profile' => 'required|file|max:2048|mimes:jpeg,png,jpg',
@@ -175,7 +178,7 @@ class AdminGuruController extends Controller
     public function edit_guru(Request $request, $id)
     {
         $validator = Validator::make($request->all(),[
-            'email' => 'required|email|unique:gurus,email,' . $id,
+            'email' => 'required|email|unique:admins|unique:murids|unique:gurus,email,' . $id,
             'foto_profile' => 'mimes:jpeg,png,jpg|file|max:2048',
             'nama_guru' => 'required',
             'password' => 'required',
@@ -333,6 +336,51 @@ class AdminGuruController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Data kode berhasil di hapus',
+        ]);
+    }
+
+    public function importView(Request $request){
+        return view('importFile');
+    }
+ 
+    public function import(Request $request){
+        Excel::import(new ImportGuru,
+                      $request->file('file')->store('file_data'));
+        // return redirect()->back();
+        return response()->json([
+            'success' => true,
+            'message' => 'berhasil import data'
+        ]);
+    }
+
+    public function downloadFile() {
+        Excel::store(new ExportGuru(), 'nugasyuk_export_dataguru.xlsx');
+        return response()->download(storage_path('app/'.'nugasyuk_export_dataguru.xlsx'), 'nugasyuk_export_dataguru.xlsx');
+    }
+ 
+    public function exportsGuru(Request $request){
+        return new ExportGuru();
+        // return Excel::download(new ExportGuru, 'nugasyuk_dataguru.xlsx');
+    }
+
+    public function data_all()
+    {
+        $data = Guru::select([
+            'id',
+            'niy',
+            'nama_guru',
+            'email',
+            'password',
+            'foto_profile',
+            'alamat',
+            'nomor_tlp',
+            'kode_id'
+        ])->get();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Data guru',
+            'data' => $data
         ]);
     }
 

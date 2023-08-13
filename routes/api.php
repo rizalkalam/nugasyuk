@@ -54,13 +54,18 @@ Route::post('/login', [LoginController::class, 'login'])->name('login.guru');
 // token salah
 Route::get('/salahtoken', [LoginController::class, 'wrongtoken'])->name('salahtoken');
 
+//
+
 Route::middleware('auth:admin')->group(function(){
     Route::group(["prefix"=>"admin"], function(){
         // Route logout admin
         Route::get('/logout', [LoginController::class, 'logout']);
 
+        // Route edit foto profile admin
+        Route::post('/edit/foto', [AdminProfileController::class, 'edit_foto']);
+
         // Route reset password admin
-        Route::post('/ubahpassword', [AdminProfileController::class, 'resetpassword']);
+        Route::post('/ubahpassword', [AdminProfileController::class, 'ubah_password']);
 
         // Route profile admin
         Route::get('/profile', [AdminProfileController::class, 'index']);
@@ -113,6 +118,15 @@ Route::middleware('auth:admin')->group(function(){
         // Route kode admin
         Route::post('/kode/{id}', [AdminGuruController::class, 'tambah_kode']);
         Route::delete('/kode/{id}', [AdminGuruController::class, 'hapus_kode']);
+
+        // Route import-export excel
+        Route::get('/file-import',[AdminGuruController::class, 'importView'])->name('import-view');
+        Route::post('/import',[AdminGuruController::class, 'import'])->name('import');
+        Route::get('/export-guru',[AdminGuruController::class, 'data_all'])->name('export-guru');
+
+        // Route Import data murid
+        Route::post('/import/murid',[AdminMuridController::class, 'import']);
+
     });
 });
 
@@ -120,12 +134,15 @@ Route::group(["middleware" => ['GuruBiasa', 'role:guru_biasa'], "prefix"=>"guru"
     // logout guru
     Route::get('/logout', [LoginController::class, 'logout']);
 
+    // Route edit foto profile guru
+    Route::post('/edit/foto', [ProfileController::class, 'edit_foto']);
+
     // Route Beranda Guru
     Route::get('/dataguru', [BerandaController::class, 'data_guru']);
 
     // profile
     Route::get('/profile', [ProfileController::class, 'index']);
-    Route::post('/ubahpassword', [ProfileController::class, 'resetpassword']);
+    Route::post('/ubahpassword', [ProfileController::class, 'ubah_password']);
 
     // notifikasi
     Route::get('/notifikasi', [GuruNotificationController::class, 'index']);
@@ -171,9 +188,13 @@ Route::group(["middleware" => ['GuruBiasa', 'role:guru_biasa'], "prefix"=>"guru"
 Route::middleware('auth:murid')->group(function(){
     Route::group(["prefix"=>"murid"], function(){
 
+        // Route edit foto profile murid
+        Route::post('/edit/foto', [MuridProfileController::class, 'edit_foto']);
+
         // Route Profile Murid
         Route::get('/profile', [MuridProfileController::class, 'index']);
-        Route::post('/ubahpassword', [MuridProfileController::class, 'resetpassword']);
+
+        Route::post('/ubahpassword', [MuridProfileController::class, 'ubah_password']);
 
         // notifikasi
         Route::get('/notifikasi', [MuridNotificationController::class, 'index']);
@@ -214,7 +235,7 @@ Route::middleware('auth:ortu')->group(function(){
 
         // profile ortu
         Route::get('/profile', [OrtuProfileController::class, 'index']);
-        Route::post('/ubahpassword', [OrtuProfileController::class, 'resetpassword']);
+        Route::post('/ubahpassword', [OrtuProfileController::class, 'ubah_password']);
 
         // notifikasi
         Route::get('/notifikasi', [OrtuNotificationController::class, 'index']);

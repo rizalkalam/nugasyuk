@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API\Admin;
 
 use App\Models\Guru;
 use App\Models\Kode;
+use App\Models\Asset;
 use App\Models\Kelas;
 use App\Models\Mapel;
 use App\Models\Murid;
@@ -60,7 +61,7 @@ class AdminMapelController extends Controller
         $validator = Validator::make($request->all(),[
             'kode_id' => 'required',
             'kelas_id' => 'required',
-            'asset_id' => 'required'
+            // 'asset_id' => 'required'
         ]);
 
         if ($validator->fails()) {
@@ -86,11 +87,14 @@ class AdminMapelController extends Controller
         ->first();
 
         if (empty($data_mapel)) {
+
+            $assetpick = Asset::inRandomOrder()
+            ->value('assets.id');
          
             $data = Mapel::create([
                 'kode_id' => $request->kode_id,
                 'kelas_id' => $request->kelas_id,
-                'asset_id' => $request->asset_id,
+                'asset_id' => $assetpick,
             ]);
     
             $mapel = Mapel::latest()->first();
@@ -133,7 +137,7 @@ class AdminMapelController extends Controller
         $validator = Validator::make($request->all(),[
             'kode_id' => 'required',
             'kelas_id' => 'required',
-            'asset_id' => 'required'
+            // 'asset_id' => 'required'
         ]);
 
         if ($validator->fails()) {
@@ -145,10 +149,6 @@ class AdminMapelController extends Controller
         }
 
         try {
-            $data = Mapel::join('assets', 'assets.id', 'mapels.asset_id')
-            ->where('mapels.id', $id)
-            ->first();
-
             $kelas_cek = Mapel::join('kodes', 'kodes.id', '=', 'mapels.kode_id')
             ->join('kelas', 'kelas.id', '=', 'mapels.kelas_id')
             ->where('kelas.id', $request->kelas_id)
@@ -185,48 +185,13 @@ class AdminMapelController extends Controller
 
             if (empty($kode_baru)) {
 
-                $data->update([
+                $data = Mapel::where('id', $id)
+                ->update([
                     'kode_id' => $request->kode_id,
                     'kelas_id' => $request->kelas_id,
-                    'asset_id' => $request->asset_id,
                     'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
                     'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
-                ]);
-
-                $mapel = Mapel::orderBy('updated_at','DESC')->first();
-
-                $guru = Kode::where('id', $mapel->kode_id)->first();
-
-                if ($mapel->kode->status_mapel == 'bk') {
-
-                    $data_percakapan = Percakapan::whereIn('user_one', array($guru->guru_id))->delete();
-
-                    $murid = Murid::where('kelas_id', $request->kelas_id)
-                    ->get();
-
-        
-                    $percakapan = [];
-                    foreach ($murid as $id) {
-                        $percakapan[] = [
-                            'user_one' => $guru->guru_id,
-                            'user_two' => $id->id,
-                            'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
-                            'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
-                        ];
-                    }
-        
-                    Percakapan::insert($percakapan);
-                }
-
-                return response()->json([
-                    'message' => 'Data Mata Pelajaran berhasil di ubah',
-                    // 'data' => $mapel,
-                ]);$data->update([
-                    'kode_id' => $request->kode_id,
-                    'kelas_id' => $request->kelas_id,
-                    'asset_id' => $request->asset_id,
-                    'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
-                    'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
+                    // 'asset_id' => $request->asset_id,
                 ]);
 
                 $mapel = Mapel::orderBy('updated_at','DESC')->first();
@@ -271,7 +236,7 @@ class AdminMapelController extends Controller
     
             } else {
 
-                $data->update([
+                $data = Mapel::where('id', $id)->update([
                     'kode_id' => $request->kode_id,
                     'kelas_id' => $request->kelas_id,
                     'asset_id' => $request->asset_id,

@@ -7,10 +7,13 @@ use App\Models\Kelas;
 use App\Models\Mapel;
 use App\Models\Murid;
 use App\Models\Percakapan;
+use App\Imports\ImportOrtu;
+use App\Imports\ImportMurid;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
+use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Resources\AdminListMuridResource;
@@ -106,7 +109,7 @@ class AdminMuridController extends Controller
             'nis'=>'required|unique:murids',
             'nama_panggilan'=>'required',
             'nama_siswa'=> 'required',
-            'email'=> 'required|email|unique:murids',
+            'email'=> 'required|email|unique:murids|unique:gurus|unique:admins',
             'password'=> 'required',
             'alamat'=>'required',
             'foto_profile'=> 'required|mimes:jpeg,png,jpg|file|max:2048',
@@ -213,7 +216,7 @@ class AdminMuridController extends Controller
             'nis'=>'required|unique:murids,nis,' . $id,
             'nama_panggilan'=>'required',
             'nama_siswa'=> 'required',
-            'email'=> 'required|email|unique:murids,email,' . $id,
+            'email'=> 'required|email|unique:admins|unique:gurus|unique:murids,email,' . $id,
             'password'=> 'required',
             'foto_profile'=> 'mimes:jpeg,png,jpg|file|max:2048',
             'alamat'=> 'required',
@@ -337,6 +340,26 @@ class AdminMuridController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Data murid berhasil di hapus',
+        ]);
+    }
+
+    public function import(Request $request)
+    {
+        Excel::import(new ImportMurid,
+                      $request->file('file')->store('file_data'));
+        
+        // Excel::import( new ImportOrtu,
+        //               $request->file('file')->store('file_data'));
+        // return redirect()->back();
+
+        // $import = new ImportMurid();
+        // $import->onlySheets('Murid', 'Wali_Murid');
+
+        // Excel::import($import, 'murid.xlsx');
+
+        return response()->json([
+            'success' => true,
+            'message' => 'berhasil import data'
         ]);
     }
 }
