@@ -2,21 +2,26 @@
 
 namespace App\Http\Controllers\API\Admin;
 
+use App\Models\Guru;
 use App\Models\Ortu;
 use App\Models\Kelas;
 use App\Models\Mapel;
 use App\Models\Murid;
 use App\Models\Percakapan;
+use App\Exports\ExportGuru;
 use App\Imports\ImportOrtu;
+use App\Exports\MuridExport;
 use App\Imports\ImportMurid;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Resources\AdminListMuridResource;
+use App\Http\Resources\ExcelDataMuridResource;
 
 class AdminMuridController extends Controller
 {
@@ -30,7 +35,7 @@ class AdminMuridController extends Controller
             $query->where('jurusans.id', $jurusan);
         })
         // ->whereNull('jurusans.nama_jurusan')
-        ->orderBy('murids.id', 'ASC')
+        ->orderBy('murids.nama_siswa', 'ASC')
         ->select([
             'murids.id',
             'murids.nis',
@@ -361,5 +366,53 @@ class AdminMuridController extends Controller
             'success' => true,
             'message' => 'berhasil import data'
         ]);
+    }
+
+    public function exportsMurid(Request $request){
+        return new MuridExport();
+        // return Excel::download(new ExportGuru, 'nugasyuk_dataguru.xlsx');
+    }
+
+    public function data_all()
+    {
+        $db_murid = Murid::select([
+            'id',
+            'nis',
+            'nama_panggilan',
+            'nama_siswa',
+            'email',
+            // 'password',
+            'alamat',
+            'foto_profile',
+            'kelas_id'
+        ])->get();
+
+        $data = ExcelDataMuridResource::collection($db_murid);
+        return $data;
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Data murid',
+            'data' => $data
+        ]);
+    }
+
+    public function tes()
+    {
+        $nama_kelas = Kelas::join('tingkatans', 'tingkatans.id', '=', 'kelas.tingkatan_id')
+        ->join('jurusans', 'jurusans.id', '=', 'kelas.jurusan_id')
+        ->where('kelas.id', 1)
+        ->select(
+                
+               DB::raw("CONCAT(tingkatans.tingkat_ke, ' ', jurusans.nama_jurusan, ' ', kelas.nama_kelas) AS kelas_lengkap")
+            )
+        // ->select(
+        //     'kelas.id'
+        // )
+        ->value('kelas_lengkap');
+
+            return response()->json([
+                'data'=>$nama_kelas
+            ]);
     }
 }

@@ -35,7 +35,7 @@ class AdminMapelController extends Controller
         ->when($nama_mapel, function ($query) use ($nama_mapel){
             $query->where('kodes.nama_mapel', 'LIKE', '%' . $nama_mapel . '%');
         })
-        ->orderBy('mapels.id', 'asc')
+        ->orderBy('kelas.id', 'asc')
         ->select([
             'mapels.id',
             'mapels.kelas_id',

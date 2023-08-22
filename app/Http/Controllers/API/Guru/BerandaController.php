@@ -40,29 +40,59 @@ class BerandaController extends Controller
         ->where('kodes.guru_id', '=', auth()->user()->id)
         ->get('tugas.id')->count();
 
-        $jumlah_menunggu = Pengumpulan::join('tugas', 'tugas.id', '=', 'pengumpulans.tugas_id')
+        $belum_dalamdeadline = Pengumpulan::join('tugas', 'tugas.id', '=', 'pengumpulans.tugas_id')
         ->join('mapels', 'mapels.id', '=', 'tugas.mapel_id')
         ->join('kodes', 'kodes.id', '=', 'mapels.kode_id')
         ->where('kodes.guru_id', auth()->user()->id)
-        ->where('pengumpulans.status', '=', 'menunggu')
-        ->select('pengumpulans.id')
-        ->get()->count();
+        ->where('pengumpulans.status', '=', 'belum_selesai_dalam_deadline')
+        ->select('pengumpulans.id')->get()->count();
 
-        $jumlah_selesai = Pengumpulan::join('tugas', 'tugas.id', '=', 'pengumpulans.tugas_id')
+        $selesai_dalamdeadline = Pengumpulan::join('tugas', 'tugas.id', '=', 'pengumpulans.tugas_id')
         ->join('mapels', 'mapels.id', '=', 'tugas.mapel_id')
         ->join('kodes', 'kodes.id', '=', 'mapels.kode_id')
         ->where('kodes.guru_id', auth()->user()->id)
-        ->where('pengumpulans.status', '=', 'selesai')
-        ->select('pengumpulans.id')
-        ->get()->count();
+        ->where('pengumpulans.status', '=', 'selesai_dalam_deadline')
+        ->select('pengumpulans.id')->get()->count();
+
+        $belum_lebihdeadline = Pengumpulan::join('tugas', 'tugas.id', '=', 'pengumpulans.tugas_id')
+        ->join('mapels', 'mapels.id', '=', 'tugas.mapel_id')
+        ->join('kodes', 'kodes.id', '=', 'mapels.kode_id')
+        ->where('kodes.guru_id', auth()->user()->id)
+        ->where('pengumpulans.status', '=', 'belum_selesai_luar_deadline')
+        ->select('pengumpulans.id')->get()->count();
+
+        $selesai_lebihdeadline = Pengumpulan::join('tugas', 'tugas.id', '=', 'pengumpulans.tugas_id')
+        ->join('mapels', 'mapels.id', '=', 'tugas.mapel_id')
+        ->join('kodes', 'kodes.id', '=', 'mapels.kode_id')
+        ->where('kodes.guru_id', auth()->user()->id)
+        ->where('pengumpulans.status', '=', 'selesai_lebih_deadline')
+        ->select('pengumpulans.id')->get()->count();
+
+        $menunggu_dalamdeadline = Pengumpulan::join('tugas', 'tugas.id', '=', 'pengumpulans.tugas_id')
+        ->join('mapels', 'mapels.id', '=', 'tugas.mapel_id')
+        ->join('kodes', 'kodes.id', '=', 'mapels.kode_id')
+        ->where('kodes.guru_id', auth()->user()->id)
+        ->where('pengumpulans.status', '=', 'menunggu_dalam_deadline')
+        ->select('pengumpulans.id')->get()->count();
+
+        $menunggu_lebihdeadline = Pengumpulan::join('tugas', 'tugas.id', '=', 'pengumpulans.tugas_id')
+        ->join('mapels', 'mapels.id', '=', 'tugas.mapel_id')
+        ->join('kodes', 'kodes.id', '=', 'mapels.kode_id')
+        ->where('kodes.guru_id', auth()->user()->id)
+        ->where('pengumpulans.status', '=', 'menunggu_lebih_deadline')
+        ->select('pengumpulans.id')->get()->count();
 
         $data = [
             "nama_guru" => $guru,
             "jumlah_kelas" => $kelas,
             "jumlah_materi" => $materi,
             "jumlah_tugas" => $jumlah_tugass,
-            "menunggu" => $jumlah_menunggu,
-            "selesai" => $jumlah_selesai
+            "belum_dalamdeadline" => $belum_dalamdeadline,
+            "selesai_dalamdeadline" => $selesai_dalamdeadline,
+            "belum_lebihdeadline" => $belum_lebihdeadline,
+            "selesai_lebihdeadline" => $selesai_lebihdeadline,
+            "menunggu_dalamdeadline" => $menunggu_dalamdeadline,
+            "menunggu_lebihdeadline" => $menunggu_lebihdeadline,
         ];
 
         return response()->json([

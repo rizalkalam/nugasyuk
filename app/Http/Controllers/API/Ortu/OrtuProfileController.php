@@ -30,7 +30,7 @@ class OrtuProfileController extends Controller
         if (Hash::check($request->password_lama, auth()->user()->password)) {    
             $validateData = Validator::make($request->all(),[
                 'password_baru'=>'required|min:5|max:255',
-                'konfirmasi'=>'required|min:5|max:255|same:password_baru',
+                // 'konfirmasi'=>'required|min:5|max:255|same:password_baru',
             ]);
             
             if ($validateData->fails()) {

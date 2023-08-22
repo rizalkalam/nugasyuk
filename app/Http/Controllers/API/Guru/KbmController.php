@@ -76,6 +76,7 @@ class KbmController extends Controller
         ->join('jurusans', 'jurusans.id', '=', 'kelas.jurusan_id')
         ->where('kelas.id', $id)
         ->select([
+            'kelas.id',
             'tingkatans.tingkat_ke',
             'jurusans.nama_jurusan',
             'kelas.nama_kelas'
@@ -86,9 +87,11 @@ class KbmController extends Controller
 
         if (count($materi) == 0) {
             return response()->json([
-                'success' => false,
+                'success' => true,
                 'message' => 'Materi tidak ada',
-                'data' => $materi
+                "kelas" => $kelas,
+                "kelas_id" => $data_kelas->id,
+                'materi' => $materi
             ], 200);
         }
         else {
@@ -124,6 +127,7 @@ class KbmController extends Controller
                         ->select([
                             'tugas.id',
                             'mapels.kelas_id',
+                            'tugas.nama_tugas',
                             'tugas.soal',
                             'tugas.date',
                             'tugas.deadline',
@@ -131,12 +135,14 @@ class KbmController extends Controller
                             'tingkatans.tingkat_ke',
                             'jurusans.nama_jurusan',
                             'kelas.nama_kelas', 
+                            'tugas.input_jawaban'
                         ])->get();
 
         $data_kelas = Kelas::join('tingkatans', 'tingkatans.id', '=', 'kelas.tingkatan_id')
         ->join('jurusans', 'jurusans.id', '=', 'kelas.jurusan_id')
         ->where('kelas.id', $id)
         ->select([
+            'kelas.id',
             'tingkatans.tingkat_ke',
             'jurusans.nama_jurusan',
             'kelas.nama_kelas'
@@ -147,8 +153,10 @@ class KbmController extends Controller
 
         if (count($tugas) == 0) {
             return response()->json([
-                'success' => false,
+                'success' => true,
                 'message' => 'Tugas tidak ada',
+                "kelas" => $kelas,
+                "kelas_id" => $data_kelas->id,
                 "tugas" => $tugas
             ], 200);
         }
@@ -203,8 +211,8 @@ class KbmController extends Controller
             "nama_guru" => $materi->nama_guru,
             "tanggal_dibuat" => $materi->tanggal_dibuat,
             "isi" => $materi->isi,
-            "link" => $materi->link !== null ? $materi->link : 0,
-            "file" => $materi->file !== null ? $materi->file : 0
+            "link" => $materi->link,
+            "file" => $materi->file
         ];
 
         if (empty($materi)) {
@@ -219,6 +227,7 @@ class KbmController extends Controller
                 "message" => "Detail Materi",
                 "kelas" => $kelas,
                 "kelas_id" => $id_kelas,
+                "id_materi" => $materi->id,
                 "materi" => $data,
             ], 200);
         }
@@ -241,7 +250,8 @@ class KbmController extends Controller
                             'tugas.date',
                             'tugas.deadline',
                             'tugas.link_tugas',
-                            'tugas.file_tugas'
+                            'tugas.file_tugas',
+                            'tugas.input_jawaban',
                         ])->get();
 
                         $data_kelas = Kelas::join('tingkatans', 'tingkatans.id', '=', 'kelas.tingkatan_id')
@@ -291,6 +301,9 @@ class KbmController extends Controller
             'tugas.soal',
             'tugas.date',
             'tugas.deadline',
+            'tugas.link_tugas',
+            'tugas.file_tugas'
+
         ])->get();
 
         return response()->json([
@@ -312,9 +325,14 @@ class KbmController extends Controller
         ->join('gurus', 'gurus.id', '=', 'kodes.guru_id')
         ->where('gurus.id', '=', auth()->user()->id)
         ->where('tugas.id', '=', $id)
-        ->where('pengumpulans.status', '=', 'menunggu')
+        ->where( function ($query){
+            return $query
+                    ->where('pengumpulans.status', '=','menunggu_dalam_deadline')
+                    ->orWhere('pengumpulans.status', '=','menunggu_lebih_deadline');
+        })
         ->select([
             'murids.id',
+            'murids.foto_profile',
             'murids.nama_siswa',
             'murids.email',
             'pengumpulans.status',
@@ -348,6 +366,7 @@ class KbmController extends Controller
         })
         ->select([
             'murids.id',
+            'murids.foto_profile',
             'murids.nama_siswa',
             'murids.email',
             'pengumpulans.status',

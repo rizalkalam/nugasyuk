@@ -87,7 +87,7 @@ class MuridSeeder extends Seeder
             'email'=>'gavra@gmail.com',
             'password'=>bcrypt('gavra123'),
             'alamat'=>'Dawe, Kudus',
-            'foto_profile'=>'gambar_profile_siswa/gavra.png',
+            'foto_profile'=>'gambar_profile_siswa/javier.png',
             'kelas_id'=>3,
             // 'tugas_id'=>1,
         ]);
@@ -95,13 +95,52 @@ class MuridSeeder extends Seeder
         Murid::create([
             'id'=>'7',
             'nis'=>'0451',
-            'nama_panggilan'=>'Putri',
-            'nama_siswa'=>'Putri Agustina Rahayu Sentosa',
-            'email'=>'putri@gmail.com',
-            'password'=>bcrypt('putri123'),
-            'alamat'=>'Gebog, Kudus',
-            'foto_profile'=>'gambar_profile_siswa/putri.png',
+            'nama_panggilan'=>'Syahda',
+            'nama_siswa'=>'Solana Syahda Rahendra',
+            'email'=>'syahdude@gmail.com',
+            'password'=>bcrypt('syahda123'),
+            'alamat'=>'Surakarta',
+            'foto_profile'=>'gambar_profile_siswa/syahda.jpg',
             'kelas_id'=>3,
+            // 'tugas_id'=>1,
+        ]);
+
+        Murid::create([
+            'id'=>'8',
+            'nis'=>'0458',
+            'nama_panggilan'=>'Rifda',
+            'nama_siswa'=>'Rifda Nalil Hana',
+            'email'=>'rifdahhh@gmail.com',
+            'password'=>bcrypt('syahda123'),
+            'alamat'=>'Wonogiri',
+            'foto_profile'=>'gambar_profile_siswa/rifda.png',
+            'kelas_id'=>3,
+            // 'tugas_id'=>1,
+        ]);
+
+        Murid::create([
+            'id'=>'9',
+            'nis'=>'0459',
+            'nama_panggilan'=>'Aul',
+            'nama_siswa'=>'Tsaqifah Aulia',
+            'email'=>'tsaqifaulia@gmail.com',
+            'password'=>bcrypt('aulia123'),
+            'alamat'=>'Surakarta',
+            'foto_profile'=>'gambar_profile_siswa/tsaqifa.png',
+            'kelas_id'=>4,
+            // 'tugas_id'=>1,
+        ]);
+
+        Murid::create([
+            'id'=>'10',
+            'nis'=>'0459',
+            'nama_panggilan'=>'Zalva',
+            'nama_siswa'=>'Aulia Zalva Prawesti',
+            'email'=>'zalvaa@gmail.com',
+            'password'=>bcrypt('zalva123'),
+            'alamat'=>'Surakarta',
+            'foto_profile'=>'gambar_profile_siswa/zalva.png',
+            'kelas_id'=>5,
             // 'tugas_id'=>1,
         ]);
 

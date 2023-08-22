@@ -20,7 +20,7 @@ class ExcelDataGuruResource extends JsonResource
             'id'=>$this->id,
             'nama_guru'=>$this->nama_guru,
             'email'=>$this->email,
-            'password'=>$this->password,
+            // 'password'=>$this->password,
             'niy'=>$this->niy,
             'alamat'=>$this->alamat,
             'nomor_tlp'=>$this->nomor_tlp,

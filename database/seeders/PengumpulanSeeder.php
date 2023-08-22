@@ -57,7 +57,7 @@ class PengumpulanSeeder extends Seeder
             'status'=>'menunggu_dalam_deadline',
             // 'kelas_id'=>1,
             'murid_id'=>1,
-            'tanggal'=>'2023-04-04',
+            'tanggal'=>'2023-08-15',
             'file' => 'file/data_kuis_app',
             'link' => 'https://youtu.be/Vgt1d3eAm7A',
         ]);
@@ -68,7 +68,7 @@ class PengumpulanSeeder extends Seeder
             'status'=>'selesai_dalam_deadline',
             // 'kelas_id'=>1,
             'murid_id'=>2,
-            'tanggal'=>'2023-04-04',
+            'tanggal'=>'2023-08-24',
             'file' => 'file/data_kuis_app',
             'link' => 'https://youtu.be/Vgt1d3eAm7A',
         ]);
@@ -79,7 +79,7 @@ class PengumpulanSeeder extends Seeder
             'status'=>'selesai_lebih_deadline',
             // 'kelas_id'=>1,
             'murid_id'=>3,
-            'tanggal'=>'2023-04-04',
+            'tanggal'=>'2023-09-27',
             'file' => 'file/data_kuis_app',
             'link' => 'https://youtu.be/Vgt1d3eAm7A',
         ]);
@@ -90,7 +90,7 @@ class PengumpulanSeeder extends Seeder
             'status'=>'selesai_lebih_deadline',
             // 'kelas_id'=>1,
             'murid_id'=>4,
-            'tanggal'=>'2023-04-04',
+            'tanggal'=>'2023-09-28',
             'file' => 'file/data_kuis_app',
             'link' => 'https://youtu.be/Vgt1d3eAm7A',
         ]);
@@ -102,6 +102,7 @@ class PengumpulanSeeder extends Seeder
             // 'kelas_id'=>1,
             'murid_id'=>2,
             'tanggal'=>'2023-04-04',
+            'file'=>'file/data_kuis_app',
             'link' => 'https://youtu.be/Vgt1d3eAm7A',
         ]);
 
@@ -121,7 +122,7 @@ class PengumpulanSeeder extends Seeder
             'status'=>'menunggu_lebih_deadline',
             // 'kelas_id'=>1,
             'murid_id'=>5,
-            'tanggal'=>'2023-07-11',
+            'tanggal'=>'2023-09-11',
             'file' => 'file/data_kuis_app',
             'link' => 'https://youtu.be/Vgt1d3eAm7A',
         ]);
@@ -132,7 +133,7 @@ class PengumpulanSeeder extends Seeder
             'status'=>'selesai_dalam_deadline',
             // 'kelas_id'=>1,
             'murid_id'=>6,
-            'tanggal'=>'2023-04-04',
+            'tanggal'=>'2023-09-04',
             'file' => 'file/data_kuis_app',
             'link' => 'https://youtu.be/Vgt1d3eAm7A',
         ]);
@@ -140,10 +141,10 @@ class PengumpulanSeeder extends Seeder
         Pengumpulan::create([
             'id'=>13,
             'tugas_id'=>7,
-            'status'=>'selesai_dalam_deadline',
+            'status'=>'menunggu_lebih_deadline',
             // 'kelas_id'=>1,
             'murid_id'=>1,
-            'tanggal'=>'2023-04-04',
+            'tanggal'=>'2023-08-14',
             'file' => 'file/1691078749-Memperkuat Keimanan.pdf',
             'link' => null,
         ]);
@@ -154,7 +155,7 @@ class PengumpulanSeeder extends Seeder
             'status'=>'menunggu_lebih_deadline',
             // 'kelas_id'=>1,
             'murid_id'=>2,
-            'tanggal'=>'2023-07-012',
+            'tanggal'=>'2023-09-11',
             'file' => 'file/1691078712-MAKALAH.docx',
             'link' => 'https://youtu.be/Vgt1d3eAm7A',
         ]);
@@ -165,7 +166,7 @@ class PengumpulanSeeder extends Seeder
             'status'=>'selesai_dalam_deadline',
             // 'kelas_id'=>1,
             'murid_id'=>3,
-            'tanggal'=>'2023-04-04',
+            'tanggal'=>'2023-08-04',
             'file' => null,
             'link' => 'https://youtu.be/Vgt1d3eAm7A',
         ]);
@@ -176,7 +177,7 @@ class PengumpulanSeeder extends Seeder
             'status'=>'selesai_lebih_deadline',
             // 'kelas_id'=>1,
             'murid_id'=>4,
-            'tanggal'=>'2023-04-04',
+            'tanggal'=>'2023-08-06',
             'file' => 'file/1691078749-Memperkuat Keimanan.pdf',
             'link' => 'https://youtu.be/Vgt1d3eAm7A',
         ]);
@@ -187,7 +188,7 @@ class PengumpulanSeeder extends Seeder
             'status'=>'selesai_lebih_deadline',
             // 'kelas_id'=>1,
             'murid_id'=>5,
-            'tanggal'=>'2023-04-04',
+            'tanggal'=>'2023-09-14',
             'file' => 'file/1691078749-Memperkuat Keimanan.pdf',
             'link' => null,
         ]);
@@ -198,8 +199,46 @@ class PengumpulanSeeder extends Seeder
             'status'=>'selesai_lebih_deadline',
             // 'kelas_id'=>1,
             'murid_id'=>6,
-            'tanggal'=>'2023-04-04',
+            'tanggal'=>'2023-09-12',
             'file' => null,
+            'link' => 'https://youtu.be/Vgt1d3eAm7A',
+        ]);
+
+        Pengumpulan::create([
+            'id'=>19,
+            'tugas_id'=>9,
+            'status'=>'menunggu_dalam_deadline',
+            // 'kelas_id'=>1,
+            'murid_id'=>1,
+            'tanggal'=>'2023-09-04',
+            'link' => 'https://youtu.be/Vgt1d3eAm7A',
+        ]);
+
+        Pengumpulan::create([
+            'id'=>20,
+            'tugas_id'=>9,
+            'status'=>'menunggu_dalam_deadline',
+            // 'kelas_id'=>1,
+            'murid_id'=>2,
+            'tanggal'=>'2023-09-15'
+        ]);
+
+        Pengumpulan::create([
+            'id'=>21,
+            'tugas_id'=>9,
+            'status'=>'belum_selesai_dalam_deadline',
+            // 'kelas_id'=>1,
+            'murid_id'=>3,
+            'tanggal'=>'2023-09-04'
+        ]);
+
+        Pengumpulan::create([
+            'id'=>22,
+            'tugas_id'=>9,
+            'status'=>'menunggu_dalam_deadline',
+            // 'kelas_id'=>2,
+            'murid_id'=>4,
+            'tanggal'=>'2023-08-26',
             'link' => 'https://youtu.be/Vgt1d3eAm7A',
         ]);
     }
