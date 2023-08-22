@@ -49,6 +49,8 @@ class MuridMapelController extends Controller
         ->join('gurus', 'gurus.id', '=', 'kodes.guru_id')
         ->where('mapels.id', $id)
         ->where('mapels.kelas_id', auth()->user()->kelas_id)
+        ->orderBy('materis.created_at', 'DESC')
+        ->orderBy('materis.tanggal_dibuat', 'DESC')
         ->select(['materis.id', 'materis.nama_materi', 'gurus.nama_guru', 'materis.tanggal_dibuat'])->get();
 
         return response()->json([
@@ -66,7 +68,8 @@ class MuridMapelController extends Controller
         ->join('gurus', 'gurus.id', '=', 'kodes.guru_id')
         ->where('mapels.id', $id)
         ->where('pengumpulans.murid_id', auth()->user()->id)
-        ->select(['tugas.id', 'pengumpulans.status', 'tugas.soal', 'gurus.nama_guru', 'tugas.date', 'tugas.deadline'])->get();
+        ->orderBy('deadline', 'ASC')
+        ->select([ 'pengumpulans.id', 'pengumpulans.tugas_id', 'pengumpulans.status', 'tugas.nama_tugas', 'tugas.soal', 'gurus.nama_guru', 'tugas.date', 'tugas.deadline', 'tugas.file_tugas', 'tugas.link_tugas', 'pengumpulans.file', 'pengumpulans.link'])->get();
 
         return response()->json([
             "success" => true,
@@ -82,7 +85,16 @@ class MuridMapelController extends Controller
         ->join('gurus', 'gurus.id', '=', 'kodes.guru_id')
         ->where('materis.id', $id)
         ->where('mapels.kelas_id', auth()->user()->kelas_id)
-        ->select(['materis.id', 'kodes.nama_mapel', 'materis.nama_materi', 'materis.isi', 'gurus.nama_guru', 'materis.tanggal_dibuat'])->get();
+        ->select([
+            'materis.id',
+            'kodes.nama_mapel',
+            'materis.nama_materi',
+            'materis.isi',
+            'gurus.nama_guru',
+            'materis.tanggal_dibuat',
+            'materis.file',
+            'materis.link'
+        ])->get();
 
         return response()->json([
             "success" => true,

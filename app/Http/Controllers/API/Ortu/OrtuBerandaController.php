@@ -37,26 +37,32 @@ class OrtuBerandaController extends Controller
 
         $belum_dalamdeadline = Pengumpulan::join('tugas', 'tugas.id', '=', 'pengumpulans.tugas_id')
         ->where('pengumpulans.murid_id', $siswa_id)
-        ->where('pengumpulans.status', '=', 'belum_selesai')
-        ->whereDate('pengumpulans.tanggal', '<=', $deadline)
+        ->where('pengumpulans.status', '=', 'belum_selesai_dalam_deadline')
         ->select('pengumpulans.id')->get()->count();
 
         $selesai_dalamdeadline = Pengumpulan::join('tugas', 'tugas.id', '=', 'pengumpulans.tugas_id')
         ->where('pengumpulans.murid_id', $siswa_id)
-        ->where('pengumpulans.status', '=', 'selesai')
-        ->whereDate('pengumpulans.tanggal', '<=', $deadline)
+        ->where('pengumpulans.status', '=', 'selesai_dalam_deadline')
         ->select('pengumpulans.id')->get()->count();
 
         $belum_lebihdeadline = Pengumpulan::join('tugas', 'tugas.id', '=', 'pengumpulans.tugas_id')
         ->where('pengumpulans.murid_id', $siswa_id)
-        ->where('pengumpulans.status', '=', 'belum_selesai')
-        ->whereDate('pengumpulans.tanggal', '>=', $deadline)
+        ->where('pengumpulans.status', '=', 'belum_selesai_luar_deadline')
         ->select('pengumpulans.id')->get()->count();
 
         $selesai_lebihdeadline = Pengumpulan::join('tugas', 'tugas.id', '=', 'pengumpulans.tugas_id')
         ->where('pengumpulans.murid_id', $siswa_id)
-        ->where('pengumpulans.status', '=', 'selesai')
-        ->whereDate('pengumpulans.tanggal', '>=', $deadline)
+        ->where('pengumpulans.status', '=', 'selesai_lebih_deadline')
+        ->select('pengumpulans.id')->get()->count();
+
+        $menunggu_dalamdeadline = Pengumpulan::join('tugas', 'tugas.id', '=', 'pengumpulans.tugas_id')
+        ->where('pengumpulans.murid_id', $siswa_id)
+        ->where('pengumpulans.status', '=', 'menunggu_dalam_deadline')
+        ->select('pengumpulans.id')->get()->count();
+
+        $menunggu_lebihdeadline = Pengumpulan::join('tugas', 'tugas.id', '=', 'pengumpulans.tugas_id')
+        ->where('pengumpulans.murid_id', $siswa_id)
+        ->where('pengumpulans.status', '=', 'menunggu_lebih_deadline')
         ->select('pengumpulans.id')->get()->count();
 
         $jumlah_tugas = Tugas::join('mapels', 'mapels.id', '=', 'tugas.mapel_id')
@@ -72,6 +78,8 @@ class OrtuBerandaController extends Controller
             "selesai_dalamdeadline" => $selesai_dalamdeadline,
             "belum_lebihdeadline" => $belum_lebihdeadline,
             "selesai_lebihdeadline" => $selesai_lebihdeadline,
+            "menunggu_dalamdeadline" => $menunggu_dalamdeadline,
+            "menunggu_lebihdeadline" => $menunggu_lebihdeadline,
             "jumlah_tugas" => $jumlah_tugas
         ];
 

@@ -31,32 +31,34 @@ class MuridBerandaController extends Controller
         ->where('mapels.kelas_id', auth()->user()->kelas_id)
         ->select('tugas.id')->get()->count();
 
-        $deadline = Tugas::join('mapels', 'mapels.id', '=', 'tugas.mapel_id')
-        ->where('mapels.kelas_id', auth()->user()->kelas_id)
-        ->value('tugas.deadline');
-
         $belum_dalamdeadline = Pengumpulan::join('tugas', 'tugas.id', '=', 'pengumpulans.tugas_id')
         ->where('pengumpulans.murid_id', auth()->user()->id)
-        ->where('pengumpulans.status', '=', 'belum_selesai')
-        ->whereDate('pengumpulans.tanggal', '<=', $deadline)
+        ->where('pengumpulans.status', '=', 'belum_selesai_dalam_deadline')
         ->select('pengumpulans.id')->get()->count();
 
         $selesai_dalamdeadline = Pengumpulan::join('tugas', 'tugas.id', '=', 'pengumpulans.tugas_id')
         ->where('pengumpulans.murid_id', auth()->user()->id)
-        ->where('pengumpulans.status', '=', 'selesai')
-        ->whereDate('pengumpulans.tanggal', '<=', $deadline)
+        ->where('pengumpulans.status', '=', 'selesai_dalam_deadline')
         ->select('pengumpulans.id')->get()->count();
 
         $belum_lebihdeadline = Pengumpulan::join('tugas', 'tugas.id', '=', 'pengumpulans.tugas_id')
         ->where('pengumpulans.murid_id', auth()->user()->id)
-        ->where('pengumpulans.status', '=', 'belum_selesai')
-        ->whereDate('pengumpulans.tanggal', '>=', $deadline)
+        ->where('pengumpulans.status', '=', 'belum_selesai_luar_deadline')
         ->select('pengumpulans.id')->get()->count();
 
         $selesai_lebihdeadline = Pengumpulan::join('tugas', 'tugas.id', '=', 'pengumpulans.tugas_id')
         ->where('pengumpulans.murid_id', auth()->user()->id)
-        ->where('pengumpulans.status', '=', 'selesai')
-        ->whereDate('pengumpulans.tanggal', '>=', $deadline)
+        ->where('pengumpulans.status', '=', 'selesai_lebih_deadline')
+        ->select('pengumpulans.id')->get()->count();
+
+        $menunggu_dalamdeadline = Pengumpulan::join('tugas', 'tugas.id', '=', 'pengumpulans.tugas_id')
+        ->where('pengumpulans.murid_id', auth()->user()->id)
+        ->where('pengumpulans.status', '=', 'menunggu_dalam_deadline')
+        ->select('pengumpulans.id')->get()->count();
+
+        $menunggu_lebihdeadline = Pengumpulan::join('tugas', 'tugas.id', '=', 'pengumpulans.tugas_id')
+        ->where('pengumpulans.murid_id', auth()->user()->id)
+        ->where('pengumpulans.status', '=', 'menunggu_lebih_deadline')
         ->select('pengumpulans.id')->get()->count();
 
         $data = [
@@ -68,6 +70,8 @@ class MuridBerandaController extends Controller
             "selesai_dalamdeadline" => $selesai_dalamdeadline,
             "belum_lebihdeadline" => $belum_lebihdeadline,
             "selesai_lebihdeadline" => $selesai_lebihdeadline,
+            "menunggu_dalamdeadline" => $menunggu_dalamdeadline,
+            "menunggu_lebihdeadline" => $menunggu_lebihdeadline,
             "jumlah_tugas" => $tugas,
             // "deadline"=>$deadline
         ];

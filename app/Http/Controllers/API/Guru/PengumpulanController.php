@@ -57,11 +57,13 @@ class PengumpulanController extends Controller
                         ->select([
                             'pengumpulans.murid_id',
                             'pengumpulans.tugas_id',
+                            'murids.foto_profile',
                             'murids.nama_siswa',
                             'murids.email',
                             'tingkatans.tingkat_ke',
                             'jurusans.nama_jurusan',
                             'kelas.nama_kelas',
+                            'tugas.input_jawaban'
                         ])->first();
         
         $siswa = Murid::join('kelas', 'kelas.id', '=', 'murids.kelas_id')
@@ -72,6 +74,7 @@ class PengumpulanController extends Controller
             // 'pengumpulans.murid_id',
             // 'pengumpulans.tugas_id',
             'murids.id',
+            'murids.foto_profile',
             'murids.nama_siswa',
             'murids.email',
             'tingkatans.tingkat_ke',
@@ -112,6 +115,8 @@ class PengumpulanController extends Controller
                         ->join('mapels', 'mapels.id', '=', 'tugas.mapel_id')
                         ->join('kodes','kodes.id', '=', 'mapels.kode_id')
                         ->join('kelas', 'kelas.id', '=', 'mapels.kelas_id')
+                        ->join('jurusans', 'jurusans.id', '=', 'kelas.jurusan_id')
+                        ->join('tingkatans', 'tingkatans.id', '=', 'kelas.tingkatan_id')
                         ->join('gurus', 'gurus.id', '=', 'kodes.guru_id')
                         ->where('gurus.id', '=', auth()->user()->id)
                         ->where('pengumpulans.id', '=', $id)
@@ -120,6 +125,12 @@ class PengumpulanController extends Controller
                             'pengumpulans.murid_id',
                             'pengumpulans.tugas_id',
                             'pengumpulans.status',
+                            'murids.foto_profile',
+                            'murids.nama_siswa',
+                            'murids.email',
+                            'tingkatans.tingkat_ke',
+                            'jurusans.nama_jurusan',
+                            'kelas.nama_kelas',
                             'gurus.nama_guru',
                             'tugas.nama_tugas',
                             'tugas.soal',
@@ -127,6 +138,7 @@ class PengumpulanController extends Controller
                             'tugas.deadline',
                             'tugas.link_tugas',
                             'tugas.file_tugas',
+                            'tugas.input_jawaban',
                             // 'pengumpulans.link',
                             'pengumpulans.file'
                         ])->get();
@@ -201,17 +213,23 @@ class PengumpulanController extends Controller
         ->join('gurus', 'gurus.id', '=', 'kodes.guru_id')
         ->where('gurus.id', '=', auth()->user()->id)
         ->where('murids.id', '=', $id)
-        ->where('pengumpulans.status', '=', 'menunggu')
+        ->where( function ($query){
+            return $query
+                    ->where('pengumpulans.status', '=','menunggu_dalam_deadline')
+                    ->orWhere('pengumpulans.status', '=','menunggu_lebih_deadline');
+        })
         ->select([
             'pengumpulans.id',
             'pengumpulans.murid_id',
             'pengumpulans.tugas_id',
+            'murids.foto_profile',
             'murids.nama_siswa',
             'murids.email',
             'tugas.nama_tugas',
             'gurus.nama_guru',
             'tugas.deadline',
             'tugas.date',
+            'tugas.input_jawaban',
             'pengumpulans.status'
         ])->get();
 
@@ -240,12 +258,14 @@ class PengumpulanController extends Controller
             'pengumpulans.id',
             'pengumpulans.murid_id',
             'pengumpulans.tugas_id',
+            'murids.foto_profile',
             'murids.nama_siswa',
             'murids.email',
             'tugas.nama_tugas',
             'gurus.nama_guru',
             'tugas.deadline',
             'tugas.date',
+            'tugas.input_jawaban',
             'pengumpulans.status'
         ])->get();
 

@@ -28,7 +28,7 @@ class TugasController extends Controller
             $query->where('status', $status);
         })
         ->when($status_mapel, function ($query) use ($status_mapel){
-            $query->where('mapels.status_mapel', $status_mapel);
+            $query->where('kodes.status_mapel', $status_mapel);
         })
         ->when($soal, function ($query) use ($soal){
             $query->where('tugas.soal', 'LIKE', '%' . $soal . '%');
@@ -42,7 +42,8 @@ class TugasController extends Controller
             'tugas.soal',
             'gurus.nama_guru',
             'tugas.date',
-            'tugas.deadline'
+            'tugas.deadline',
+            'kodes.status_mapel'
         ])->get();
 
         return response()->json([
@@ -60,7 +61,21 @@ class TugasController extends Controller
         ->join('gurus', 'gurus.id', '=', 'kodes.guru_id')
         ->where('pengumpulans.id', $id)
         ->where('pengumpulans.murid_id', auth()->user()->id)
-        ->select(['kodes.nama_mapel', 'tugas.id', 'pengumpulans.status', 'tugas.nama_tugas', 'tugas.soal', 'gurus.nama_guru', 'tugas.date', 'tugas.deadline', 'pengumpulans.file'])->get();
+        ->select([
+            'kodes.nama_mapel',
+            'pengumpulans.id',
+            'pengumpulans.tugas_id',
+            'pengumpulans.status',
+            'tugas.nama_tugas',
+            'tugas.soal',
+            'gurus.nama_guru',
+            'tugas.date',
+            'tugas.deadline',
+            'tugas.file_tugas',
+            'tugas.link_tugas',
+            'pengumpulans.file',
+        ])
+        ->get();
 
         return response()->json([
             "success" => true,
@@ -73,11 +88,8 @@ class TugasController extends Controller
     {
         $validator = Validator::make($request->all(),[
             // 'link'=> 'required',
-            'file'=> 'mimes:pdf,docx,xlsx|max:10000',
+            'file'=> 'mimes:pdf,docx,xlsx',
         ]);
-
-        // $jawaban = Tugas::where('id', $id)
-        // ->first('id');
 
         if ($validator->fails()) {
             return response()->json([
@@ -93,18 +105,33 @@ class TugasController extends Controller
             ->where('pengumpulans.id', $id)
             ->value('tugas.deadline');
 
-            $berkas = $request->file('file');
-            $nama = $berkas->getClientOriginalName();
-
             $data_kiriman = Pengumpulan::where('id', $id)
             ->where('murid_id', auth()->user()->id)
             ->first();
 
-            if (Carbon::now() <= $deadline) {
+            $berkas = $request->file('file');
+
+            if ($deadline >= Carbon::now()->format('Y-m-d')) {
+                if (empty($berkas)) {
+                    $data_kiriman->update([
+                        'status'=>'menunggu_dalam_deadline',
+                        'link'=> $request->link,
+                        'tanggal'=>Carbon::now()->format('Y-m-d')
+                        // 'file'=> $berkas->storeAs('file', $nama),
+                    ]);
+
+                    return response()->json([
+                        'message' => 'Jawaban berhasil terkirim',
+                        'data' => $data_kiriman,
+                        // 'status' => $status
+                    ]);
+                }
+                $nama = $berkas->getClientOriginalName();
                 $data_kiriman->update([
                     'status'=>'menunggu_dalam_deadline',
                     'link'=> $request->link,
                     'file'=> $berkas->storeAs('file', $nama),
+                    'tanggal'=>Carbon::now()->format('Y-m-d')
                 ]);
     
                 return response()->json([
@@ -112,18 +139,34 @@ class TugasController extends Controller
                     'data' => $data_kiriman,
                     // 'status' => $status
                 ]);
-            }
-            $data_kiriman->update([
-                'status'=>'menunggu_lebih_deadline',
-                'link'=> $request->link,
-                'file'=> $berkas->storeAs('file', $nama),
-            ]);
-
-            return response()->json([
-                'message' => 'Jawaban berhasil terkirim',
-                'data' => $data_kiriman,
-                // 'status' => $status
-            ]);
+            } 
+                if (empty($berkas)) {
+                    $data_kiriman->update([
+                        'status'=>'menunggu_lebih_deadline',
+                        'link'=> $request->link,
+                        'tanggal'=>Carbon::now()->format('Y-m-d')
+                        // 'file'=> $berkas->storeAs('file', $nama),
+                    ]);
+    
+                    return response()->json([
+                        'message' => 'Jawaban berhasil terkirim',
+                        'data' => $data_kiriman,
+                        // 'status' => $status
+                    ]);
+                }
+                $nama = $berkas->getClientOriginalName();
+                $data_kiriman->update([
+                    'status'=>'menunggu_lebih_deadline',
+                    'link'=> $request->link,
+                    'file'=> $berkas->storeAs('file', $nama),
+                    'tanggal'=>Carbon::now()->format('Y-m-d')
+                ]);
+    
+                return response()->json([
+                    'message' => 'Jawaban berhasil terkirim',
+                    'data' => $data_kiriman,
+                    // 'status' => $status
+                ]);
         } catch (\Throwable $th) {
             //throw $th;
             return response()->json([
@@ -135,12 +178,6 @@ class TugasController extends Controller
 
     public function hapus_file($id)
     {
-        // $status = Pengumpulan::where('id', $id)
-        // ->where('murid_id', auth()->user()->id)
-        // ->first();
-
-        // $status->update(['status'=>'belum_selesai']);
-
         $file_path = Pengumpulan::where('id', $id)->value('file');
 
         if (!empty($file_path)) {

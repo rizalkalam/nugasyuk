@@ -34,8 +34,17 @@ class AdminGuruController extends Controller
         ->when($nama_guru, function ($query) use ($nama_guru){
             $query->where('gurus.nama_guru', 'LIKE', '%' . $nama_guru . '%');
         })
-        ->orderBy('gurus.niy', 'ASC')
-        ->select(['gurus.id', 'gurus.niy', 'gurus.foto_profile', 'gurus.nama_guru', 'gurus.email', 'kodes.status_mapel'])->get();
+        // ->orderBy('gurus.niy', 'ASC')
+        ->orderBy('gurus.nama_guru', 'ASC')
+        ->select([
+            'gurus.id',
+            'gurus.niy',
+            'gurus.foto_profile',
+            'gurus.nama_guru',
+            'gurus.email',
+            'kodes.status_mapel'
+        ])
+        ->get();
 
         $data = AdminListGuruResource::collection($guru);
 
@@ -370,7 +379,7 @@ class AdminGuruController extends Controller
             'niy',
             'nama_guru',
             'email',
-            'password',
+            // 'password',
             'foto_profile',
             'alamat',
             'nomor_tlp',

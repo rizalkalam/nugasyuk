@@ -18,6 +18,7 @@ return new class extends Migration
             $table->foreignId('tingkatan_id');
             $table->foreignId('jurusan_id');
             $table->foreignId('guru_id')->nullable();
+            $table->string('kelas_lengkap')->nullable();
             $table->timestamps();
         });
     }

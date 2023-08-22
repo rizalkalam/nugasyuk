@@ -27,8 +27,9 @@ class DetailTugasKbmResource extends JsonResource
             "soal" => $this->soal,
             "date" => $this->date,
             "deadline" => $this->deadline,
-            "link" => $this->link_tugas,
-            "file" => $this->file_tugas,
+            "soal_link" => $this->link_tugas,
+            "soal_file" => $this->file_tugas,
+            "input_jawaban" => $this->input_jawaban
         ];
     }
 }

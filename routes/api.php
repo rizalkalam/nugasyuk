@@ -126,6 +126,8 @@ Route::middleware('auth:admin')->group(function(){
 
         // Route Import data murid
         Route::post('/import/murid',[AdminMuridController::class, 'import']);
+        Route::get('/tes',[AdminMuridController::class, 'tes']);
+        Route::get('/export-murid',[AdminMuridController::class, 'data_all'])->name('export-murid');
 
     });
 });
