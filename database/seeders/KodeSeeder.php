@@ -24,7 +24,7 @@ class KodeSeeder extends Seeder
 
         Kode::create([
              'id'=>'2',
-           'kode_guru'=>'RZ1',
+           'kode_guru'=>'RH1',
            'nama_mapel'=>'IOT',
            'status_mapel'=>'produktif',
            'guru_id'=>2,
@@ -32,7 +32,7 @@ class KodeSeeder extends Seeder
 
         Kode::create([
             'id'=>'3',
-            'kode_guru'=>'RZ2',
+            'kode_guru'=>'RH2',
             'nama_mapel'=>'Desktop Dev',
             'status_mapel'=>'produktif',
             'guru_id'=>2,
@@ -40,7 +40,7 @@ class KodeSeeder extends Seeder
 
         Kode::create([
              'id'=>'4',
-            'kode_guru'=>'MF1',
+            'kode_guru'=>'MA1',
             'nama_mapel'=>'Database',
             'status_mapel'=>'produktif',
             'guru_id'=>3,
@@ -48,7 +48,7 @@ class KodeSeeder extends Seeder
 
         Kode::create([
              'id'=>'5',
-            'kode_guru'=>'LS1',
+            'kode_guru'=>'LE1',
             'nama_mapel'=>'Bahasa Indonesia',
             'status_mapel'=>'normadaf',
             'guru_id'=>4,
@@ -64,7 +64,7 @@ class KodeSeeder extends Seeder
 
         Kode::create([
              'id'=>'7',
-            'kode_guru'=>'HS1',
+            'kode_guru'=>'HC1',
             'nama_mapel'=>"PAI",
             'status_mapel'=>'normadaf',
             'guru_id'=>6,
@@ -72,7 +72,7 @@ class KodeSeeder extends Seeder
 
         Kode::create([
             'id'=>'8',
-           'kode_guru'=>'DT1',
+           'kode_guru'=>'SA1',
            'nama_mapel'=>"Bahasa Inggris",
            'status_mapel'=>'normadaf',
            'guru_id'=>7,
@@ -80,7 +80,7 @@ class KodeSeeder extends Seeder
 
         Kode::create([
             'id'=>'9',
-           'kode_guru'=>'AN1',
+           'kode_guru'=>'AR1',
            'nama_mapel'=>"Bimbingan Konseling",
            'status_mapel'=>'bk',
            'guru_id'=>8,
@@ -88,7 +88,7 @@ class KodeSeeder extends Seeder
 
         Kode::create([
             'id'=>'10',
-           'kode_guru'=>'AS1',
+           'kode_guru'=>'WI1',
            'nama_mapel'=>"Bimbingan Konseling",
            'status_mapel'=>'bk',
            'guru_id'=>9,
