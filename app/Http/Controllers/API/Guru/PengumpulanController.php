@@ -10,6 +10,7 @@ use App\Models\Pengumpulan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\GuruPengumpulanResource;
 use App\Http\Resources\DetailTugasPengumpulanResource;
 
 class PengumpulanController extends Controller
@@ -30,7 +31,19 @@ class PengumpulanController extends Controller
                             });
                         })
                         ->orderBy('murids.nama_siswa', 'ASC')
-                        ->get(['murids.id', 'murids.kelas_id',  'murids.foto_profile', 'murids.nama_siswa', 'murids.email', 'tingkatans.tingkat_ke', 'jurusans.nama_jurusan', 'kelas.nama_kelas']);
+                        ->select([
+                            'murids.id',
+                            'murids.kelas_id',
+                            'murids.foto_profile',
+                            'murids.nama_siswa',
+                            'murids.email',
+                            'tingkatans.tingkat_ke',
+                            'jurusans.nama_jurusan',
+                            'kelas.nama_kelas'
+                        ])
+                        ->get();
+
+                        $data = GuruPengumpulanResource::collection($murid);
                         
         $jumlah_murid = count($murid);
     
@@ -38,7 +51,7 @@ class PengumpulanController extends Controller
             "success" => true,
             "message" => "list siswa",
             "jumlah_siswa" => $jumlah_murid,
-            "pengumpulan" => $murid,
+            "pengumpulan" => $data,
         ], 200);
     }
 

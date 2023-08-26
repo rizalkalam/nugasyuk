@@ -332,6 +332,7 @@ class KbmController extends Controller
         })
         ->select([
             'murids.id',
+            'pengumpulans.id AS pengumpulan_id',
             'murids.foto_profile',
             'murids.nama_siswa',
             'murids.email',
@@ -366,6 +367,7 @@ class KbmController extends Controller
         })
         ->select([
             'murids.id',
+            'pengumpulans.id AS pengumpulan_id',
             'murids.foto_profile',
             'murids.nama_siswa',
             'murids.email',

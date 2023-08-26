@@ -5,10 +5,12 @@ namespace App\Imports;
 use App\Models\Ortu;
 use App\Models\Kelas;
 use App\Models\Murid;
+use Illuminate\Support\Carbon;
 use App\Imports\OrtuSheetImport;
 use App\Imports\MuridSheetImport;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Maatwebsite\Excel\Concerns\ToArray;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Illuminate\Support\Facades\Validator;
@@ -32,17 +34,17 @@ class ImportMurid implements ToCollection, WithHeadingRow
                 '*.nama_panggilan' => 'required',
                 '*.nama_siswa' => 'required',
                 '*.email' => 'required|email|unique:murids|unique:gurus|unique:admins',
-                '*.password' => 'required',
                 '*.alamat' => 'required',
                 '*.kelas' => 'required',
-
+                
                 // validasi input wali murid
                 '*.nama_wali'=>'required',
                 '*.email_wali'=>'required|email|unique:ortus,email',
-                '*.password'=>'required',
+
+                // '*.password'=>'required',
+                // '*.password' => 'required',
             ])->validate();
 
-        
 
         foreach ($rows as $row)
         {
@@ -56,21 +58,31 @@ class ImportMurid implements ToCollection, WithHeadingRow
 
             if (!empty($kelas)) {
                 foreach ($kelas as $key) {
+                    if (empty(explode(' ',trim($row['nama_siswa']))[1])) {
+                        $kostumisasi_password_murid = Carbon::now()->format('Y').'_'.explode(' ',trim($row['nama_siswa']))[0].'_'.$row['nis'];
+                    } else {
+                        $kostumisasi_password_murid = Carbon::now()->format('Y').'_'.explode(' ',trim($row['nama_siswa']))[0].'_'.explode(' ',trim($row['nama_siswa']))[1].'_'.$row['nis'];
+                    }
                     Murid::create([
                         'nis'=>$row['nis'],
                         'nama_panggilan'=>$row['nama_panggilan'],
                         'nama_siswa'=>$row['nama_siswa'],
                         'email'=>$row['email'],
-                        'password'=>bcrypt($row['password']),
+                        'password'=>Hash::make($kostumisasi_password_murid),
                         'foto_profile'=>$row['foto_profile'],
                         'alamat'=>$row['alamat'],
                         'kelas_id'=>$key->id
                     ]);
                 }
+                if (empty(explode(' ',trim($row['nama_wali']))[1])) {
+                    $kostumisasi_password_wali = Carbon::now()->format('Y').'_'.explode(' ',trim($row['nama_wali']))[0].'_'.$row['nis'];
+                } else {
+                    $kostumisasi_password_wali = Carbon::now()->format('Y').'_'.explode(' ',trim($row['nama_wali']))[0].'_'.explode(' ',trim($row['nama_wali']))[1].'_'.$row['nis'];
+                }
                 Ortu::create([
                  'nama'=>$row['nama_wali'],
                  'email'=>$row['email_wali'],
-                 'password'=>$row['password_wali'],
+                 'password'=>Hash::make($kostumisasi_password_wali),
                  'siswa_id'=>$row['id']
                 ]);
             }

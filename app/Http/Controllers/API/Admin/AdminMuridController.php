@@ -115,15 +115,15 @@ class AdminMuridController extends Controller
             'nama_panggilan'=>'required',
             'nama_siswa'=> 'required',
             'email'=> 'required|email|unique:murids|unique:gurus|unique:admins',
-            'password'=> 'required',
             'alamat'=>'required',
             'foto_profile'=> 'required|mimes:jpeg,png,jpg|file|max:2048',
             'kelas_id'=> 'required',
+            // 'password'=> 'required',
 
             // validasi input wali murid
             'nama'=>'required',
             'email_wali'=>'required|email|unique:ortus,email',
-            'password'=>'required',
+            // 'password'=>'required',
         ]);
 
         if ($validator->fails()) {
@@ -138,7 +138,6 @@ class AdminMuridController extends Controller
         $nama = time().'-'.$berkas->getClientOriginalName();
 
         try {
-
             $guru_id = Mapel::join('kodes', 'kodes.id', '=', 'mapels.kode_id')
             ->join('gurus', 'gurus.id', '=', 'kodes.guru_id')
             ->where('mapels.kelas_id', $request->kelas_id)
@@ -146,13 +145,26 @@ class AdminMuridController extends Controller
             ->first();
 
             if (!empty($guru_id)) {
+                if (empty(explode(' ',trim($request->nama_siswa))[1])) {
+                    $kostumisasi_password_murid = Carbon::now()->format('Y').'_'.explode(' ',trim($request->nama_siswa))[0].'_'.$request->nis;
+                }
+                 else {
+                    $kostumisasi_password_murid = Carbon::now()->format('Y').'_'.explode(' ',trim($request->nama_siswa))[0].'_'.explode(' ',trim($request->nama_siswa))[1].'_'.$request->nis;
+                }
 
+                if (empty(explode(' ',trim($request->nama))[1])) {
+                    $kostumisasi_password_wali = Carbon::now()->format('Y').'_'.explode(' ',trim($request->nama))[0].'_'.$request->nis;
+                }
+                 else {
+                    $kostumisasi_password_wali = Carbon::now()->format('Y').'_'.explode(' ',trim($request->nama))[0].'_'.explode(' ',trim($request->nama))[1].'_'.$request->nis;
+                }  
+                
                 $data = Murid::create([
                     'nis' => $request->nis,
                     'nama_panggilan'=>$request->nama_panggilan,
                     'nama_siswa' => $request->nama_siswa,
                     'email' => $request->email,
-                    'password' => Hash::make($request->password),
+                    'password' => $kostumisasi_password_murid,
                     'alamat'=> $request->alamat,
                     'foto_profile' => $berkas->storeAs('gambar_profile_siswa',$nama),
                     'kelas_id' => $request->kelas_id
@@ -161,7 +173,7 @@ class AdminMuridController extends Controller
                 $wali_murid = Ortu::create([
                     'nama'=>$request->nama,
                     'email'=>$request->email_wali,
-                    'password'=>Hash::make($request->password_wali),
+                    'password'=>Hash::make($kostumisasi_password_wali),
                     'siswa_id'=>Murid::latest()->first()->id
                 ]);
                 
@@ -222,15 +234,16 @@ class AdminMuridController extends Controller
             'nama_panggilan'=>'required',
             'nama_siswa'=> 'required',
             'email'=> 'required|email|unique:admins|unique:gurus|unique:murids,email,' . $id,
-            'password'=> 'required',
             'foto_profile'=> 'mimes:jpeg,png,jpg|file|max:2048',
             'alamat'=> 'required',
             'kelas_id'=> 'required',
-
-             // validasi input wali murid
-             'nama'=>'required',
-             'email_wali'=>'required|email|unique:ortus,email,' . $id,
-             'password'=>'required',
+            
+            // validasi input wali murid
+            'nama'=>'required',
+            'email_wali'=>'required|email|unique:ortus,email,' . $id,
+            
+            // 'password'=> 'required',
+            //  'password'=>'required',
             //  'siswa_id'=>'required'
         ]);
 

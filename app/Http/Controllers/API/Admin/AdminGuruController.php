@@ -137,11 +137,11 @@ class AdminGuruController extends Controller
         $validator = Validator::make($request->all(),[
             'nama_guru' => 'required',
             'email' => 'required|email|unique:gurus|unique:murids|unique:admins',
-            'password' => 'required',
             'niy' => 'required|unique:gurus',
             'foto_profile' => 'required|file|max:2048|mimes:jpeg,png,jpg',
             'nomor_tlp' => 'required',
             'alamat' => 'required'
+            // 'password' => 'required',
             // 'mapel_id' => 'required'
         ]);
 
@@ -157,10 +157,16 @@ class AdminGuruController extends Controller
         $nama = time().'-'.$berkas->getClientOriginalName();
 
         try {
+            if (empty(explode(' ',trim($request->nama_guru))[1])) {
+                $kostumisasi_password = Carbon::now()->format('Y').'_'.explode(' ',trim($request->nama_guru))[0].'_'.$request->niy;
+            } else {
+                $kostumisasi_password = Carbon::now()->format('Y').'_'.explode(' ',trim($request->nama_guru))[0].'_'.explode(' ',trim($request->nama_guru))[1].'_'.$request->niy;
+            }
+            
             $data = Guru::create([
                 'nama_guru' => $request->nama_guru,
                 'email' => $request->email, 
-                'password' => Hash::make($request->password),
+                'password' => Hash::make($kostumisasi_password),
                 'niy' => $request->niy,
                 'foto_profile' => $berkas->storeAs('gambar_profile_guru', $nama),
                 'nomor_tlp' => $request->nomor_tlp,
@@ -190,8 +196,8 @@ class AdminGuruController extends Controller
             'email' => 'required|email|unique:admins|unique:murids|unique:gurus,email,' . $id,
             'foto_profile' => 'mimes:jpeg,png,jpg|file|max:2048',
             'nama_guru' => 'required',
-            'password' => 'required',
             'niy' => 'required|unique:gurus,niy,' . $id,
+            // 'password' => 'required',
             // 'kode_id' => 'required'
         ]);
 
@@ -220,11 +226,11 @@ class AdminGuruController extends Controller
             $guru->update([
                 'nama_guru' => $request->nama_guru,
                 'email' => $request->email, 
-                'password' => Hash::make($request->password),
                 'niy' => $request->niy,
                 'foto_profile' => $edit,
                 'nomor_tlp' => $request->nomor_tlp,
                 'alamat' => $request->alamat,
+                // 'password' => Hash::make($request->password),
                 // 'kode_id' => $request->kode_id
             ]);
 
@@ -280,7 +286,7 @@ class AdminGuruController extends Controller
     public function tambah_kode(Request $request, $id)
     {
         $validator = Validator::make($request->all(),[
-            'kode_guru'=> 'required|unique:kodes',
+            'kode_guru'=> 'unique:kodes',
             'nama_mapel'=> 'required',
             'status_mapel'=> 'required',
             // 'guru_id'=> 'required',
@@ -295,8 +301,53 @@ class AdminGuruController extends Controller
         }
 
         try {
+            $nama_guru = Guru::where('id', $id)
+            ->value('nama_guru');
+
+            $cek_mapel = Kode::join('gurus', 'gurus.id', '=', 'kodes.guru_id')
+            ->where('gurus.id', $id)
+            ->where('kodes.nama_mapel', 'LIKE', '%' . $request->nama_mapel . '%')
+            ->first();
+            
+            if (!empty($cek_mapel)) {
+                return response()->json([
+                    'message' => 'Mapel sudah diampu oleh '. $nama_guru,
+                    'data' => [],
+                ]);
+            }
+            $cek_kode = Kode::join('gurus', 'gurus.id', '=', 'kodes.guru_id')
+            ->where('gurus.id', $id)
+            ->latest('kodes.created_at')
+            ->value('kode_guru');
+            
+            $cek_kode_nomor = substr($cek_kode, -1);
+            
+            
+            $nomor_kode = 1;
+            if (!empty($cek_kode)) {
+                if (empty(explode(' ',trim($nama_guru))[1])) {
+                    $nama_depan = explode(' ',trim($nama_guru))[0];
+                    $kostumisasi_nama_kode = strtoupper(substr($nama_depan, 0, 2)).$cek_kode_nomor+1;
+                } else {
+                    $nama_depan = explode(' ',trim($nama_guru))[0];
+                    $nama_lanjut = explode(' ',trim($nama_guru))[1];
+                    $kostumisasi_nama_kode = strtoupper(substr($nama_depan, 0, 1)).strtoupper(substr($nama_lanjut, 0, 1)).$cek_kode_nomor+1;
+                }
+                
+            }else {
+                if (empty(explode(' ',trim($nama_guru))[1])) {
+                    $nama_depan = explode(' ',trim($nama_guru))[0];
+                    $kostumisasi_nama_kode = strtoupper(substr($nama_depan, 0, 2)).$nomor_kode;
+                } else {
+                    $nama_depan = explode(' ',trim($nama_guru))[0];
+                    $nama_lanjut = explode(' ',trim($nama_guru))[1];
+                    $kostumisasi_nama_kode = strtoupper(substr($nama_depan, 0, 1)).strtoupper(substr($nama_lanjut, 0, 1)).$nomor_kode;
+                }
+            }
+            
+            
             $data = Kode::create([
-                'kode_guru'=> $request->kode_guru,
+                'kode_guru'=> $kostumisasi_nama_kode,
                 'nama_mapel'=> $request->nama_mapel,
                 'status_mapel'=> $request->status_mapel,
                 'guru_id'=> $id,
@@ -313,6 +364,8 @@ class AdminGuruController extends Controller
                 'message' => 'Data kode guru baru berhasil dibuat',
                 'data' => $data,
             ]);
+
+            
         } catch (\Throwable $th) {
             //throw $th;
             return response()->json([

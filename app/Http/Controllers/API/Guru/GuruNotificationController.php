@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API\Guru;
 
 use App\Models\Tugas;
 use App\Models\Materi;
+use App\Models\Pengumpulan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use App\Http\Controllers\Controller;
@@ -12,56 +13,29 @@ class GuruNotificationController extends Controller
 {
     public function index()
     {
-        $tugas_sekarang = Tugas::join('mapels', 'mapels.id', '=', 'tugas.mapel_id')
+        $data = Pengumpulan::join('tugas', 'tugas.id', '=', 'pengumpulans.tugas_id')
+        ->join('murids', 'murids.id', '=', 'pengumpulans.murid_id')
+        ->join('mapels', 'mapels.id', '=', 'tugas.mapel_id')
+        ->join('kelas', 'kelas.id', '=', 'mapels.kelas_id')
         ->join('kodes', 'kodes.id', '=', 'mapels.kode_id')
         ->join('gurus', 'gurus.id', '=', 'kodes.guru_id')
-        ->where('gurus.id', auth()->user()->id)
-        ->whereDate('date', '=', Carbon::now()->format('Y-m-d'))
+        ->where('pengumpulans.status', '=','menunggu_lebih_deadline')
+        // ->where( function ($query){
+        //     return $query
+        //     ->orWhere('pengumpulans.status', '=','menunggu_lebih_deadline');
+        // })
         ->select([
-            'tugas.id',
+            'pengumpulans.id',
+            'pengumpulans.murid_id',
+            'pengumpulans.tugas_id',
+            'murids.foto_profile',
+            'murids.nama_siswa',
+            'murids.email',
             'tugas.nama_tugas',
-            'gurus.nama_guru',
+            'tugas.deadline',
+            'pengumpulans.status',
+            'pengumpulans.tanggal AS tanggal_mengumpulkan',
         ])->get();
-
-        $tugas_kemarin = Tugas::join('mapels', 'mapels.id', '=', 'tugas.mapel_id')
-        ->join('kodes', 'kodes.id', '=', 'mapels.kode_id')
-        ->join('gurus', 'gurus.id', '=', 'kodes.guru_id')
-        ->where('gurus.id', auth()->user()->id)
-        ->whereDate('date', '=', Carbon::yesterday()->format('Y-m-d'))
-        ->select([
-            'tugas.id',
-            'tugas.nama_tugas',
-            'gurus.nama_guru',
-        ])->get();
-
-        $materi_sekarang = Materi::join('mapels', 'mapels.id', '=', 'materis.mapel_id')
-        ->join('kodes', 'kodes.id', '=', 'mapels.kode_id')
-        ->join('gurus', 'gurus.id', '=', 'kodes.guru_id')
-        ->where('gurus.id', auth()->user()->id)
-        ->whereDate('tanggal_dibuat', '=', Carbon::now()->format('Y-m-d'))
-        ->select([
-            'materis.id',
-            'materis.nama_materi',
-            'gurus.nama_guru',
-        ])->get();
-
-        $materi_kemarin = Materi::join('mapels', 'mapels.id', '=', 'materis.mapel_id')
-        ->join('kodes', 'kodes.id', '=', 'mapels.kode_id')
-        ->join('gurus', 'gurus.id', '=', 'kodes.guru_id')
-        ->where('gurus.id', auth()->user()->id)
-        ->whereDate('tanggal_dibuat', '=', Carbon::yesterday()->format('Y-m-d'))
-        ->select([
-            'materis.id',
-            'materis.nama_materi',
-            'gurus.nama_guru',
-        ])->get();
-
-        $data = [
-            "tugas_sekarang" => $tugas_sekarang,
-            "materi_sekarang" => $materi_sekarang,
-            "tugas_kemarin" => $tugas_kemarin,
-            "materi_kemarin" =>$materi_kemarin
-        ];
 
         return response()->json([
             "success" => true,
