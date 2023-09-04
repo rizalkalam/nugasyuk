@@ -95,7 +95,7 @@ class TugasSeeder extends Seeder
             'nama_tugas'=>"Sejarah Kejayaan Islam",
             'soal'=>'Bagaimana peradaban Islam pada masa kejayaan ntara Tahun 650-1250 M',
             'date'=>Carbon::now()->format('Y-m-d'),
-            'deadline'=>'2023-09-10',
+            'deadline'=>'2023-09-22',
             'link_tugas'=>'https://youtu.be/Vgt1d3eAm7A',
             'file_tugas'=>'file/1691078712-MAKALAH.docx',
             'mapel_id'=>7,

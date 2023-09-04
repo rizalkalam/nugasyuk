@@ -15,6 +15,18 @@ class MuridBerandaController extends Controller
 {
     public function data_murid()
     {
+        $deadline = Tugas::join('mapels', 'mapels.id', '=', 'tugas.mapel_id')
+        ->where('mapels.kelas_id', auth()->user()->kelas_id)
+        ->whereDate('tugas.deadline', '<', Carbon::now()->format('Y-m-d'))
+        ->get('tugas.id');
+
+        if (!empty($deadline)) {
+           $update_status = Tugas::join('mapels', 'mapels.id', '=', 'tugas.mapel_id')
+           ->where('mapels.kelas_id', auth()->user()->kelas_id)
+           ->whereDate('tugas.deadline', '<', Carbon::now()->format('Y-m-d'))
+           ->update(["status_tugas"=>"lewat_deadline"]);
+        }
+
         $murid = Murid::where('id', auth()->user()->id)->value('nama_panggilan');
 
         $jumlah_murid = Murid::where('kelas_id', auth()->user()->kelas_id)

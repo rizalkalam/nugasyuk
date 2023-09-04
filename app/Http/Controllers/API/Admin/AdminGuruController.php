@@ -322,6 +322,7 @@ class AdminGuruController extends Controller
             
             $cek_kode_nomor = substr($cek_kode, -1);
             
+            $cek_nama_guru = explode(' ',trim($nama_guru))[0];
             
             $nomor_kode = 1;
             if (!empty($cek_kode)) {
@@ -333,16 +334,20 @@ class AdminGuruController extends Controller
                     $nama_lanjut = explode(' ',trim($nama_guru))[1];
                     $kostumisasi_nama_kode = strtoupper(substr($nama_depan, 0, 1)).strtoupper(substr($nama_lanjut, 0, 1)).$cek_kode_nomor+1;
                 }
-                
-            }else {
+            } else {
                 if (empty(explode(' ',trim($nama_guru))[1])) {
                     $nama_depan = explode(' ',trim($nama_guru))[0];
                     $kostumisasi_nama_kode = strtoupper(substr($nama_depan, 0, 2)).$nomor_kode;
                 } else {
                     $nama_depan = explode(' ',trim($nama_guru))[0];
                     $nama_lanjut = explode(' ',trim($nama_guru))[1];
-                    $kostumisasi_nama_kode = strtoupper(substr($nama_depan, 0, 1)).strtoupper(substr($nama_lanjut, 0, 1)).$nomor_kode;
+                    $kostumisasi_nama_kode = strtoupper(substr($nama_depan, 0, 1)).strtoupper(substr($nama_lanjut, 0, 1)).$cek_kode_nomor+1;
                 }
+            }
+
+            if(!empty(strtoupper(substr($cek_nama_guru, 0, 2)))) {
+                $nama_depan = explode(' ',trim($nama_guru))[0];
+                $kostumisasi_nama_kode = strtoupper(substr($nama_depan, 0, 3)).$cek_kode_nomor+1;
             }
             
             
@@ -363,6 +368,7 @@ class AdminGuruController extends Controller
             return response()->json([
                 'message' => 'Data kode guru baru berhasil dibuat',
                 'data' => $data,
+                'tes' => $cek_nama_guru
             ]);
 
             

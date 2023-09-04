@@ -43,6 +43,7 @@ class TugasController extends Controller
             'gurus.nama_guru',
             'tugas.date',
             'tugas.deadline',
+            'tugas.status_tugas',
             'kodes.status_mapel'
         ])->get();
 
@@ -73,6 +74,7 @@ class TugasController extends Controller
             'tugas.deadline',
             'tugas.file_tugas',
             'tugas.link_tugas',
+            'tugas.status_tugas',
             'pengumpulans.file',
         ])
         ->get();

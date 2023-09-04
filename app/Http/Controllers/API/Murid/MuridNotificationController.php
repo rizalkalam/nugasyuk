@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API\Murid;
 
 use App\Models\Tugas;
 use App\Models\Materi;
+use App\Models\Pengumpulan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use App\Http\Controllers\Controller;
@@ -11,7 +12,7 @@ use App\Http\Controllers\Controller;
 class MuridNotificationController extends Controller
 {
     public function index()
-    {
+    {   
         $tugas_sekarang = Tugas::join('mapels', 'mapels.id', '=', 'tugas.mapel_id')
         ->join('kodes', 'kodes.id', '=', 'mapels.kode_id')
         ->join('gurus', 'gurus.id', '=', 'kodes.guru_id')
@@ -21,17 +22,22 @@ class MuridNotificationController extends Controller
             'tugas.id',
             'tugas.nama_tugas',
             'gurus.nama_guru',
+            'tugas.deadline',
+            // 'tugas.status_tugas'
+            // 'pengumpulans.status'
         ])->get();
 
         $tugas_kemarin = Tugas::join('mapels', 'mapels.id', '=', 'tugas.mapel_id')
         ->join('kodes', 'kodes.id', '=', 'mapels.kode_id')
         ->join('gurus', 'gurus.id', '=', 'kodes.guru_id')
         ->where('mapels.kelas_id', auth()->user()->kelas_id)
-        ->whereDate('date', '=', Carbon::yesterday()->format('Y-m-d'))
         ->select([
             'tugas.id',
             'tugas.nama_tugas',
             'gurus.nama_guru',
+            'tugas.deadline',
+            // 'tugas.status_tugas'
+            // 'pengumpulans.status'
         ])->get();
 
         $materi_sekarang = Materi::join('mapels', 'mapels.id', '=', 'materis.mapel_id')
@@ -60,7 +66,8 @@ class MuridNotificationController extends Controller
             "tugas_sekarang" => $tugas_sekarang,
             "materi_sekarang" => $materi_sekarang,
             "tugas_kemarin" => $tugas_kemarin,
-            "materi_kemarin" =>$materi_kemarin
+            "materi_kemarin" =>$materi_kemarin,
+            // "tes" => $deadline
         ];
 
         return response()->json([

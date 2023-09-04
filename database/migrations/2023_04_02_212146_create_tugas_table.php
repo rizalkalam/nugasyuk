@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('link_tugas')->nullable();
             $table->string('file_tugas')->nullable();
             $table->foreignId('mapel_id');
+            $table->enum('status_tugas', ['lewat_deadline', 'dalam_deadline'])->default('dalam_deadline');
             $table->enum('input_jawaban', ['tidak', 'ya']);
             $table->timestamps();
         });

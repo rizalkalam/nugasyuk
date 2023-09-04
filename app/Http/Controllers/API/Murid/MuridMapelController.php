@@ -69,7 +69,7 @@ class MuridMapelController extends Controller
         ->where('mapels.id', $id)
         ->where('pengumpulans.murid_id', auth()->user()->id)
         ->orderBy('deadline', 'ASC')
-        ->select([ 'pengumpulans.id', 'pengumpulans.tugas_id', 'pengumpulans.status', 'tugas.nama_tugas', 'tugas.soal', 'gurus.nama_guru', 'tugas.date', 'tugas.deadline', 'tugas.file_tugas', 'tugas.link_tugas', 'pengumpulans.file', 'pengumpulans.link'])->get();
+        ->select([ 'pengumpulans.id', 'pengumpulans.tugas_id', 'pengumpulans.status', 'tugas.nama_tugas', 'tugas.soal', 'gurus.nama_guru', 'tugas.date', 'tugas.deadline', 'tugas.status_tugas', 'tugas.file_tugas', 'tugas.link_tugas', 'pengumpulans.file', 'pengumpulans.link'])->get();
 
         return response()->json([
             "success" => true,
