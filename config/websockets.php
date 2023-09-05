@@ -9,6 +9,7 @@ return [
      */
     'dashboard' => [
         'port' => env('LARAVEL_WEBSOCKETS_PORT', 6001),
+        'domain' => env('LARAVEL_WEBSOCKETS_DOMAIN'),
     ],
 
     /*
@@ -27,8 +28,11 @@ return [
             'name' => 'nugasyuk',
             'key' => '4c9c1a75e68db870e514',
             'secret' => '07029e5a95b7518294bf',
-            'enable_client_messages' => false,
-            'enable_statistics' => true,
+            'enable_client_messages' => true,
+            'enable_statistics' => false,
+            'allowed_origins' => [
+                env('LARAVEL_WEBSOCKETS_DOMAIN'),
+            ],
         ],
     ],
 
