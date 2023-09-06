@@ -1,3 +1,11 @@
+name: Laravel 
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
 jobs:
   runs-on: ubuntu-latest
   deploy_prod:
