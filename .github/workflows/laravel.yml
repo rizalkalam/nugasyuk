@@ -17,7 +17,7 @@ jobs:
         php-version: '8.0'
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         script: |
-          cd /var/home/nugasyuk/www
+          cd /home/nugasyuk/www
           git pull origin main
           git status
     - uses: actions/checkout@v3
