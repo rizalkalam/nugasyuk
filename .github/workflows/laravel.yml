@@ -3,16 +3,13 @@ name: Deploy
 on:
   push:
     branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
 
 jobs:
-  laravel-tests:
+  deploy:
 
     runs-on: ubuntu-latest
 
     steps:
-    - uses: shivammathur/setup-php@15c43e89cdef867065b0213be354c2841860869e
       with:
         php-version: '8.0'
         key: ${{ secrets.SSH_PRIVATE_KEY }}
@@ -20,7 +17,27 @@ jobs:
           cd /home/nugasyuk/www
           git pull origin main
           git status
-    - uses: actions/checkout@v3
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Build and push Docker image
+        run: |
+          docker build -t your-image-name .
+          echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+          docker tag your-image-name $DOCKER_USERNAME/your-image-name
+          docker push $DOCKER_USERNAME/your-image-name
+    
+     - name: SSH into VPS and pull Docker image
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.VPS_SSH_PORT }}
+          script: |
+            docker pull $DOCKER_USERNAME/your-image-name
+            docker-compose -f /path/to/docker-compose.yml up -d
+
     - name: Copy .env
       run: php -r "file_exists('.env') || copy('.env.example', '.env');"
     - name: Install Dependencies
