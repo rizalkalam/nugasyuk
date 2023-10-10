@@ -8,20 +8,8 @@ pipeline {
                 checkout([
                     $class: 'GitSCM',
                     branches: [[name: '*/main']], // Specify the branch you want to pull
-                    userRemoteConfigs: [[url: 'https://github.com/rizalkalam/nugasyuk.git']],
+                    userRemoteConfigs: [[url: 'https://github.com/rizalkalam/rizalkalam.github.io.git']],
                 ])
-            }
-        }
-
-        stage('Install Dependencies') {
-            steps {
-                sh 'composer install --no-interaction --prefer-dist'
-            }
-        }
-
-        stage('Database Migrations') {
-            steps {
-                sh 'php artisan migrate --force'
             }
         }
 
