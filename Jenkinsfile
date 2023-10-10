@@ -12,7 +12,7 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 // Install Composer dan dependensinya
-                sh 'composer install --ignore-platform-req=ext-curl'
+                sh 'composer install --ignore-platform-req=ext-dom'
             }
         }
 
