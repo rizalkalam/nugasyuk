@@ -36,10 +36,4 @@ pipeline {
             }
         }
     }
-
-    post {
-        always {
-            // Tambahkan langkah lain yang mungkin diperlukan, seperti notifikasi
-        }
-    }
 }
