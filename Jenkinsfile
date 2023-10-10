@@ -4,24 +4,42 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                // Use the 'checkout' step to pull the Git repository
-                checkout([
-                    $class: 'GitSCM',
-                    branches: [[name: '*/main']], // Specify the branch you want to pull
-                    userRemoteConfigs: [[url: 'https://github.com/rizalkalam/rizalkalam.github.io.git']],
-                ])
+                // Ambil kode dari repository Git
+                checkout scm
             }
         }
 
-        stage('Deploy') {
+        stage('Install Dependencies') {
             steps {
-                // Copy your application to the web server directory
-                sh 'rsync -avz --exclude=".env" . /var/www/html'
-                // Restart the web server (e.g., Nginx)
-                sh 'systemctl restart nginx'
+                // Install Composer dan dependensinya
+                sh 'composer install --ignore-platform-req=ext-gd'
             }
         }
 
-        // Add more stages for building, testing, and deploying your project
+        stage('Build and Deploy') {
+            steps {
+                // Lakukan proses build, migrasi, dll.
+                sh 'php artisan jwt:secret'
+                sh 'php artisan key:generate'
+                sh 'php artisan config:cache'
+                sh 'php artisan storage:link'
+                sh 'php artisan migrate:fresh --seed'
+            }
+        }
+
+        stage('Configure Nginx') {
+            steps {
+                // Konfigurasi Nginx untuk mengarahkan ke direktori aplikasi
+                sh 'sudo cp index.php /etc/nginx/sites-available/nugasyuk'
+                sh 'sudo ln -s /etc/nginx/sites-available/nugasyuk /etc/nginx/sites-enabled/'
+                sh 'sudo systemctl reload nginx'
+            }
+        }
+    }
+
+    post {
+        always {
+            // Tambahkan langkah lain yang mungkin diperlukan, seperti notifikasi
+        }
     }
 }
