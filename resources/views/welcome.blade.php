@@ -16,9 +16,6 @@
         </style>
     </head>
     <body class="antialiased">
-        {{-- @foreach ($murids as $item)
-            <h3>{{ $item->nama_siswa }}</h3>
-            <a href=""><img src="{{ asset($item->foto_profile) }}" alt=""></a>
-        @endforeach --}}
+        <h1>Hello World</h1>
     </body>
 </html>
