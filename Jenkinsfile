@@ -1,36 +1,17 @@
-pipeline {
+pipeline{
     agent any
-
     stages {
         stage('Checkout') {
             steps {
-                // Ambil kode dari repository Git
                 checkout scm
             }
         }
 
-        stage('Install Dependencies') {
+       stage('Deploy HTML File') {
             steps {
-                // Install Composer dan dependensinya
-                sh 'composer install --ignore-platform-req=ext-dom'
-            }
-        }
-
-        stage('Build and Deploy') {
-            steps {
-                // Lakukan proses build, migrasi, dll.
-                sh 'php artisan key:generate'
-                sh 'php artisan config:cache'
-                sh 'php artisan migrate --force'
-            }
-        }
-
-        stage('Configure Nginx') {
-            steps {
-                // Konfigurasi Nginx untuk mengarahkan ke direktori aplikasi
-                sh 'sudo cp index.php /etc/nginx/sites-available/nugasyuk'
-                sh 'sudo ln -s /etc/nginx/sites-available/nugasyuk /etc/nginx/sites-enabled/'
-                sh 'sudo systemctl reload nginx'
+                sh 'sudo cp -r /home/rizalkalam/.jenkins/workspace/backend-laravel/* /var/www/worldinyourhand.my.id/html/'
+                // sh 'sudo cp -r /home/rizalkalam/.jenkins/workspace/SupremeAcademy/assets/* /var/www/worldinyourhand.my.id/html/assets/'
+                // sh 'sudo cp -r /home/rizalkalam/.jenkins/workspace/SupremeAcademy/style/* /var/www/worldinyourhand.my.id/html/style/'
             }
         }
     }
