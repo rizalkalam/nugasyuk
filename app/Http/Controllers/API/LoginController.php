@@ -38,7 +38,8 @@ class LoginController extends Controller
         } elseif ($token = auth()->guard('admin')->attempt($credentials)) {
             return response()->json([
                 'token'=>$token,
-                'akun'=>auth()->guard('admin')->user()->email
+                'akun'=>auth()->guard('admin')->user()->email,
+                'admin_id'=>'ini adalah akun admin',
             ]);
         } else {
             return response()->json(['kesalahan'=>'Tidak sah'], 401);
