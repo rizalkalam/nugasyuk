@@ -27,18 +27,19 @@ class LoginController extends Controller
             return response()->json([
                 'token'=>$token,
                 'akun'=>auth()->guard('murid')->user()->email,
-                'kelas_id'=>auth()->guard('murid')->user()->kelas_id
+                'kelas_id'=>'ini adalah akun murid'
             ]);
         } elseif ($token = auth()->guard('ortu')->attempt($credentials)) {
             return response()->json([
                 'token'=>$token,
                 'akun'=>auth()->guard('ortu')->user()->email,
-                'siswa_id'=>auth()->guard('ortu')->user()->siswa_id
+                'siswa_id'=>'ini adalah akun wali'
             ]);
         } elseif ($token = auth()->guard('admin')->attempt($credentials)) {
             return response()->json([
                 'token'=>$token,
-                'akun'=>auth()->guard('admin')->user()->email
+                'akun'=>auth()->guard('admin')->user()->email,
+                'admin_id'=>'ini adalah akun admin',
             ]);
         } else {
             return response()->json(['kesalahan'=>'Tidak sah'], 401);

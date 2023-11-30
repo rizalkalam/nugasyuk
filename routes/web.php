@@ -14,9 +14,9 @@ use App\Http\Controllers\API\Admin\AdminMuridController;
 |
 */
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
+Route::get('/', function () {
+    return view('welcome');
+});
 
 // Route::get('/', [AdminMuridController::class, 'test']);
 
